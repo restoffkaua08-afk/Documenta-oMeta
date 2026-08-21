@@ -5,11 +5,20 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 ## Leitura recomendada
 
 1. [`meta/visao-geral.md`](meta/visao-geral.md)
-2. [`meta/arquitetura-alvo.md`](meta/arquitetura-alvo.md)
-3. [`status/status-geral.md`](status/status-geral.md)
-4. [`rachel/visao.md`](rachel/visao.md)
-5. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
-6. [`decisoes/indice.md`](decisoes/indice.md)
+2. [`meta/especificacao-mestra.md`](meta/especificacao-mestra.md)
+3. [`meta/arquitetura-alvo.md`](meta/arquitetura-alvo.md)
+4. [`meta/governanca-documental.md`](meta/governanca-documental.md)
+5. [`status/status-geral.md`](status/status-geral.md)
+6. [`rachel/visao.md`](rachel/visao.md)
+7. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
+8. [`decisoes/indice.md`](decisoes/indice.md)
+
+## Mapas de referencia
+
+- [`meta/componentes-e-fronteiras.md`](meta/componentes-e-fronteiras.md)
+- [`meta/ciclo-de-vida-e-gates.md`](meta/ciclo-de-vida-e-gates.md)
+- [`meta/glossario.md`](meta/glossario.md)
+- [`decisoes/decisoes-superadas.md`](decisoes/decisoes-superadas.md)
 
 ## Regras de confiabilidade
 
@@ -29,4 +38,3 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 | Bloqueado | Depende de requisito, decisao, hardware ou autorizacao |
 | Superado | Fez parte do planejamento, mas deixou de orientar o projeto |
 | A confirmar | A fonte e insuficiente ou contraditoria |
-
