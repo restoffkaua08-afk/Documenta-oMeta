@@ -1,0 +1,35 @@
+# Matriz de Gates do Projeto Meta
+
+**Atualizado em:** 2026-08-21
+
+Esta matriz separa existencia documental, implementacao e validacao. O estado mais fraco prevalece quando as evidencias divergem.
+
+| Projeto ou marco | Especificado | Implementado | Validado | Estado do gate | Evidencia ou pendencia |
+|---|---:|---:|---:|---|---|
+| Rachel - ciclo arquitetural legado | Sim | Sim | Parcial | Fechado apenas como arquitetura | Relatorios 15/15; nao equivale a producao |
+| Rachel - Etapa 1 CI | Sim | Sim | Sim | Aprovado | Commit `0d27273`; registro de 372 testes aprovados e 11 xfail |
+| Rachel - Etapa 2 | Sim | Reportado | A confirmar | Pendente | Auditar codigo e executar gate definido |
+| Rachel - Etapa 3 | Sim | Reportado | A confirmar | Pendente | Confirmar implementacao, testes e integracao |
+| Rachel - interface paralela | Sim | Reportado | Parcial | Pendente | Commit `aec1989`; validar web, desktop e Tauri |
+| Rachel - Etapa 4 Tool Runtime | Sim | Reportado | A confirmar | Pendente | Documento de aceite nao substitui auditoria da branch |
+| Rachel - Etapa 5 Agent Loop | Sim | Nao confirmado | Nao | Bloqueado | Depende do fechamento das Etapas 2 a 4 |
+| Jarvis - baseline standalone | Sim | A inventariar | Nao | Nao aberto | Inspecionar repositorio, versao upstream, testes e licenca |
+| ULTRON - baseline | Sim | A inventariar | Nao | Nao aberto | Localizar codigo, schemas executaveis e testes |
+| Zane - Z0 requisitos | Sim | Nao | Nao | Aguardando | Depende dos inventarios finais de Rachel e Jarvis |
+
+## Evidencias aceitas
+
+- commit ou tag identificavel;
+- codigo presente na branch auditada;
+- teste reproduzivel com resultado registrado;
+- build ou pacote gerado e verificavel;
+- verificacao de seguranca ou contrato;
+- decisao arquitetural aprovada quando o gate for documental.
+
+## Evidencias insuficientes isoladamente
+
+- plano de implementacao;
+- mensagem dizendo que uma etapa terminou;
+- checklist sem saida de execucao;
+- documento de aceite sem correspondencia no codigo;
+- interface visual sem fluxo funcional validado.
