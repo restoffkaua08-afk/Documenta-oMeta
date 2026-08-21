@@ -13,14 +13,18 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 7. [`jarvis/indice.md`](jarvis/indice.md)
 8. [`ultron/indice.md`](ultron/indice.md)
 9. [`zane/indice.md`](zane/indice.md)
-10. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
-11. [`decisoes/indice.md`](decisoes/indice.md)
+10. [`resumos/resumo-executivo.md`](resumos/resumo-executivo.md)
+11. [`status/matriz-de-gates.md`](status/matriz-de-gates.md)
+12. [`integracao/contratos-entre-projetos.md`](integracao/contratos-entre-projetos.md)
+13. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
+14. [`decisoes/indice.md`](decisoes/indice.md)
 
 ## Mapas de referencia
 
 - [`meta/componentes-e-fronteiras.md`](meta/componentes-e-fronteiras.md)
 - [`meta/ciclo-de-vida-e-gates.md`](meta/ciclo-de-vida-e-gates.md)
 - [`meta/glossario.md`](meta/glossario.md)
+- [`fontes/metodo-de-rastreabilidade.md`](fontes/metodo-de-rastreabilidade.md)
 - [`decisoes/decisoes-superadas.md`](decisoes/decisoes-superadas.md)
 
 ## Regras de confiabilidade
