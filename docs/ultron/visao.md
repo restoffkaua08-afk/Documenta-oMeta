@@ -18,3 +18,27 @@ Se ULTRON estiver indisponivel, o Zane deve continuar operando com todas as capa
 
 Arquitetura e conceitos extensamente planejados nas fontes historicas. Implementacao real ainda precisa ser inventariada antes de qualquer declaracao de progresso.
 
+## Produto-alvo
+
+ULTRON deve permitir que desenvolvedores e sistemas:
+
+- publiquem manifests versionados;
+- descubram agentes, skills, workflows e packs;
+- validem schemas, dependencias e compatibilidade;
+- instalem sem ativar automaticamente;
+- ativem capacidades dentro de politicas;
+- visualizem relacoes e dependencias;
+- acompanhem versoes, proveniencia e saude;
+- removam ou revertam capacidades com seguranca.
+
+## O que ULTRON nao e
+
+- nao e o cerebro do Zane;
+- nao e o runtime obrigatorio do Jarvis;
+- nao concede permissao apenas por instalar um pack;
+- nao e um repositório de prompts sem schema;
+- nao e memoria pessoal global sem isolamento;
+- nao deve executar codigo nao confiavel durante validacao.
+
+Ver [`indice.md`](indice.md) para a especificacao completa.
+
