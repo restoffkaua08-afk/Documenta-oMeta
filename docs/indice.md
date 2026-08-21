@@ -18,6 +18,10 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 12. [`integracao/contratos-entre-projetos.md`](integracao/contratos-entre-projetos.md)
 13. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
 14. [`decisoes/indice.md`](decisoes/indice.md)
+15. [`historico/linha-do-tempo.md`](historico/linha-do-tempo.md)
+16. [`riscos/registro-de-riscos.md`](riscos/registro-de-riscos.md)
+17. [`operacao/indice.md`](operacao/indice.md)
+18. [`validacao/criterios-de-completude.md`](validacao/criterios-de-completude.md)
 
 ## Mapas de referencia
 
@@ -25,6 +29,8 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 - [`meta/ciclo-de-vida-e-gates.md`](meta/ciclo-de-vida-e-gates.md)
 - [`meta/glossario.md`](meta/glossario.md)
 - [`fontes/metodo-de-rastreabilidade.md`](fontes/metodo-de-rastreabilidade.md)
+- [`fontes/catalogo-das-fontes.md`](fontes/catalogo-das-fontes.md)
+- [`desenvolvimento/prontidao-para-desenvolvimento.md`](desenvolvimento/prontidao-para-desenvolvimento.md)
 - [`decisoes/decisoes-superadas.md`](decisoes/decisoes-superadas.md)
 
 ## Regras de confiabilidade
