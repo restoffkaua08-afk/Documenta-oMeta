@@ -22,3 +22,24 @@ Uma instalacao limpa do Zane deve iniciar e executar seus fluxos essenciais sem 
 
 Produto planejado. A implementacao deve aguardar a conclusao e o inventario tecnico dos predecessores.
 
+## Proposta de valor
+
+Zane sera um agente pessoal capaz de compreender contexto, lembrar de forma governada, planejar, pesquisar, trabalhar com projetos, executar ferramentas e acompanhar tarefas em uma experiencia unica.
+
+Ele deve combinar:
+
+- naturalidade e contexto pessoal;
+- capacidade agentic real;
+- seguranca e autorizacoes claras;
+- operacao local-first;
+- cloud opcional;
+- modelos substituiveis;
+- interfaces desktop, web e futura mobile;
+- expansao opcional pelo ULTRON.
+
+## Regra de identidade
+
+O usuario ve e configura Zane. Nomes Rachel e Jarvis permanecem na historia tecnica, nos repositorios predecessores e nos documentos de migracao, nao como dois produtos obrigatorios escondidos na operacao diaria.
+
+Ver [`indice.md`](indice.md) para a especificacao completa.
+

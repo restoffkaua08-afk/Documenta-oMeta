@@ -12,8 +12,9 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 6. [`rachel/indice.md`](rachel/indice.md)
 7. [`jarvis/indice.md`](jarvis/indice.md)
 8. [`ultron/indice.md`](ultron/indice.md)
-9. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
-10. [`decisoes/indice.md`](decisoes/indice.md)
+9. [`zane/indice.md`](zane/indice.md)
+10. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
+11. [`decisoes/indice.md`](decisoes/indice.md)
 
 ## Mapas de referencia
 
