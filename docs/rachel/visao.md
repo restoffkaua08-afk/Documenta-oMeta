@@ -29,3 +29,31 @@ Os nomes representam perfis internos de responsabilidade. A distribuicao exata d
 
 Rachel deve instalar, iniciar, conversar, manter contexto, usar suas capacidades nativas e aplicar governanca sem depender do OpenJarvis ou do futuro Zane.
 
+## Produto-alvo
+
+Ao final do roadmap profissional, Rachel deve funcionar como agente pessoal local capaz de:
+
+- manter uma conversa natural sem exigir nomes internos;
+- reconhecer quando uma solicitacao exige acao;
+- planejar e executar tarefas dentro de limites;
+- solicitar aprovacao em linguagem clara;
+- manipular arquivos e projetos com ferramentas tipadas;
+- interromper, cancelar, retomar e explicar execucoes;
+- usar memoria e conhecimento sem confundir os dois;
+- selecionar modelos conforme capacidade e politica;
+- operar em interface desktop e web de validacao;
+- produzir evidencias de testes, build, seguranca e instalacao.
+
+## O que Rachel nao e
+
+- nao e apenas um chatbot;
+- nao e um wrapper obrigatorio do OpenJarvis;
+- nao e um agente com autonomia ilimitada;
+- nao e um modelo de linguagem especifico;
+- nao esta Production Ready apenas porque sua arquitetura antiga foi fechada;
+- nao e o produto final do Meta depois da consolidacao no Zane.
+
+## Navegacao
+
+Ver [`indice.md`](indice.md) para a documentacao tecnica completa.
+

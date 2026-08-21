@@ -49,3 +49,10 @@ Auditar a branch `evolution/rachel-professional-agent` para confirmar:
 - build do frontend web e desktop;
 - ponto exato para iniciar a Etapa 5.
 
+## Conclusao operacional
+
+O ponto mais conservador e tecnicamente defensavel e:
+
+> Rachel possui uma baseline arquitetural fechada e uma branch profissional com entregas documentadas nas etapas iniciais, mas o repositorio atual ainda precisa ser auditado antes de declarar as etapas 2, 3 e 4 definitivamente encerradas ou iniciar o Agent Loop.
+
+Ver tambem [`indice.md`](indice.md) e [`evidencias/baseline-e-readiness.md`](evidencias/baseline-e-readiness.md).

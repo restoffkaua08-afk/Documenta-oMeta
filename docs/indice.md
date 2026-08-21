@@ -9,7 +9,7 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 3. [`meta/arquitetura-alvo.md`](meta/arquitetura-alvo.md)
 4. [`meta/governanca-documental.md`](meta/governanca-documental.md)
 5. [`status/status-geral.md`](status/status-geral.md)
-6. [`rachel/visao.md`](rachel/visao.md)
+6. [`rachel/indice.md`](rachel/indice.md)
 7. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
 8. [`decisoes/indice.md`](decisoes/indice.md)
 
