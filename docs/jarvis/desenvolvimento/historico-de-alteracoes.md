@@ -119,3 +119,15 @@ validação no Windows e empacotamento antes da release.
 - Documento técnico:
   `alteracoes/JARVIS-010-benchmark-agente-codigo.md`.
 
+## JARVIS-011 — instalação reproduzível no Windows
+
+- Instalador direcionado por padrão ao repositório `Jarvis-ia`.
+- Adicionados modos `-CliOnly`, `-SkipOllama` e repositório configurável.
+- Acrescentada validação pós-instalação do CLI e do benchmark Jarvis Code.
+- Criado desinstalador com confirmação, proteção contra caminhos amplos,
+  limpeza do PATH e backup opcional de dados.
+- Criado workflow Windows para parsing PowerShell e instalação isolada real.
+- Documento técnico:
+  `alteracoes/JARVIS-011-instalacao-windows.md`.
+- Gate pendente: conclusão verde do workflow e validação na máquina de destino.
+
