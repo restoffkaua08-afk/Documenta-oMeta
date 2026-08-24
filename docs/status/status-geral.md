@@ -6,7 +6,7 @@
 |---|---|---|
 | Rachel | Evolucao profissional | Etapa 1 validada; Etapas 2 a 4 reportadas e pendentes de gate consolidado |
 | Jarvis | Especificacao standalone | Baseline de implementacao a inventariar apos o gate da Rachel |
-| **ULTRON** | **Implementacao iniciada** | **U0 aprovado (Escopo e Contratos); U1 em curso (Registry Ready)** |
+| **ULTRON** | **Implementacao em andamento** | **U0 aprovado (Escopo e Contratos); U1 aprovado (Registry Ready); U2-U5 pendentes** |
 | Zane | Especificacao arquitetural | Arquitetura propria e roadmap Z0-Z9 definidos; implementacao nao iniciada |
 
 ## Foco atual
@@ -15,14 +15,18 @@
 2. Auditar a branch atual da Rachel.
 3. Fechar formalmente os gates das etapas 2, 3 e 4.
 4. Determinar se a proxima execucao e a Etapa 5 - Agent Loop.
-5. **Implementar ULTRON U1 — Registry Ready** (commit por commit, com gates de evidencia).
+5. **Implementar ULTRON U2 — Installation Ready** (resolver deps, store, install pipeline).
 6. Atualizar esta pagina a cada mudanca relevante.
 
 Detalhamento: [`matriz-de-gates.md`](matriz-de-gates.md).
 
 ## Marcos recentes
 
-- **2026-08-24** — Repositorio ULTRON criado e gate U0 aprovado. Detalhes em [`../ultron/status/status-atual.md`](../ultron/status/status-atual.md).
+- **2026-08-24** — Repositorio ULTRON criado.
+- **2026-08-24** — Gate U0 (Escopo e Contratos) aprovado (commit `f240df6`).
+- **2026-08-24** — Gate U1 (Registry Ready) aprovado (commit `10ff301`): Registry SQLite+FTS5, API HTTP, portal Obsidian.
+
+Detalhes em [`../ultron/status/status-atual.md`](../ultron/status/status-atual.md).
 
 ## Avisos
 

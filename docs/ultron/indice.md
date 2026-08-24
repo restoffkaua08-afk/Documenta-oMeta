@@ -14,13 +14,18 @@
 ## Status e implementacao (a partir de 2026-08-24)
 
 - [`status/status-atual.md`](status/status-atual.md) — estado por gate, o que foi feito, o que falta
+- [`gates/U0.md`](gates/U0.md) — prova do gate U0 (Escopo e Contratos) ✅
+- [`gates/U1.md`](gates/U1.md) — prova do gate U1 (Registry Ready) ✅
 - [`decisoes/registro.md`](decisoes/registro.md) — DEC-U-001 a DEC-U-009 (decisoes arquiteturais)
 - [`design/portal-obsidian.md`](design/portal-obsidian.md) — design UI/UX do portal (gate U1+)
 - [`necessidades/adicionais-design-arquitetura.md`](necessidades/adicionais-design-arquitetura.md) — gaps entre spec e implementacao
 
 ## Estado
 
-ULTRON possui planejamento arquitetural detalhado nas fontes. **A partir de 2026-08-24**, a implementacao foi iniciada: o gate U0 (Escopo e Contratos) foi aprovado com 76 testes, 92.71% de cobertura, ruff e mypy strict limpos. Repositorio oficial: https://github.com/restoffkaua08-afk/ultron
+ULTRON possui planejamento arquitetural detalhado nas fontes. **A partir de 2026-08-24**, a implementacao foi iniciada e os dois primeiros gates foram entregues:
 
-Gate U1 (Registry Ready) em curso.
+- **Gate U0 (Escopo e Contratos)** — ✅ Aprovado. 76 testes, 92.71% cobertura, ruff+mypy limpos.
+- **Gate U1 (Registry Ready)** — ✅ Aprovado. 105 testes, 86.40% cobertura. Registry SQLite+FTS5 + API HTTP + portal Obsidian entregues.
+
+Repositorio oficial: https://github.com/restoffkaua08-afk/ultron
 

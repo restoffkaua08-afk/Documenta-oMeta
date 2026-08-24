@@ -75,3 +75,26 @@ Nenhum gate pode ser aprovado se:
 
 Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 
+
+---
+
+## Status dos gates (atualizado 2026-08-24)
+
+### U0 — ✅ Aprovado (commit `f240df6`)
+
+- 76 testes unitários, 92.71% cobertura
+- Núcleo imutável, Consumer ABC, deny-by-default
+
+### U1 — ✅ Aprovado (commit `10ff301`)
+
+- **105 testes** (29 novos de integração), **86.40% cobertura**
+- Registry SQLite + FTS5 (aiosqlite), WAL, audit append-only
+- API HTTP versionada (`/api/v1/*`) + portal Obsidian (HTMX-free, vanilla JS)
+- Estrutura: `src/ultron/registry/`, `src/ultron/api/`, `src/ultron/portal/`
+- Endpoints JSON: health, manifests list/search/get, stats, audit
+- Páginas HTML: home, browse, manifest detail, graph (Cytoscape), audit
+- Métricas: mypy strict OK, ruff clean
+
+### U2 — ⏳ Pendente
+
+- Ver checklist acima + adicionar `packaging`-style semver resolution
