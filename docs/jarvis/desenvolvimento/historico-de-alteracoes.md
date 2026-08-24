@@ -84,9 +84,24 @@ Este documento é o registro cronológico central das modificações realizadas 
   validação por shell mais revisão de diff após a última edição.
 - Documento: [JARVIS-008](alteracoes/JARVIS-008-gate-qualidade-codigo.md)
 
+## JARVIS-009 — sessões e diagnóstico Code
+
+- Sessões: `e4d863148b8be09716ef46b80e1be9740f3f4834`
+- Persistência no chat: `ec407c97246cad5da368957243e4ff7bab4b8f40`
+- Opções de sessão: `951983d872c9d18f9be445ac76790e5429266471`
+- Diagnóstico: `fd51a0008a7612c62d78a8252ea9b2986212b141`,
+  `310bdcdb5f379f400af9c881bcb30e6d680a9a1a`
+- Testes: `c7dedee6ce0387f00becc2db5dd24ecf981313de`,
+  `95be61ac4ab36df5c095ce4fd485bb582abbbce9`,
+  `4078ba8494a859fbac3b3aac23a08fa720b1a737`
+- Resultado: conversas são retomadas por projeto e `jarvis code --check`
+  valida o ambiente antes de iniciar o modelo.
+- Documento:
+  [JARVIS-009](alteracoes/JARVIS-009-sessoes-diagnostico-code.md)
+
 ## Estado atual
 
-O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O modo Code usa
-roteamento especializado, orçamento próprio, gate pós-edição e instalação
-auditável de skills. Ainda faltam execução integral da suíte, benchmarks com
-modelos reais, testes no Windows, diagnóstico e empacotamento antes da release.
+O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O modo Code possui
+roteamento especializado, gate pós-edição, skills auditáveis, sessões privadas
+por projeto e preflight. Ainda faltam suíte integral, benchmarks reais,
+validação no Windows e empacotamento antes da release.
