@@ -105,3 +105,17 @@ O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O modo Code possui
 roteamento especializado, gate pós-edição, skills auditáveis, sessões privadas
 por projeto e preflight. Ainda faltam suíte integral, benchmarks reais,
 validação no Windows e empacotamento antes da release.
+
+## JARVIS-010 — benchmark isolado do agente de código
+
+- Adicionada fixture Git descartável com defeito intencional e tarefa objetiva.
+- Adicionado avaliador determinístico por testes, Git diff e escopo permitido.
+- Adicionados `jarvis code --benchmark-prepare` e
+  `jarvis code --benchmark-evaluate`.
+- Relatório JSON e código de saída permitem integração futura em CI.
+- Cobertura adicionada para sucesso, falha inicial, diretório inválido e mudança
+  fora do escopo.
+- Validação comportamental final: estado inicial 0/100; correção válida 100/100.
+- Documento técnico:
+  `alteracoes/JARVIS-010-benchmark-agente-codigo.md`.
+
