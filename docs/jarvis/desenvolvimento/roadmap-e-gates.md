@@ -77,5 +77,11 @@ Adiciona:
 
 ## Estado atual
 
-Planejado. Nenhum gate esta verde ate que o repositorio e a baseline real sejam auditados.
+O repositório e a baseline foram importados e registrados. As correções
+JARVIS-001 a JARVIS-005 estão implementadas na `main`, com foco atual em
+confiabilidade e governança. Nenhum gate está verde: ainda faltam auditoria
+integral, execução completa da suíte, perfis mínimos de segurança e os demais
+critérios listados acima. Consulte
+[Histórico de alterações](historico-de-alteracoes.md) para evidências e
+commits.
 
