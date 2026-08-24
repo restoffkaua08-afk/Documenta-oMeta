@@ -73,9 +73,20 @@ Este documento é o registro cronológico central das modificações realizadas 
   skill pode ser instalada após relatório e confirmação.
 - Documento: [JARVIS-007](alteracoes/JARVIS-007-skills-github-chat.md)
 
+## JARVIS-008 — gate de qualidade do agente de código
+
+- Gate pós-edição: `73ca22d85967e07fc35bd64da8c06b4dc1821bcb`
+- Roteamento no chat: `d39a967d31219c6e8fc0053657fbfe0ede9dbf87`
+- Configuração Code: `cf25c1bbb3f145603a11d1cd59383986d90b5ad5`
+- Testes: `a0a84eb56ee8f75b6aaaa347a804d2b5cdb3e718`,
+  `f0c7cecbcb512f65013f18ab019e61491018a00e`
+- Resultado: o modo Code usa `model_code`, 30 turnos por padrão e exige
+  validação por shell mais revisão de diff após a última edição.
+- Documento: [JARVIS-008](alteracoes/JARVIS-008-gate-qualidade-codigo.md)
+
 ## Estado atual
 
-O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O RBAC está ativo,
-`jarvis code` está implementado e aceita análise/instalação auditável de
-skills GitHub. Ainda faltam execução integral da suíte, testes reais no
-Windows, perfis mínimos, diagnóstico e empacotamento antes de uma release.
+O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O modo Code usa
+roteamento especializado, orçamento próprio, gate pós-edição e instalação
+auditável de skills. Ainda faltam execução integral da suíte, benchmarks com
+modelos reais, testes no Windows, diagnóstico e empacotamento antes da release.
