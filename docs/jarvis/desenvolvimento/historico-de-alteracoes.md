@@ -61,9 +61,21 @@ Este documento é o registro cronológico central das modificações realizadas 
   ferramentas de arquivos, patch, shell e Git em um REPL especializado.
 - Documento: [JARVIS-006](alteracoes/JARVIS-006-agente-codigo-terminal.md)
 
+## JARVIS-007 — skills GitHub pelo chat
+
+- Ferramentas: `d12284309c5be50c6f11fe6bd923330d762a1509`
+- Registro: `4cf47ccb2a3bda8927ad3984ab007aeeb30f317f`
+- Integração no Code: `f645eedf1b550f1d8b4d43cfb27db15dc07e2c9b`
+- Proteção contra symlink: `d01ff03d822627590052fdd7cf95ff9ad5b03e81`
+- Testes: `9ce30178b103a90b232215ed84d63ff1e1f4cfc4`,
+  `a049aeeeef2f68ae4f9e28224eb185b912091b5f`
+- Resultado: links públicos do GitHub podem ser analisados pelo chat e uma
+  skill pode ser instalada após relatório e confirmação.
+- Documento: [JARVIS-007](alteracoes/JARVIS-007-skills-github-chat.md)
+
 ## Estado atual
 
-O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O RBAC está ativo
-em modo compatível e o primeiro modo `jarvis code` está implementado. Ainda
-faltam execução integral da suíte, teste com modelo real, perfis mínimos,
-diagnóstico específico e empacotamento Windows antes de uma release.
+O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O RBAC está ativo,
+`jarvis code` está implementado e aceita análise/instalação auditável de
+skills GitHub. Ainda faltam execução integral da suíte, testes reais no
+Windows, perfis mínimos, diagnóstico e empacotamento antes de uma release.
