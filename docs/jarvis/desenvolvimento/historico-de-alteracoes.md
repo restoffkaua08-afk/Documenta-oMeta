@@ -50,9 +50,20 @@ Este documento é o registro cronológico central das modificações realizadas 
   `default_deny` configurável.
 - Documento: [JARVIS-005](alteracoes/JARVIS-005-rbac-ativo-configuravel.md)
 
+## JARVIS-006 — agente de código no terminal
+
+- Agente ReAct: `b7ac61eb8f1c81139c1fd64e84a884451d1d1386`
+- Integração com chat: `18d054b4990ab8460c71ef40ae910fb63cc7fd11`
+- Comando: `e06592f605aa7ac2946eda8f16cc2416b7bdc387`
+- Registro na CLI: `6a43be6732e35daa3e3b6ac8c0360bd5bd61c923`
+- Testes: `36972be137900212e4697bc8027ed719ab649a2d`
+- Resultado: `jarvis code` reúne o agente ReAct, prompt de engenharia,
+  ferramentas de arquivos, patch, shell e Git em um REPL especializado.
+- Documento: [JARVIS-006](alteracoes/JARVIS-006-agente-codigo-terminal.md)
+
 ## Estado atual
 
-O trabalho permanece no gate `JARVIS STANDALONE READY`, frente de segurança
-e confiabilidade. O RBAC está ativo por padrão com `default_deny = false`.
-A próxima etapa é criar perfis e concessões mínimas antes de considerar
-deny-by-default global.
+O trabalho permanece no gate `JARVIS STANDALONE_READY`. O RBAC está ativo
+em modo compatível e o primeiro modo `jarvis code` está implementado. Ainda
+faltam execução integral da suíte, teste com modelo real, perfis mínimos,
+diagnóstico específico e empacotamento Windows antes de uma release.
