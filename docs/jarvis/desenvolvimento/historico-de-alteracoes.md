@@ -131,3 +131,14 @@ validação no Windows e empacotamento antes da release.
   `alteracoes/JARVIS-011-instalacao-windows.md`.
 - Gate pendente: conclusão verde do workflow e validação na máquina de destino.
 
+## JARVIS-012 — benchmark multiarquivo de engenharia
+
+- Criado perfil `multifile` com contrato distribuído em dois módulos.
+- Manifesto elevado para versão 2 com arquivos permitidos e obrigatórios.
+- Relatório passou a expor perfil e arquivos obrigatórios ausentes.
+- Pesos separados para testes, existência de diff, escopo e cobertura exigida.
+- CLI recebeu `--benchmark-profile basic|multifile`.
+- Validação comportamental: 0/100 inicial, 25/100 parcial e 100/100 coerente.
+- Documento técnico:
+  `alteracoes/JARVIS-012-benchmark-multiarquivo.md`.
+
