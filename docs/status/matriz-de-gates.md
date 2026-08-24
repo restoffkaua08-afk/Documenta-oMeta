@@ -1,6 +1,6 @@
 # Matriz de Gates do Projeto Meta
 
-**Atualizado em:** 2026-08-21
+**Atualizado em:** 2026-08-24
 
 Esta matriz separa existencia documental, implementacao e validacao. O estado mais fraco prevalece quando as evidencias divergem.
 
@@ -14,7 +14,12 @@ Esta matriz separa existencia documental, implementacao e validacao. O estado ma
 | Rachel - Etapa 4 Tool Runtime | Sim | Reportado | A confirmar | Pendente | Documento de aceite nao substitui auditoria da branch |
 | Rachel - Etapa 5 Agent Loop | Sim | Nao confirmado | Nao | Bloqueado | Depende do fechamento das Etapas 2 a 4 |
 | Jarvis - baseline standalone | Sim | A inventariar | Nao | Nao aberto | Inspecionar repositorio, versao upstream, testes e licenca |
-| ULTRON - baseline | Sim | A inventariar | Nao | Nao aberto | Localizar codigo, schemas executaveis e testes |
+| **ULTRON - U0 Escopo e Contratos** | Sim | Sim | Sim | **Aprovado** | **Repo `restoffkaua08-afk/ultron`; commit `f240df6`; 76 testes, 92.71% cobertura, ruff+mypy limpos** |
+| ULTRON - U1 Registry Ready | Sim | Em curso | Nao | Em curso | Scaffold inicial; design do portal (Obsidian) definido |
+| ULTRON - U2 Installation Ready | Sim | Nao | Nao | Planejado | — |
+| ULTRON - U3 Security Ready | Sim | Nao | Nao | Planejado | — |
+| ULTRON - U4 Graph Ready | Sim | Nao | Nao | Planejado | — |
+| ULTRON - U5 Zane Compatibility | Sim | Nao | Nao | Planejado | — |
 | Zane - Z0 requisitos | Sim | Nao | Nao | Aguardando | Depende dos inventarios finais de Rachel e Jarvis |
 
 ## Evidencias aceitas

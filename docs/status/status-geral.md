@@ -1,12 +1,12 @@
 # Status Geral do Projeto Meta
 
-**Atualizado em:** 2026-08-21
+**Atualizado em:** 2026-08-24
 
 | Projeto | Fase | Estado documental |
 |---|---|---|
 | Rachel | Evolucao profissional | Etapa 1 validada; Etapas 2 a 4 reportadas e pendentes de gate consolidado |
 | Jarvis | Especificacao standalone | Baseline de implementacao a inventariar apos o gate da Rachel |
-| ULTRON | Especificacao arquitetural | Registry, schemas e seguranca definidos; implementacao a inventariar |
+| **ULTRON** | **Implementacao iniciada** | **U0 aprovado (Escopo e Contratos); U1 em curso (Registry Ready)** |
 | Zane | Especificacao arquitetural | Arquitetura propria e roadmap Z0-Z9 definidos; implementacao nao iniciada |
 
 ## Foco atual
@@ -15,12 +15,18 @@
 2. Auditar a branch atual da Rachel.
 3. Fechar formalmente os gates das etapas 2, 3 e 4.
 4. Determinar se a proxima execucao e a Etapa 5 - Agent Loop.
-5. Atualizar esta pagina a cada mudanca relevante.
+5. **Implementar ULTRON U1 — Registry Ready** (commit por commit, com gates de evidencia).
+6. Atualizar esta pagina a cada mudanca relevante.
 
 Detalhamento: [`matriz-de-gates.md`](matriz-de-gates.md).
+
+## Marcos recentes
+
+- **2026-08-24** — Repositorio ULTRON criado e gate U0 aprovado. Detalhes em [`../ultron/status/status-atual.md`](../ultron/status/status-atual.md).
 
 ## Avisos
 
 - `Architecture Closed` da Rachel nao significa `Production Ready`.
 - A entrega de interface foi paralela e nao comprova a Etapa 14 inteira.
 - O status da Etapa 4 deriva de documento de aceite e ainda deve ser confrontado com o codigo.
+- ULTRON U0 foi aprovado **com base em codigo + testes + build**, nao em documento de aceite. Esse e o padrao a seguir.
