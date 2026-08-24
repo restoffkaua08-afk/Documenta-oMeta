@@ -142,3 +142,14 @@ validação no Windows e empacotamento antes da release.
 - Documento técnico:
   `alteracoes/JARVIS-012-benchmark-multiarquivo.md`.
 
+## JARVIS-013 — gate obrigatório de inspeção antes da edição
+
+- Detectado que o gate anterior validava o pós-edição, mas não o pré-editação.
+- `file_write` e `apply_patch` são bloqueados antes de leitura e inspeção Git.
+- O bloqueio não executa a mutação e retorna orientação recuperável ao modelo.
+- Mantidas as exigências posteriores de `shell_exec` e `git_diff`.
+- Testes cobrem tentativa prematura, recuperação e fluxo completo.
+- Validação estática: AST válido e conformidade com 88 caracteres.
+- Documento técnico:
+  `alteracoes/JARVIS-013-gate-inspecao-previa.md`.
+
