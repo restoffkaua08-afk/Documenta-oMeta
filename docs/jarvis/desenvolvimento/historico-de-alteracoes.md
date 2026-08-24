@@ -63,7 +63,7 @@ Este documento é o registro cronológico central das modificações realizadas 
 
 ## Estado atual
 
-O trabalho permanece no gate `JARVIS STANDALONE_READY`. O RBAC está ativo
+O trabalho permanece no gate `JARVIS_STANDALONE_READY`. O RBAC está ativo
 em modo compatível e o primeiro modo `jarvis code` está implementado. Ainda
 faltam execução integral da suíte, teste com modelo real, perfis mínimos,
 diagnóstico específico e empacotamento Windows antes de uma release.
