@@ -153,3 +153,16 @@ validação no Windows e empacotamento antes da release.
 - Documento técnico:
   `alteracoes/JARVIS-013-gate-inspecao-previa.md`.
 
+## JARVIS-014 — conexão segura com modelos avançados
+
+- Corrigido o roteamento que escolhia o engine antes de conhecer o modelo.
+- O chat agora revalida `can_serve` e seleciona backend compatível.
+- Adicionado `jarvis code --strong`.
+- Seleção por presença de credencial sem imprimir ou persistir seu valor.
+- Suporte inicial a OpenAI, Anthropic, Google e OpenRouter.
+- Instalador CLI do Windows inclui o extra `inference-cloud`.
+- Testes cobrem seleção, precedência, credenciais vazias e mensagens seguras.
+- Erro de assinatura encontrado durante revisão e corrigido antes da entrega.
+- Documento técnico:
+  `alteracoes/JARVIS-014-modelos-avancados.md`.
+
