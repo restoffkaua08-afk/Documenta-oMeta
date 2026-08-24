@@ -12,7 +12,10 @@
 
 ## Estado
 
-Esta pasta descreve a arquitetura desejada do Jarvis standalone. O repositorio derivado do OpenJarvis ainda precisa ser criado/importado e auditado antes que qualquer capacidade seja marcada como implementada.
+O fork `restoffkaua08-afk/Jarvis-ia` foi criado e está em desenvolvimento
+diretamente na `main`. A frente atual do gate `JARVIS STANDALONE READY`
+trabalha segurança e confiabilidade; consulte o histórico para distinguir
+arquitetura planejada, implementação concluída e validação pendente.
 
 ## Acompanhamento da evolução
 
