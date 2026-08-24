@@ -85,15 +85,15 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 - 76 testes unitários, 92.71% cobertura
 - Núcleo imutável, Consumer ABC, deny-by-default
 
-### U1 — ✅ Aprovado (commit `10ff301`)
+### U1 — ✅ Aprovado e estabilizado (base `10ff301`)
 
-- **105 testes** (29 novos de integração), **86.40% cobertura**
+- **111 testes**, **89,18% cobertura** após estabilização
 - Registry SQLite + FTS5 (aiosqlite), WAL, audit append-only
 - API HTTP versionada (`/api/v1/*`) + portal Obsidian (HTMX-free, vanilla JS)
 - Estrutura: `src/ultron/registry/`, `src/ultron/api/`, `src/ultron/portal/`
 - Endpoints JSON: health, manifests list/search/get, stats, audit
 - Páginas HTML: home, browse, manifest detail, graph (Cytoscape), audit
-- Métricas: mypy strict OK, ruff clean
+- Métricas: mypy strict, ruff check, ruff format e build aprovados
 
 ### U2 — ⏳ Pendente
 

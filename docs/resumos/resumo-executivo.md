@@ -29,7 +29,7 @@ ULTRON pode ampliar Zane com agentes, skills, workflows e packs, mas a indisponi
 |---|---|---|
 | Rachel | Novo ciclo profissional iniciado; Etapa 1 possui evidencia forte; Etapas 2 a 4 exigem auditoria consolidada | Confirmar codigo, testes e builds antes da Etapa 5 |
 | Jarvis | Arquitetura e roadmap especificados; implementacao atual ainda nao inventariada nesta fonte | Definir baseline verificavel depois do gate da Rachel |
-| ULTRON | Arquitetura, schemas, seguranca e lifecycle especificados | Inventariar implementacao e abrir gate inicial |
+| ULTRON | U0 aprovado; U1 aprovado e estabilizado (111 testes, 89,18% de cobertura) | Implementar U2 Installation Ready |
 | Zane | Arquitetura-alvo e roadmap Z0-Z9 especificados; nao implementado | Aguardar maturidade e inventario dos predecessores |
 
 ## Risco principal

@@ -6,7 +6,7 @@
 |---|---|---|
 | Rachel | Evolucao profissional | Etapa 1 validada; Etapas 2 a 4 reportadas e pendentes de gate consolidado |
 | Jarvis | Especificacao standalone | Baseline de implementacao a inventariar apos o gate da Rachel |
-| **ULTRON** | **Implementacao em andamento** | **U0 aprovado (Escopo e Contratos); U1 aprovado (Registry Ready); U2-U5 pendentes** |
+| **ULTRON** | **Implementacao em andamento** | **U0 aprovado; U1 aprovado e estabilizado (111 testes, 89,18%); U2-U5 pendentes** |
 | Zane | Especificacao arquitetural | Arquitetura propria e roadmap Z0-Z9 definidos; implementacao nao iniciada |
 
 ## Foco atual
@@ -25,6 +25,7 @@ Detalhamento: [`matriz-de-gates.md`](matriz-de-gates.md).
 - **2026-08-24** — Repositorio ULTRON criado.
 - **2026-08-24** — Gate U0 (Escopo e Contratos) aprovado (commit `f240df6`).
 - **2026-08-24** — Gate U1 (Registry Ready) aprovado (commit `10ff301`): Registry SQLite+FTS5, API HTTP, portal Obsidian.
+- **2026-08-24** — U1 estabilizado após revisão funcional; documentação e evidências sincronizadas.
 
 Detalhes em [`../ultron/status/status-atual.md`](../ultron/status/status-atual.md).
 

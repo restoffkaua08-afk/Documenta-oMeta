@@ -145,7 +145,7 @@ Uma frase em um documento nao substitui esses artefatos.
 
 - Rachel: em evolucao profissional; etapas iniciais possuem implementacoes registradas.
 - Jarvis: planejamento consolidado, desenvolvimento aguardando gate da Rachel.
-- ULTRON: arquitetura planejada; implementacao real a inventariar.
+- ULTRON: U0 aprovado; U1 aprovado e estabilizado com codigo, testes e build reproduzidos; U2-U5 pendentes.
 - Zane: especificacao e decisoes iniciais; construcao aguardando predecessores.
 
 ## 13. Criterio de sucesso do Meta
@@ -158,4 +158,3 @@ O programa atinge seu objetivo quando:
 4. Testes provam que Zane nao depende dos predecessores nem do ULTRON.
 5. Seguranca, observabilidade, instalacao e recuperacao foram validadas.
 6. A documentacao permite que outra equipe continue o desenvolvimento sem depender do chat original.
-

@@ -10,7 +10,7 @@
 | Gate | Descrição | Estado | Evidência |
 |---|---|---|---|
 | U0 | Escopo e contratos | **Aprovado** | commit `f240df6`; 76 testes, 92.71% cobertura, ruff+mypy limpos |
-| U1 | Registry Ready | **Aprovado** | commit `10ff301`; 105 testes, 86.40% cobertura, portal Obsidian entregue |
+| U1 | Registry Ready | **Aprovado e estabilizado** | base `10ff301`; 111 testes, 89,18% cobertura e build reproduzido |
 | U2 | Installation Ready | Não aberto | — |
 | U3 | Security Ready | Não aberto | — |
 | U4 | Graph Ready | Não aberto | — |
@@ -21,6 +21,7 @@
 - **2026-08-21** — Documentação consolidada em `docs/`. ULTRON marcado como "a inventariar".
 - **2026-08-24** — Repositório `restoffkaua08-afk/ultron` criado; gate **U0 aprovado**.
 - **2026-08-24** — Gate **U1 aprovado**. Registry SQLite+FTS5, API HTTP e portal Obsidian entregues e publicados.
+- **2026-08-24** — U1 estabilizado: filtros, paginação, status, busca por versão, rotas e documentação corrigidos.
 
 ## O que está implementado
 
@@ -87,11 +88,13 @@
 - Marcador `integration` separa de unit, usa `pytest-asyncio`
 - Fixtures com `tmp_path` para DB isolado por teste
 
-**Métricas finais:**
-- 105 testes passam
-- 86.40% cobertura (acima do mínimo 85%)
+**Métricas após estabilização:**
+- 111 testes passam
+- 89,18% cobertura (acima do mínimo 85%)
 - mypy strict: 0 erros em 14 arquivos
 - ruff: All checks passed!
+- ruff format: 25 arquivos formatados
+- wheel e source distribution construídos com sucesso
 
 ## O que ainda precisa ser feito (U2 → U5)
 

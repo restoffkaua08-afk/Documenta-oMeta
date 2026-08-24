@@ -25,7 +25,6 @@
 ULTRON possui planejamento arquitetural detalhado nas fontes. **A partir de 2026-08-24**, a implementacao foi iniciada e os dois primeiros gates foram entregues:
 
 - **Gate U0 (Escopo e Contratos)** — ✅ Aprovado. 76 testes, 92.71% cobertura, ruff+mypy limpos.
-- **Gate U1 (Registry Ready)** — ✅ Aprovado. 105 testes, 86.40% cobertura. Registry SQLite+FTS5 + API HTTP + portal Obsidian entregues.
+- **Gate U1 (Registry Ready)** — ✅ Aprovado e estabilizado. 111 testes, 89,18% cobertura. Registry SQLite+FTS5 + API HTTP + portal Obsidian entregues.
 
 Repositorio oficial: https://github.com/restoffkaua08-afk/ultron
-

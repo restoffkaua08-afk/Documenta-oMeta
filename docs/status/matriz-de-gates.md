@@ -15,7 +15,7 @@ Esta matriz separa existencia documental, implementacao e validacao. O estado ma
 | Rachel - Etapa 5 Agent Loop | Sim | Nao confirmado | Nao | Bloqueado | Depende do fechamento das Etapas 2 a 4 |
 | Jarvis - baseline standalone | Sim | A inventariar | Nao | Nao aberto | Inspecionar repositorio, versao upstream, testes e licenca |
 | **ULTRON - U0 Escopo e Contratos** | Sim | Sim | Sim | **Aprovado** | **Repo `restoffkaua08-afk/ultron`; commit `f240df6`; 76 testes, 92.71% cobertura, ruff+mypy limpos** |
-| **ULTRON - U1 Registry Ready** | Sim | Sim | Sim | **Aprovado** | **Repo `restoffkaua08-afk/ultron`; commit `10ff301`; 105 testes (29 integração), 86.40% cobertura; portal Obsidian + API HTTP + Registry SQLite/FTS5 entregues** |
+| **ULTRON - U1 Registry Ready** | Sim | Sim | Sim | **Aprovado e estabilizado** | **Base `10ff301`; 111 testes, 89,18% cobertura; lint, format, mypy e build aprovados; portal + API + Registry SQLite/FTS5 entregues** |
 | ULTRON - U2 Installation Ready | Sim | Nao | Nao | Planejado | — |
 | ULTRON - U3 Security Ready | Sim | Nao | Nao | Planejado | — |
 | ULTRON - U4 Graph Ready | Sim | Nao | Nao | Planejado | — |
