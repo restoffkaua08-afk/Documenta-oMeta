@@ -14,3 +14,7 @@
 
 Esta pasta descreve a arquitetura desejada do Jarvis standalone. O repositorio derivado do OpenJarvis ainda precisa ser criado/importado e auditado antes que qualquer capacidade seja marcada como implementada.
 
+## Acompanhamento da evolução
+
+- [Histórico completo de alterações](desenvolvimento/historico-de-alteracoes.md)
+- [Registros técnicos individuais](desenvolvimento/alteracoes/)
