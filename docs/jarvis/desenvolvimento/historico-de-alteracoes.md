@@ -40,6 +40,19 @@ Este documento é o registro cronológico central das modificações realizadas 
 - Resultado: ambientes sem extensão Rust utilizam a política Python em vez de desativar RBAC.
 - Documento: [JARVIS-004](alteracoes/JARVIS-004-rbac-sem-rust.md)
 
+## JARVIS-005 — RBAC ativo e configurável
+
+- Configuração: `3b5064eca06779e3bba547137456d4cdd819f8fa`
+- Inicialização: `b5ab009a607fea7f33bdc1e033a7b07be71c9928`
+- Testes de configuração: `c95372806bed4388a1140adc6be958782ca5778d`
+- Testes de integração: `8e2c8b56c2704439b5c376e08dbbe3b9c87dad3b`
+- Resultado: RBAC passa a ser criado por padrão em modo compatível e aceita
+  `default_deny` configurável.
+- Documento: [JARVIS-005](alteracoes/JARVIS-005-rbac-ativo-configuravel.md)
+
 ## Estado atual
 
-O trabalho permanece no gate `JARVIS STANDALONE READY`, frente de segurança e confiabilidade. A ativação e o padrão deny-by-default ainda estão em auditoria; não foram marcados como concluídos.
+O trabalho permanece no gate `JARVIS STANDALONE READY`, frente de segurança
+e confiabilidade. O RBAC está ativo por padrão com `default_deny = false`.
+A próxima etapa é criar perfis e concessões mínimas antes de considerar
+deny-by-default global.
