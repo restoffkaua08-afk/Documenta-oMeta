@@ -166,7 +166,7 @@ Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud 
 Gate `ULTRON_GRAPH_READY` aprovado para os contratos locais. Aplicação da migration, Advisors e testes RLS ocorrerão quando o projeto Supabase for conectado.
 
 
-### U5 — 🚧 Em desenvolvimento (fundação `b24c414`)
+### U5 — 🚧 Em desenvolvimento (fundação `1e34613`)
 
 - Catálogo remoto gera snapshot local atômico, determinístico e protegido por SHA-256
 - Falha de rede usa o último snapshot íntegro; adulteração falha de forma fechada
@@ -177,6 +177,9 @@ Gate `ULTRON_GRAPH_READY` aprovado para os contratos locais. Aplicação da migr
 - E2E prova cache disponível, ferramentas nativas intactas e nenhuma mutação parcial
 - Fonte única mapeia cada método Python para REST e MCP sem divergência
 - Todas as mutações exigem confirmação; `/api/v1/protocol` expõe o contrato versionado
-- 195 testes, 92,75% de cobertura, lint, tipagem e build aprovados
+- Servidor MCP Streamable HTTP stateless executável em `/mcp`
+- Descoberta MCP expõe exatamente as oito operações e reutiliza o Registry da API
+- Lifecycle MCP falha de forma explícita sem adapter, nunca simula sucesso
+- 199 testes, 91,57% de cobertura, lint, formatação, tipagem e build aprovados
 
-Pendente: implementação executável do servidor MCP e prova final do gate.
+Pendente: adapter de lifecycle persistente por consumer e prova final do gate.
