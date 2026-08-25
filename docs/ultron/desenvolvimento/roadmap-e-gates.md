@@ -118,7 +118,7 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 
 Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud permanecem nas etapas de plataforma sem alterar os invariantes locais.
 
-### U3 — 🚧 Em desenvolvimento (fundação `97bd5dc`)
+### U3 — ✅ Aprovado (`5627b1f`)
 
 - Pipeline determinístico de validação sem execução de pacotes
 - SHA-256 obrigatório e proveniência Git/OCI fixada por commit ou digest
@@ -132,7 +132,10 @@ Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud perm
 - Revogação desativa atomicamente a versão e dependentes transitivos, preservando independentes e lockfile
 - Auditoria encadeada por SHA-256 detecta alteração, reordenação e remoção de eventos
 - Estado separado de cabeça e contagem detecta truncamento; migração reconstrói a cadeia histórica
-- 163 testes, 91,80% de cobertura, lint/formatação, tipagem e build aprovados
-- Pendente: sandbox
+- Contrato de sandbox separado do Registry com backend substituível
+- `process.spawn` exige concessão explícita; aprovações pendentes falham de forma fechada
+- Rede desligada por padrão e liberada somente quando declarada e concedida
+- Imagens fixadas por digest SHA-256 e limites obrigatórios de tempo, memória, CPU, processos e saída
+- 168 testes, 91,51% de cobertura, lint/formatação, tipagem e build aprovados
 
-O gate `ULTRON_SECURITY_READY` permanece pendente.
+Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud será conectado a workers isolados fora das funções web.
