@@ -166,13 +166,15 @@ Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud 
 Gate `ULTRON_GRAPH_READY` aprovado para os contratos locais. Aplicação da migration, Advisors e testes RLS ocorrerão quando o projeto Supabase for conectado.
 
 
-### U5 — 🚧 Em desenvolvimento (fundação `e911710`)
+### U5 — 🚧 Em desenvolvimento (fundação `462c9dd`)
 
 - Catálogo remoto gera snapshot local atômico, determinístico e protegido por SHA-256
 - Falha de rede usa o último snapshot íntegro; adulteração falha de forma fechada
 - Ausência de servidor e cache produz erro tipado, nunca catálogo vazio silencioso
 - Contrato neutro para Claude, Codex, Zane e consumers próprios
 - Consumer inicia e preserva capacidades nativas sem depender do Ultron
-- 190 testes, 92,82% de cobertura, lint, tipagem e build aprovados
+- Adapter resiliente universal bloqueia install/activate/deactivate/remove offline
+- E2E prova cache disponível, ferramentas nativas intactas e nenhuma mutação parcial
+- 192 testes, 92,73% de cobertura, lint, tipagem e build aprovados
 
-Pendente: mutações offline fail-closed, adapter completo, E2E de independência e equivalência MCP/REST.
+Pendente: equivalência MCP/REST e prova final do gate.
