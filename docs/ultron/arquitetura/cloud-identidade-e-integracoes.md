@@ -35,3 +35,17 @@ grants. Tokens de provider, GitHub App e service role nunca são enviados ao cli
 
 Contratos técnicos publicados no ULTRON no commit `8351589`. O núcleo continua
 com 126 testes aprovados, lint, formatação, tipagem e build verdes.
+
+
+## Preparação executável — etapa 1 (`0c57ab4`)
+
+- blueprint Supabase multi-tenant criado;
+- RLS habilitada em todas as tabelas expostas;
+- papéis owner/admin/developer/viewer aplicados nas policies de escrita;
+- bootstrap de profile e organização pessoal preparado para o primeiro login;
+- consumers, grants, installations e auditoria modelados;
+- arquivo de variáveis sem secrets e readiness cloud implementados;
+- 130 testes aprovados, 90,44% de cobertura e build verde.
+
+O schema ainda não foi aplicado: ele deverá ser promovido a migration em uma branch
+Supabase, receber testes negativos de isolamento e passar pelos advisors antes da produção.
