@@ -95,7 +95,7 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 - Páginas HTML: home, browse, manifest detail, graph (Cytoscape), audit
 - Métricas: mypy strict, ruff check, ruff format e build aprovados
 
-### U2 — 🚧 Em desenvolvimento (fundação `a8782cc`)
+### U2 — ✅ Aprovado (`65ff7a5`)
 
 - Resolver recursivo determinístico com seleção da maior versão SemVer compatível
 - Ranges exatos, `^`, `~`, curingas e especificadores PEP 440
@@ -112,7 +112,8 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 - Adapters de referência por mapping e filesystem local confinado
 - Coleta conservadora com simulação padrão e proteção de todos os checkpoints
 - E2E comprovado: referência → instalação → ativação → upgrade → rollback → coleta
-- 144 testes, 91,50% de cobertura, lint/formatação, tipagem de produção e build aprovados
-- Pendente para o gate: revisão formal do contrato de compatibilidade com consumers
+- Handshake SemVer e suíte de conformidade neutra comprovados para Claude, Codex, Zane e consumers próprios
+- Major incompatível falha de forma tipada com `PROTOCOL_INCOMPATIBLE`
+- 149 testes, 91,15% de cobertura, lint/formatação, tipagem de produção e build aprovados
 
-O gate `ULTRON_INSTALLATION_READY` permanece pendente até o ciclo de vida completo ser comprovado.
+Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud permanecem nas etapas de plataforma sem alterar os invariantes locais.
