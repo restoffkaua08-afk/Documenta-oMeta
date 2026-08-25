@@ -117,3 +117,15 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 - 149 testes, 91,15% de cobertura, lint/formatação, tipagem de produção e build aprovados
 
 Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud permanecem nas etapas de plataforma sem alterar os invariantes locais.
+
+### U3 — 🚧 Em desenvolvimento (fundação `2d57814`)
+
+- Pipeline determinístico de validação sem execução de pacotes
+- SHA-256 obrigatório e proveniência Git/OCI fixada por commit ou digest
+- Detecção de risco subestimado e aviso de aprovação para alto risco
+- Status `quarantined` persistido e auditado
+- Resolver e instalador rejeitam versões em quarentena
+- 154 testes, 91,85% de cobertura, lint/formatação, tipagem e build aprovados
+- Pendente: assinatura de publishers, promoção de quarentena, sandbox, revogação propagada e auditoria encadeada
+
+O gate `ULTRON_SECURITY_READY` permanece pendente.
