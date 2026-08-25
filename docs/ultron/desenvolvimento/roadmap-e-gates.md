@@ -139,3 +139,15 @@ Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud perm
 - 168 testes, 91,51% de cobertura, lint/formatação, tipagem e build aprovados
 
 Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud será conectado a workers isolados fora das funções web.
+
+
+### U4 — 🚧 Em desenvolvimento (fundação `05f8040`)
+
+- Store de dados isolado por organização, namespace e chave
+- Toda operação exige contexto explícito; não existe consulta global
+- Identificadores bloqueiam traversal e formatos ambíguos
+- Lineage somente entre registros existentes no mesmo isolamento
+- JSON canônico e determinístico
+- 171 testes, 91,55% de cobertura, lint, tipagem e build aprovados
+
+Pendente: projeção completa do grafo, busca/portal, retenção e integração cloud.
