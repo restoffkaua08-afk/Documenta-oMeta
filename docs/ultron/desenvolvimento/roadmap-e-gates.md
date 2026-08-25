@@ -141,7 +141,7 @@ Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud perm
 Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud será conectado a workers isolados fora das funções web.
 
 
-### U4 — 🚧 Em desenvolvimento (fundação `dfd006c`)
+### U4 — 🚧 Em desenvolvimento (fundação `532ec53`)
 
 - Store de dados isolado por organização, namespace e chave
 - Toda operação exige contexto explícito; não existe consulta global
@@ -158,6 +158,8 @@ Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud 
 - Busca compartilhada por ID, nome e versão, com tipo, relação e limite combináveis
 - Retenção por expiração explícita usa plano imutável e aplicação por chaves exatas
 - Lineage é limpo atomicamente e planos não atravessam organizações
-- 182 testes, 92,61% de cobertura, lint, tipagem e build aprovados
+- Blueprint Supabase equivalente inclui records, lineage, expiração, RLS e grants explícitos
+- Índices cobrem foreign keys, projeção, isolamento e retenção
+- 185 testes, 92,61% de cobertura, lint, tipagem e build aprovados
 
-Pendente: equivalência e testes de escala no schema cloud.
+Pendente: teste de escala e aplicação/Advisors quando o projeto Supabase for conectado.
