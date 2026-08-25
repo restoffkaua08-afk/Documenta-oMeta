@@ -95,7 +95,7 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 - Páginas HTML: home, browse, manifest detail, graph (Cytoscape), audit
 - Métricas: mypy strict, ruff check, ruff format e build aprovados
 
-### U2 — 🚧 Em desenvolvimento (fundação `a53877b`)
+### U2 — 🚧 Em desenvolvimento (fundação `a8782cc`)
 
 - Resolver recursivo determinístico com seleção da maior versão SemVer compatível
 - Ranges exatos, `^`, `~`, curingas e especificadores PEP 440
@@ -109,7 +109,10 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 - Mudança de versão reconcilia o estado e volta a capability para inativa
 - Remoção segura bloqueia raiz, capability ativa e dependências ainda utilizadas
 - Journal imutável de lockfiles com SHA-256 e rollback explícito; upgrades preservam o estado anterior
-- 140 testes, 91,39% de cobertura, lint/formatação, tipagem de produção e build aprovados
-- Pendente para o gate: coleta de conteúdo órfão, adapters e E2E do ciclo completo
+- Adapters de referência por mapping e filesystem local confinado
+- Coleta conservadora com simulação padrão e proteção de todos os checkpoints
+- E2E comprovado: referência → instalação → ativação → upgrade → rollback → coleta
+- 144 testes, 91,50% de cobertura, lint/formatação, tipagem de produção e build aprovados
+- Pendente para o gate: revisão formal do contrato de compatibilidade com consumers
 
 O gate `ULTRON_INSTALLATION_READY` permanece pendente até o ciclo de vida completo ser comprovado.
