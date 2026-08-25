@@ -141,7 +141,7 @@ Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud perm
 Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud será conectado a workers isolados fora das funções web.
 
 
-### U4 — 🚧 Em desenvolvimento (fundação `fb283db`)
+### U4 — 🚧 Em desenvolvimento (fundação `27b04aa`)
 
 - Store de dados isolado por organização, namespace e chave
 - Toda operação exige contexto explícito; não existe consulta global
@@ -150,6 +150,9 @@ Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud 
 - JSON canônico e determinístico
 - Projeção determinística de nós e arestas com raízes e profundidade limitada
 - Travessia permanece isolada por organização e namespace
-- 173 testes, 91,53% de cobertura, lint, tipagem e build aprovados
+- Grafo operacional une manifests, dependências, consumers e instalações
+- Relações distinguem dependência declarada, versão resolvida e instalação
+- Consumers desconhecidos falham de forma fechada
+- 176 testes, 91,79% de cobertura, lint, tipagem e build aprovados
 
-Pendente: grafo de manifests/instalações, busca/portal, retenção e integração cloud.
+Pendente: busca/portal, retenção e integração cloud.
