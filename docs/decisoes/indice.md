@@ -14,6 +14,7 @@
 | [DEC-010](DEC-010-memoria-dataset.md) | Memoria pessoal e dataset permanecem separados | Ativa |
 | [DEC-011](DEC-011-substituibilidade.md) | Providers e infraestrutura devem ser substituiveis | Ativa |
 | [DEC-012](DEC-012-rachel-model-condicional.md) | Rachel Model e uma capacidade condicional | Ativa |
+| [DEC-013](DEC-013-rachel-main-como-linha-de-desenvolvimento.md) | Rachel passa a ser desenvolvida diretamente na `main`, com evidencias e documentacao sincronizadas | Ativa |
 
 Novas decisoes devem registrar data, contexto, alternativas, consequencias, evidencias e relacao com decisoes anteriores.
 
