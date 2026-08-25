@@ -118,7 +118,7 @@ Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
 
 Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud permanecem nas etapas de plataforma sem alterar os invariantes locais.
 
-### U3 — 🚧 Em desenvolvimento (fundação `eb1fd4f`)
+### U3 — 🚧 Em desenvolvimento (fundação `7776827`)
 
 - Pipeline determinístico de validação sem execução de pacotes
 - SHA-256 obrigatório e proveniência Git/OCI fixada por commit ou digest
@@ -128,7 +128,8 @@ Gate `ULTRON_INSTALLATION_READY` aprovado. REST, MCP e autenticação cloud perm
 - Assinaturas Ed25519 vinculam publisher, manifest canônico e hash do artefato
 - Trust store atômico persiste apenas chaves públicas e bloqueia chaves revogadas
 - Fontes remotas sem assinatura válida entram em quarentena; local mantém compatibilidade com aviso
-- 158 testes, 91,61% de cobertura, lint/formatação, tipagem e build aprovados
-- Pendente: promoção de quarentena, sandbox, revogação propagada e auditoria encadeada
+- Promoção exige revalidação, role `security_admin`, correlation ID e evento auditável dedicado
+- 159 testes, 91,73% de cobertura, lint/formatação, tipagem e build aprovados
+- Pendente: sandbox, revogação propagada e auditoria encadeada
 
 O gate `ULTRON_SECURITY_READY` permanece pendente.
