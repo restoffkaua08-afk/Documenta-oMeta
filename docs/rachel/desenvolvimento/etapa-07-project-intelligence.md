@@ -129,20 +129,41 @@ Commit:
 
 - `486b8698f7df71d44f911846b9c16a21eb079a29` — `feat(project): servir contexto limitado pela tool project.context`.
 
-A CI completa `RACHEL CI` desse commit foi iniciada e ainda esta em execucao. A mudanca nao deve ser considerada evidência final ate os jobs Python/Core/Runtime, frontend e Tauri concluirem verdes.
+A CI completa `RACHEL CI` desse commit concluiu verde nos tres jobs: Python Core + Runtime contracts, Desktop frontend build e Tauri Rust check.
+
+### Teste especifico da tool `project.context`
+
+Foi criado o teste dedicado:
+
+- `RACHEL_PLATFORM/RUNTIME/TESTS/test_project_context_tool.py`.
+
+O teste monta um projeto sintetico com 40 arquivos e valida o caminho completo via `ToolCoordinator.invoke("project.context", ...)`.
+
+Ele exige que:
+
+- a tool conclua com `state=completed`;
+- o resultado tenha no maximo 19 arquivos;
+- a estimativa permaneça em no maximo 8.000 tokens;
+- cada item retornado possua `content` real;
+- o arquivo relevante para a tarefa de refresh de token seja selecionado e exponha o simbolo esperado.
+
+Commit:
+
+- `05a0b148b69a31c34ab12e55d01383e40706167c` — `test(project): validar contexto limitado via tool coordinator`.
+
+A CI desse commit deve ser considerada evidencia final somente depois que os jobs obrigatorios concluirem verdes.
 
 ## Estrategia de integracao segura
 
-A Etapa 07 esta sendo dividida em micro-lotes deliberadamente pequenos. Primeiro foi validado o ranking, depois o budget isolado, depois o contexto real, depois o boundary para planejamento e agora a tool `project.context`. O Agent Loop somente deve ser alterado depois que esta integracao estiver verde na CI.
+A Etapa 07 esta sendo dividida em micro-lotes deliberadamente pequenos. Primeiro foi validado o ranking, depois o budget isolado, depois o contexto real, depois o boundary para planejamento, depois a tool `project.context` e agora o teste dedicado dessa fronteira. O Agent Loop somente deve ser alterado depois que esta validacao estiver verde na CI.
 
 ## Proximos micro-lotes
 
-1. aguardar a CI do commit `486b8698f7df71d44f911846b9c16a21eb079a29`;
-2. adicionar teste especifico provando que `project.context` retorna conteudo real limitado e respeita o hard cap de arquivos;
-3. validar novamente regressao completa;
-4. conectar contexto limitado ao Agent Loop/planning em um lote separado;
-5. adicionar teste E2E pequeno demonstrando que o Agent Loop recebe contexto limitado;
-6. reconciliar e fechar o gate/documentacao da Etapa 07.
+1. aguardar a CI do commit `05a0b148b69a31c34ab12e55d01383e40706167c`;
+2. auditar o ponto exato de entrada do Agent Loop/planner para anexar contexto de projeto sem acoplamento indevido;
+3. conectar `ProjectContextProvider` ao Agent Loop em um lote separado e pequeno;
+4. adicionar teste E2E pequeno demonstrando que o Agent Loop recebe contexto limitado;
+5. reconciliar e fechar o gate/documentacao da Etapa 07.
 
 ## Gate atual
 
@@ -155,8 +176,8 @@ A Etapa 07 esta sendo dividida em micro-lotes deliberadamente pequenos. Primeiro
 - budget de contexto isolado: **IMPLEMENTED / TESTED**;
 - contexto real limitado integrado ao Project Intelligence: **IMPLEMENTED / TESTED**;
 - provider de contexto para planejamento: **IMPLEMENTED / TESTED**;
-- caminho `project.context` servindo contexto real limitado: **IMPLEMENTED / CI IN PROGRESS**;
-- teste especifico da tool `project.context`: **PENDING**;
+- caminho `project.context` servindo contexto real limitado: **IMPLEMENTED / CI PASS**;
+- teste especifico da tool `project.context`: **IMPLEMENTED / CI IN PROGRESS**;
 - Agent Loop consumindo contexto limitado: **PENDING / A AUDITAR**;
 - gate completo da Etapa 07: **NOT YET CLOSED**.
 
