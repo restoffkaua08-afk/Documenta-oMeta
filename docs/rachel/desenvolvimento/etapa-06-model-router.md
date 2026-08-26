@@ -1,7 +1,7 @@
 # Rachel — Etapa 06: Model Router
 
-**Estado:** Implementada; validacao automatizada em andamento no head atual  
-**Data:** 2026-08-25  
+**Estado:** Implementada e validada por CI automatizada; validacoes dependentes de providers reais permanecem separadas  
+**Data:** 2026-08-26  
 **Repositorio:** `restoffkaua08-afk/rachel-ia`  
 **Branch oficial:** `main`
 
@@ -126,16 +126,17 @@ Cenarios cobertos:
 
 ## Evidencias de CI
 
-Durante a sequencia de commits, o workflow `tests` executado sobre o commit `6303bb276265ffda517d668e0ab91537dcf02241` concluiu com `success`. Commits posteriores cancelaram runs anteriores por causa da politica `cancel-in-progress` da CI, portanto cancelamentos intermediarios nao representam falha funcional.
+O workflow profissional `RACHEL CI` no head `ae6dfd0cf1058a4dcf755ac707a5e4096ec56155`, run `32886817853`, concluiu integralmente com sucesso.
 
-No head `ae6dfd0cf1058a4dcf755ac707a5e4096ec56155`, dois workflows foram disparados:
+Jobs confirmados:
 
-- `tests` — run `32886817885`;
-- `RACHEL CI` — run `32886817853`.
+- `Python Core + Runtime contracts` — **PASS**;
+- `Desktop frontend build` — **PASS**;
+- `Tauri Rust check` — **PASS**.
 
-Na ultima verificacao registrada durante esta atualizacao, o job `Python Core + Runtime contracts` do `RACHEL CI` havia concluido com sucesso, incluindo compilacao Python, validacao dos JSONs, suite completa do Core e suite critica de regressao do Runtime. O build do frontend tambem havia concluido com sucesso; o `cargo check` do Tauri ainda estava em execucao.
+O job Python incluiu compilacao das fontes, validacao de configuracoes JSON, suite completa do Core e suite critica de regressao do Runtime. O frontend compilou normalmente e o `cargo check` do Tauri tambem terminou verde.
 
-O estado final desses runs deve ser registrado quando ambos encerrarem.
+Runs intermediarios cancelados durante a sequencia de commits foram consequencia da politica `cancel-in-progress` e nao representam falha funcional da implementacao.
 
 ## O que esta validado nesta etapa
 
@@ -145,10 +146,11 @@ O estado final desses runs deve ser registrado quando ambos encerrarem.
 - protecao inicial de conteudo sensivel;
 - fallback controlado;
 - integracao com Bootstrap e ChatService;
-- compatibilidade com a suite Core/Runtime executada ate o ponto registrado;
-- build do frontend no CI do head atual ate o ponto registrado.
+- Core + Runtime regressions no head da etapa;
+- build do frontend;
+- `cargo check` do desktop Tauri.
 
-## O que nao deve ser declarado ainda
+## O que permanece dependente de ambiente real
 
 Esta etapa nao prova, por si so:
 
@@ -158,7 +160,7 @@ Esta etapa nao prova, por si so:
 - performance de um modelo vision real;
 - budgets de `max_tokens`/`context_window` sendo impostos pelo adapter concreto.
 
-Esses itens dependem de configuracao/provider real ou de trabalho complementar e nao serao sintetizados como sucesso.
+Esses itens dependem de configuracao/provider real e permanecem como validacoes de ambiente, sem bloquear a conclusao da implementacao e da CI automatizada da Etapa 06.
 
 ## Gate
 
@@ -166,17 +168,17 @@ Estado atual do gate:
 
 - implementacao: **PASS**;
 - testes unitarios especificos: **PASS**;
-- Core + Runtime regressions no head atual: **PASS** no job Python observado;
-- frontend build no head atual: **PASS**;
-- Tauri check no head atual: **PENDING** na ultima observacao;
-- smoke/performance com provider local real: **NOT VERIFIED**;
-- provider cloud real: **UNCONFIGURED / nao obrigatorio nesta fase**.
+- Core + Runtime regressions: **PASS**;
+- frontend build: **PASS**;
+- Tauri Rust check: **PASS**;
+- smoke/performance com provider local real: **NOT VERIFIED / environment-dependent**;
+- provider cloud real: **UNCONFIGURED / optional**.
 
-Classificacao documental correta enquanto a CI finaliza:
+Classificacao documental:
 
-> `IMPLEMENTED / AUTOMATED VALIDATION IN PROGRESS`
+> `IMPLEMENTED / AUTOMATED CI VALIDATED`
 
-A etapa somente deve receber `VALIDATED` integral quando o run final do CI terminar verde e os criterios manuais que dependem de provider real forem executados ou explicitamente separados para um gate posterior de ambiente.
+A Etapa 06 esta encerrada no que depende de codigo e CI reproduzivel. Benchmarks com modelos reais continuam explicitamente separados para nao transformar ausencia de ambiente em evidencia ficticia.
 
 ## Commits da implementacao
 
@@ -191,4 +193,4 @@ A etapa somente deve receber `VALIDATED` integral quando o run final do CI termi
 
 ## Proxima etapa tecnica
 
-Antes de iniciar uma nova implementacao grande, deve-se auditar o que ja existe de Project Intelligence contra os criterios da Etapa 07. O repositorio ja possui `project_intelligence_runtime.py` e testes relacionados; portanto a proxima acao correta e comparar implementacao existente com o gate do roadmap, completar apenas lacunas reais e evitar duplicacao.
+A proxima acao e auditar e completar somente as lacunas reais da Etapa 07 — Project Intelligence. O repositorio ja possui `project_intelligence_runtime.py`, integracao com `ToolCoordinator` e testes relacionados; portanto o desenvolvimento deve ser incremental, preservando o que ja funciona e adicionando apenas os criterios do gate ainda ausentes.
