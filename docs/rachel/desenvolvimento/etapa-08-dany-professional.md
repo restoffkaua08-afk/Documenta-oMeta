@@ -1,13 +1,13 @@
 # Rachel — Etapa 08: Dany profissional
 
-**Estado:** Em implementacao incremental  
+**Estado:** Em validacao final  
 **Data:** 2026-08-26  
 **Repositorio:** `restoffkaua08-afk/rachel-ia`  
 **Branch oficial:** `main`
 
 ## Objetivo
 
-Substituir a validacao estrutural simples da Dany por um gate profissional que nao confunda texto bem-formado com resposta correta. A etapa deve validar consistencia com resultados de tools, obrigacoes de citacao em pesquisa, grounding em evidencia, alegacoes de sucesso, validacao de codigo e admissao explicita de incerteza quando factualidade nao foi comprovada.
+Substituir a validacao estrutural simples da Dany por um gate profissional que nao confunda texto bem-formado com resposta correta. A etapa valida consistencia com resultados de tools, obrigacoes de citacao em pesquisa, grounding em evidencia, alegacoes de sucesso, validacao de codigo e admissao explicita de incerteza quando factualidade nao foi comprovada.
 
 ## Pre-requisito
 
@@ -22,7 +22,7 @@ O `DanyEvaluator` existente em `RACHEL_PLATFORM/RUNTIME/SRC/cognitive_runtime.py
 - ausencia de caractere nulo;
 - conteudo nao composto apenas por whitespace.
 
-Uma resposta generica e nao grounded podia receber score 100. Esse comportamento nao atende ao roadmap profissional.
+Uma resposta generica e nao grounded podia receber score 100. Esse comportamento nao atendia ao roadmap profissional.
 
 ## Implementacao realizada
 
@@ -112,19 +112,63 @@ Os testes verificam:
 - descoberta de `pytest`, `lint` e `build` em resultados reais;
 - identificacao do validador profissional no payload.
 
-A CI desse commit foi disparada e ainda nao deve ser tratada como evidencia final enquanto estiver pendente.
+### CLI profissional
 
-## Integracao restante
+Foi criado:
 
-O novo avaliador e seu adapter ainda precisam substituir o `DanyEvaluator` estrutural nos caminhos canonicos:
+- `RACHEL_PLATFORM/RUNTIME/SRC/dany_cli.py`.
 
-1. chat nao-streaming do `NedCognitiveBridge`;
-2. resposta grounded apos tool;
-3. pesquisa `web.research`;
-4. chat streaming do resident bridge;
-5. CLI `evaluate`, preservando compatibilidade onde necessario.
+Commits relacionados:
 
-A integracao deve manter o principio de que Dany avalia a resposta com o contexto real disponivel, nao com contexto inventado.
+- `1e63a2d59f286c9f71fadb9d057413ce192cbaa6` — `feat(dany): adicionar CLI profissional de avaliacao`;
+- `2ea1732019037363fa85b19598309f6f511d8621` — `feat(dany): rotear evaluate para CLI profissional`;
+- `6f040a7d2be3ca203494196b4f31ccb527ee9657` — `test(dany): validar CLI profissional e roteamento`.
+
+O comando `evaluate` do script `RACHEL_PLATFORM/SCRIPTS/rachel.ps1` deixou de compartilhar o entrypoint cognitivo antigo e passou a usar o CLI dedicado da Dany profissional.
+
+### Integracao no runtime cognitivo
+
+O `RACHEL_PLATFORM/RUNTIME/SRC/cognitive_runtime.py` foi atualizado para usar a Dany profissional como avaliador canonico.
+
+Commit:
+
+- `82496771f778181dd5fabd79f11e18503653fbc4` — `feat(dany): integrar avaliacao profissional ao runtime cognitivo`.
+
+Mudancas principais:
+
+- `DanyEvaluator` passa a ser alias de compatibilidade para `DanyProfessional`;
+- chat normal usa `evaluate_runtime_response()`;
+- payload de qualidade identifica `validator=dany-professional`;
+- `quality_scope` deixa de ser fixo e passa a refletir o escopo real do report;
+- respostas apos tools sao reavaliadas usando o `tool_result` real como evidencia;
+- `web.research` fornece URLs reais como citacoes permitidas;
+- pesquisa sem fonte primaria injeta instrucao explicita de baixa confianca;
+- resposta grounded rejeitada pela Dany interrompe o caminho em vez de publicar sucesso inconsistente;
+- status do Ned passa a declarar `quality_scope=professional-contextual`.
+
+Teste de integracao:
+
+- `22bf108efd847bbb3397ea66f5e2f55ca7073ac9` — `test(dany): validar integracao no bridge cognitivo`.
+
+Esse teste confirma que o bridge usa `DanyProfessional`, que o payload identifica o validador profissional e que o status do runtime nao anuncia mais escopo apenas estrutural.
+
+### Integracao no streaming desktop
+
+O resident bridge em `APP/bridge/rachel_server.py` tambem foi conectado ao mesmo gate profissional para que chat streaming e chat nao-streaming nao tenham criterios de qualidade divergentes.
+
+Commits:
+
+- `2732daead167843018203bedf55a8158d05035ff` — `feat(dany): integrar qualidade profissional ao streaming`;
+- `998bde69b409986fed1ef1be948316c3e529fb11` — `test(dany): validar qualidade profissional no streaming`.
+
+O streaming agora:
+
+- avalia a resposta completa ao final da geracao;
+- retorna `validator=dany-professional`;
+- publica `quality_scope` real;
+- preserva update de qualidade no learning engine;
+- rejeita resposta que falhe nos checks criticos;
+- continua sem avaliar conteudo parcial quando a geracao e cancelada.
 
 ## Gate atual da Etapa 08
 
@@ -135,15 +179,17 @@ A integracao deve manter o principio de que Dany avalia a resposta com o context
 - grounding em evidencia: **IMPLEMENTED / TESTED**;
 - deteccao conservadora de alegacoes inventadas: **IMPLEMENTED / TESTED**;
 - validacao de codigo baseada em checks reais: **IMPLEMENTED / TESTED**;
-- adapter de contexto do runtime: **IMPLEMENTED / CI IN PROGRESS**;
-- integracao no caminho canonico de chat/tool/stream: **PENDING**;
-- CI final da etapa: **PENDING**;
+- adapter de contexto do runtime: **IMPLEMENTED / TESTED**;
+- CLI `evaluate` profissional: **IMPLEMENTED / TESTED**;
+- chat nao-streaming: **IMPLEMENTED / TESTED**;
+- resposta grounded apos tool: **IMPLEMENTED / TESTED BY CONTRACT / FINAL CI PENDING**;
+- pesquisa `web.research`: **IMPLEMENTED BY CONTEXT ADAPTER / FINAL CI PENDING**;
+- chat streaming: **IMPLEMENTED / TESTED**;
+- CI final da etapa: **IN PROGRESS**.
 
 ## Proximos passos
 
-1. confirmar CI do adapter de contexto;
-2. integrar `DanyProfessional` ao caminho canonico de `NedCognitiveBridge`;
-3. passar `tool_result` e metadata de pesquisa reais para o evaluator;
-4. integrar o mesmo comportamento ao streaming;
-5. adicionar testes de integracao do bridge;
-6. somente marcar a Etapa 08 como validada com CI completa verde.
+1. aguardar a `RACHEL CI` do commit `998bde69b409986fed1ef1be948316c3e529fb11`;
+2. se verde, marcar a Etapa 08 como validada;
+3. iniciar auditoria da Etapa 09 — Knowledge Port real;
+4. nao criar infraestrutura externa: a Etapa 09 deve conectar o runtime de conhecimento existente ao Core por adapter interno e testavel.
