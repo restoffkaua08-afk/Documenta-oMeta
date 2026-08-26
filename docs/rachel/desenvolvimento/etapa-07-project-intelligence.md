@@ -1,6 +1,6 @@
 # Rachel — Etapa 07: Project Intelligence
 
-**Estado:** Em validacao e endurecimento incremental  
+**Estado:** Em validacao final  
 **Data:** 2026-08-26  
 **Repositorio:** `restoffkaua08-afk/rachel-ia`  
 **Branch oficial:** `main`
@@ -50,7 +50,7 @@ Commit:
 
 O workflow `tests` do commit concluiu com sucesso.
 
-### Orçamento de contexto
+### Orcamento de contexto
 
 Foi criada uma camada pequena e isolada para impor budget conservador antes da integracao no runtime principal:
 
@@ -115,7 +115,7 @@ Commits:
 - `f94f850c436c0470c82ae7883b1d284b82ae6a0a` — `feat(project): adicionar provider de contexto para planejamento`;
 - `9d309d112a894f9c0aba054579633f0471753be6` — `test(project): validar provider de contexto para planejamento`.
 
-Os testes verificam normalizacao de entrada, delegacao ao runtime, hard caps e rejeicao de `scope`/`task` vazios. O workflow `tests` do commit `9d309d112a894f9c0aba054579633f0471753be6` concluiu com sucesso, incluindo Core e Runtime.
+Os testes verificam normalizacao de entrada, delegacao ao runtime, hard caps e rejeicao de `scope`/`task` vazios. O workflow do ultimo commit concluiu com sucesso.
 
 ### `project.context` passa a servir contexto real limitado
 
@@ -133,7 +133,7 @@ A CI completa `RACHEL CI` desse commit concluiu verde nos tres jobs: Python Core
 
 ### Teste especifico da tool `project.context`
 
-Foi criado o teste dedicado:
+Foi criado:
 
 - `RACHEL_PLATFORM/RUNTIME/TESTS/test_project_context_tool.py`.
 
@@ -145,25 +145,72 @@ Ele exige que:
 - o resultado tenha no maximo 19 arquivos;
 - a estimativa permaneça em no maximo 8.000 tokens;
 - cada item retornado possua `content` real;
-- o arquivo relevante para a tarefa de refresh de token seja selecionado e exponha o simbolo esperado.
+- o arquivo relevante seja selecionado e exponha o simbolo esperado.
 
 Commit:
 
 - `05a0b148b69a31c34ab12e55d01383e40706167c` — `test(project): validar contexto limitado via tool coordinator`.
 
-A CI desse commit deve ser considerada evidencia final somente depois que os jobs obrigatorios concluirem verdes.
+A `RACHEL CI` desse commit concluiu verde nos jobs Python Core + Runtime, Desktop frontend build e Tauri Rust check.
 
-## Estrategia de integracao segura
+### Contexto limitado no planejamento de Ned e no Agent Loop
 
-A Etapa 07 esta sendo dividida em micro-lotes deliberadamente pequenos. Primeiro foi validado o ranking, depois o budget isolado, depois o contexto real, depois o boundary para planejamento, depois a tool `project.context` e agora o teste dedicado dessa fronteira. O Agent Loop somente deve ser alterado depois que esta validacao estiver verde na CI.
+A auditoria mostrou que o `AgentLoopRuntime` cria seus planos pelo `TaskOrchestrator`. Em vez de acoplar o loop diretamente ao indexador, a integracao foi feita no boundary de planejamento utilizado por ambos.
 
-## Proximos micro-lotes
+Foi criado:
 
-1. aguardar a CI do commit `05a0b148b69a31c34ab12e55d01383e40706167c`;
-2. auditar o ponto exato de entrada do Agent Loop/planner para anexar contexto de projeto sem acoplamento indevido;
-3. conectar `ProjectContextProvider` ao Agent Loop em um lote separado e pequeno;
-4. adicionar teste E2E pequeno demonstrando que o Agent Loop recebe contexto limitado;
-5. reconciliar e fechar o gate/documentacao da Etapa 07.
+- `RACHEL_PLATFORM/RUNTIME/SRC/project_planning_context.py`.
+
+Essa camada:
+
+- identifica objetivos orientados a projeto/codigo/repository;
+- solicita contexto ao `ProjectContextProvider` somente para esse tipo de tarefa;
+- usa `workspace` e caminho `.` como raiz governada;
+- mantem os hard caps definidos pelo provider;
+- nao faz scan de projeto em objetivos comuns que nao necessitam contexto;
+- empacota o contexto em um bloco explicito `[PROJECT_CONTEXT_BOUNDED]` para o planejador.
+
+Commit:
+
+- `13fadb0da623f6929a6cf2d1cf86266eee47825d` — `feat(project): preparar contexto limitado para planejamento`.
+
+O `TaskOrchestrator.model_specifications()` foi entao conectado a essa camada. Como o `AgentLoopRuntime.start()` usa `TaskOrchestrator.create_plan()` quando o plano e gerado pelo modelo, tarefas profissionais de projeto passam pelo mesmo caminho e recebem o contexto limitado antes da criacao das etapas.
+
+Commit:
+
+- `e630b864002faf3419ec348794f0087ce2e248ba` — `feat(project): integrar contexto limitado ao planejamento`.
+
+Foi criado o teste:
+
+- `RACHEL_PLATFORM/RUNTIME/TESTS/test_project_planning_context.py`.
+
+O teste valida:
+
+- injecao de contexto real em tarefa de projeto;
+- limite de 8.000 tokens e 19 arquivos na chamada ao runtime;
+- ausencia de scan/contexto em tarefa comum;
+- passagem do contexto pelo caminho real `AgentLoopRuntime -> TaskOrchestrator -> model planning`, usando `execute=False` para isolar o gate de planejamento sem executar tools.
+
+Commits:
+
+- `8383eb22ae0e83b2bf570c1eaf9739694213c874` — `test(project): validar contexto no planejamento do agente`;
+- `6126f2134f009bad3f707989d35c0f58d230fc70` — `test(agent): provar contexto limitado no agent loop`.
+
+Os workflows do ultimo commit estao em execucao. Esta integracao somente deve ser marcada como evidencia final depois que os testes e a `RACHEL CI` concluirem verdes.
+
+## Decisao de arquitetura
+
+O Agent Loop nao recebeu dependencia direta de `ProjectIntelligenceRuntime`. O caminho escolhido e:
+
+```text
+AgentLoopRuntime
+    -> TaskOrchestrator
+        -> project_planning_context
+            -> ProjectContextProvider
+                -> ProjectIntelligenceRuntime.context_for
+```
+
+Isso mantem o loop desacoplado do indexador, reutiliza o mesmo boundary ja validado e permite substituir a estrategia de contexto no futuro sem reescrever o loop profissional.
 
 ## Gate atual
 
@@ -176,9 +223,17 @@ A Etapa 07 esta sendo dividida em micro-lotes deliberadamente pequenos. Primeiro
 - budget de contexto isolado: **IMPLEMENTED / TESTED**;
 - contexto real limitado integrado ao Project Intelligence: **IMPLEMENTED / TESTED**;
 - provider de contexto para planejamento: **IMPLEMENTED / TESTED**;
-- caminho `project.context` servindo contexto real limitado: **IMPLEMENTED / CI PASS**;
-- teste especifico da tool `project.context`: **IMPLEMENTED / CI IN PROGRESS**;
-- Agent Loop consumindo contexto limitado: **PENDING / A AUDITAR**;
-- gate completo da Etapa 07: **NOT YET CLOSED**.
+- `project.context` servindo contexto real limitado: **IMPLEMENTED / CI PASS**;
+- teste dedicado da tool `project.context`: **IMPLEMENTED / CI PASS**;
+- planejamento de Ned consumindo contexto limitado: **IMPLEMENTED / CI IN PROGRESS**;
+- Agent Loop recebendo contexto limitado no model planning: **IMPLEMENTED / CI IN PROGRESS**;
+- gate completo da Etapa 07: **AWAITING FINAL CI**.
 
-A etapa nao deve ser marcada como `VALIDATED` enquanto a integracao com planejamento/Agent Loop nao estiver demonstrada por codigo e testes.
+## Proximos passos
+
+1. aguardar os workflows do commit `6126f2134f009bad3f707989d35c0f58d230fc70`;
+2. se verdes, reconciliar o gate da Etapa 07 como validado;
+3. revisar rapidamente se existe algum requisito documental do roadmap ainda sem evidencia;
+4. somente depois iniciar a proxima etapa da Rachel.
+
+A etapa nao deve ser marcada como `VALIDATED` antes da evidencia final da CI.
