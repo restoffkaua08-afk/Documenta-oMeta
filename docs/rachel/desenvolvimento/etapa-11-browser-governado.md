@@ -171,41 +171,41 @@ A regressao critica inclui agora:
 - `test_browser_runtime.py`;
 - `test_browser_tools.py`.
 
-No run `33074979083`, no head `3124f23276f6cd8546f3c9e85d6c484ff9dbb0f7`, a verificacao registrou:
+O run `33074979083`, no head `3124f23276f6cd8546f3c9e85d6c484ff9dbb0f7`, concluiu com:
 
 - Python Core + Runtime contracts: **PASS**;
 - Desktop frontend build: **PASS**;
-- Tauri Rust check: **RUNNING NA ULTIMA CONSULTA**.
+- Tauri Rust check: **PASS**.
 
-A Etapa 11 nao deve ser classificada como `VALIDATED` ate o job final fechar verde e os sublotes restantes serem concluidos.
+Portanto, o primeiro gate integrado de BrowserRuntime + ToolCoordinator + Cyber esta verde. A Etapa 11 como um todo continua aberta porque os efeitos interativos, roteamento natural e sessao persistente ainda nao foram concluidos.
 
 ## Gate atual
 
-- boundary browser: **IMPLEMENTED**;
+- boundary browser: **VALIDATED**;
 - backend Playwright lazy: **IMPLEMENTED**;
-- WebPolicy/SSRF compartilhada: **IMPLEMENTED / TESTED**;
-- validacao de requests durante navegacao: **IMPLEMENTED / TESTED**;
-- abrir pagina: **IMPLEMENTED / TESTED**;
-- obter titulo: **IMPLEMENTED / TESTED**;
-- ler texto: **IMPLEMENTED / TESTED**;
-- registry `browser.*`: **IMPLEMENTED**;
-- ToolCoordinator: **IMPLEMENTED / TESTED**;
-- leitura = Cyber LOW: **IMPLEMENTED / TESTED**;
-- efeitos = Cyber approval: **IMPLEMENTED / TESTED**;
-- efeito remoto sem approval -> `approval_required`: **IMPLEMENTED / TESTED**;
+- WebPolicy/SSRF compartilhada: **VALIDATED POR TESTES DE CONTRATO**;
+- validacao de requests durante navegacao: **VALIDATED POR TESTES DE CONTRATO**;
+- abrir pagina: **VALIDATED NO BOUNDARY/COORDINATOR**;
+- obter titulo: **VALIDATED NO BOUNDARY/COORDINATOR**;
+- ler texto: **VALIDATED NO BOUNDARY/COORDINATOR**;
+- registry `browser.*`: **VALIDATED**;
+- ToolCoordinator: **VALIDATED**;
+- leitura = Cyber LOW: **VALIDATED**;
+- efeitos = Cyber approval: **VALIDATED**;
+- efeito remoto sem approval -> `approval_required`: **VALIDATED**;
 - click/form/login/upload/download depois do approval: **PENDING**;
 - roteamento natural deterministico no Ned: **PENDING**;
 - sessao persistente/tab state: **PENDING**;
 - smoke real Playwright com browser instalado: **PENDING PARA AMBIENTE APROPRIADO**;
+- CI deste sublote: **GREEN**;
 - CI final da etapa: **PENDING**.
 
 ## Proximos passos
 
-1. confirmar Tauri/CI completa do head `3124f232...`;
-2. adicionar roteamento natural confiavel para pedidos de navegacao;
-3. criar contrato de sessao/tab que impeça efeitos sem pagina alvo conhecida;
-4. implementar click/form/login/upload/download em sublotes independentes;
-5. vincular approvals a acao + alvo + parametros para impedir reutilizacao indevida;
-6. testar que approval de uma operacao nao autoriza outra;
-7. executar smoke Playwright real quando dependencia/browser estiver disponivel;
-8. fechar Etapa 11 somente com CI completa verde e gate funcional comprovado.
+1. adicionar roteamento natural confiavel para pedidos de navegacao;
+2. criar contrato de sessao/tab que impeça efeitos sem pagina alvo conhecida;
+3. implementar click/form/login/upload/download em sublotes independentes;
+4. vincular approvals a acao + alvo + parametros para impedir reutilizacao indevida;
+5. testar que approval de uma operacao nao autoriza outra;
+6. executar smoke Playwright real quando dependencia/browser estiver disponivel;
+7. fechar Etapa 11 somente com CI completa verde e gate funcional comprovado.
