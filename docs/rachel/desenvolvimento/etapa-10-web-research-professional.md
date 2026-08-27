@@ -74,7 +74,17 @@ Commit de correcao:
 
 O detector passou a aceitar conectores naturais conservadores como `is`, `was`, `é`, `era` e `foi`, mantendo a deteccao limitada a marcadores explicitamente comparaveis (`version`, `release`, `limit`).
 
-Isso corrige a falha sem transformar o detector em um classificador semantico amplo ou propenso a falsos positivos.
+### IDs de evidencia determinísticos
+
+Foi identificado um problema adicional de reprodutibilidade: os IDs de claims utilizavam `hash(url)`, cujo valor pode variar entre processos Python. Isso enfraquecia rastreabilidade entre execucoes, logs e testes.
+
+Commits:
+
+- `08b9e286df028f89f20ee40986d812d14cabed7b` — `feat(research): tornar IDs de evidencia determinísticos`;
+- `e89d3f89299fe32d5675696793246c3dc6009dd6` — `test(research): validar IDs estáveis de evidência`;
+- `650149c7f4698073d16065f70594eefc6e9fc686` — `ci(research): incluir evidências determinísticas na regressão`.
+
+Agora o identificador de fonte e derivado de SHA-256 da URL normalizada e truncado para 16 caracteres hexadecimais. A mesma URL gera o mesmo prefixo de claim em processos diferentes. O novo teste tambem valida diretamente a deteccao de conflito em linguagem natural.
 
 ## Integracao ao ResearchEngine
 
@@ -127,13 +137,7 @@ synthesis
 └── must_not_fake_freshness
 ```
 
-`required_disclosures` e derivado do estado real da pesquisa e pode exigir explicitamente:
-
-- `source_conflicts`;
-- `freshness_unverified`;
-- `primary_source_missing`.
-
-Isso fornece ao modelo um conjunto limitado de afirmacoes suportadas e torna mais rastreavel a associacao entre afirmacao final e evidencia.
+`required_disclosures` e derivado do estado real da pesquisa e pode exigir explicitamente `source_conflicts`, `freshness_unverified` ou `primary_source_missing`.
 
 ## Dany integrada ao estado profissional da pesquisa
 
@@ -146,57 +150,27 @@ Commits:
 
 `EvalContext` representa `research_conflict_count`, `freshness_required` e `freshness_verified`. Os gates criticos `research_conflicts_disclosed` e `freshness_consistent` impedem que a resposta esconda divergencias ou finja atualidade nao verificada.
 
-A CI reforcada encontrou um caso real adicional: a resposta correta `As fontes divergem` ainda era rejeitada porque o vocabulario deterministico aceitava substantivos como `divergencia`, mas nao as formas verbais de `divergir`. A correcao `17f8eaa...` adicionou `diverge`, `divergem`, `divergiu` e `divergiram`, preservando todos os demais gates.
-
 ## Teste de caminho research -> resposta -> Dany
 
-O teste de `ResearchEngine` foi ampliado no commit:
+Commits relevantes:
 
-- `6dccd47f05b8058fd0080a72f3142a9759fb7172` — `test(research): validar sintese auditavel e gate Dany`.
+- `6dccd47f05b8058fd0080a72f3142a9759fb7172` — `test(research): validar sintese auditavel e gate Dany`;
+- `a92403a8015afcf70dbfd0fab96347fcf7c3e8f6` — `test(research): expor gate Dany em falha de sintese`.
 
-O teste agora cobre o caminho integrado:
-
-```text
-ResearchEngine
-   ↓
-research result
-   ↓
-synthesis claim-evidence
-   ↓
-evaluate_runtime_response
-   ↓
-DanyProfessional
-```
-
-Casos comprovados pelo teste:
-
-- resposta que omite conflito entre fontes e rejeitada;
-- resposta que declara a divergencia e usa evidencias retornadas pode passar;
-- resposta que afirma atualidade quando freshness nao foi verificada e rejeitada;
-- resposta que admite explicitamente a incerteza temporal satisfaz o gate;
-- `source_conflicts`, `freshness_unverified` e `primary_source_missing` aparecem no contrato quando aplicaveis.
+O segundo commit acrescentou diagnostico detalhado ao assert integrado para que qualquer nova rejeicao da Dany exponha os checks e issues exatos em CI, reduzindo ambiguidade durante regressao.
 
 ## CI reforcada
 
-O workflow foi atualizado no commit:
-
-- `081fcb570ffcde863a791b70496983471808664a` — `ci(research): incluir gates profissionais recentes na regressao`.
-
-Foram adicionados explicitamente a regressao critica:
+A regressao critica agora inclui explicitamente:
 
 - `test_research_strategy.py`;
+- `test_research_evidence.py`;
+- `test_research_runtime.py`;
 - `test_dany_professional.py`.
 
-`test_research_runtime.py` ja fazia parte da suite e tambem cobre o caminho integrado ate a Dany.
+O run `33074276577`, no head `650149c7f4698073d16065f70594eefc6e9fc686`, concluiu o workflow `tests` com Core e Runtime em **PASS**, incluindo os IDs determinísticos e o detector de conflitos atualizado.
 
-O run `33072136183` detectou a lacuna do disclosure natural. A correcao foi aplicada em `17f8eaa...`.
-
-O run final `33072680019`, no head `17f8eaa2ee61276a7e4c9b6367be2f8444dd737d`, concluiu com:
-
-- Python Core full unit suite: **PASS**;
-- Critical Runtime regression suite: **PASS**;
-- Desktop frontend build: **PASS**;
-- Tauri Rust check: **PASS**.
+O gate original da Etapa 10 ja havia sido fechado pelo `RACHEL CI` verde do head `17f8eaa2ee61276a7e4c9b6367be2f8444dd737d`, com Core/Runtime, frontend e Tauri aprovados. As melhorias posteriores foram tratadas como hardening incremental sem reabrir o escopo funcional da etapa.
 
 ## Gate de fonte primaria
 
@@ -216,6 +190,7 @@ O workflow `tests` do commit `385e2fddc897ff8072f7f676262fcb0ab43f8745` concluiu
 - freshness verification por sinal de publicacao: **VALIDATED**;
 - classificacao conservadora de conflito entre fontes: **VALIDATED**;
 - estrutura claim -> evidence: **VALIDATED**;
+- IDs de evidencia determinísticos: **VALIDATED**;
 - contrato de sintese estruturada: **VALIDATED**;
 - Dany exige disclosure de conflitos: **VALIDATED**;
 - Dany governa freshness nao verificada: **VALIDATED**;
@@ -229,6 +204,4 @@ A Etapa 10 esta encerrada para o escopo definido no roadmap. Melhorias posterior
 
 ## Proximo passo
 
-1. reconciliar a limpeza restante da Etapa 09;
-2. iniciar a Etapa 11 — Browser governado — com auditoria da infraestrutura existente antes de adicionar novas dependencias;
-3. manter leitura e efeitos do browser separados por politica Cyber desde o primeiro lote.
+A Etapa 11 — Browser governado — foi iniciada a partir da infraestrutura Playwright ja encontrada na `main`. O foco passa a ser registrar o browser no ToolCoordinator/registry, manter leitura separada de efeitos, exigir Cyber para acoes remotas e somente depois habilitar execucao interativa com estado de sessao.
