@@ -1,6 +1,6 @@
 # Rachel — Etapa 10: Web Research Professional
 
-**Estado:** Em implementacao incremental  
+**Estado:** VALIDATED  
 **Data:** 2026-08-27  
 **Repositorio:** `restoffkaua08-afk/rachel-ia`  
 **Branch oficial:** `main`
@@ -141,9 +141,12 @@ Commits:
 
 - `d7d7c5f661699ebf0c208595309dc2a2ceb67bd9` — `feat(dany): validar conflitos e freshness em pesquisas`;
 - `7cd758773712360d0bd02c5aea100649f40430d0` — `feat(dany): propagar evidencias profissionais de pesquisa`;
-- `85055ac6deac8574858ced9e5f4aa686988a9abf` — `test(dany): validar conflitos e freshness de pesquisa`.
+- `85055ac6deac8574858ced9e5f4aa686988a9abf` — `test(dany): validar conflitos e freshness de pesquisa`;
+- `17f8eaa2ee61276a7e4c9b6367be2f8444dd737d` — `fix(dany): reconhecer disclosure natural de divergencia`.
 
 `EvalContext` representa `research_conflict_count`, `freshness_required` e `freshness_verified`. Os gates criticos `research_conflicts_disclosed` e `freshness_consistent` impedem que a resposta esconda divergencias ou finja atualidade nao verificada.
+
+A CI reforcada encontrou um caso real adicional: a resposta correta `As fontes divergem` ainda era rejeitada porque o vocabulario deterministico aceitava substantivos como `divergencia`, mas nao as formas verbais de `divergir`. A correcao `17f8eaa...` adicionou `diverge`, `divergem`, `divergiu` e `divergiram`, preservando todos os demais gates.
 
 ## Teste de caminho research -> resposta -> Dany
 
@@ -175,7 +178,7 @@ Casos comprovados pelo teste:
 
 ## CI reforcada
 
-Foi identificado que a lista critica do `RACHEL CI` ainda nao executava explicitamente alguns testes profissionais recentes. O workflow foi atualizado no commit:
+O workflow foi atualizado no commit:
 
 - `081fcb570ffcde863a791b70496983471808664a` — `ci(research): incluir gates profissionais recentes na regressao`.
 
@@ -184,7 +187,16 @@ Foram adicionados explicitamente a regressao critica:
 - `test_research_strategy.py`;
 - `test_dany_professional.py`.
 
-`test_research_runtime.py` ja fazia parte da suite e agora tambem cobre o caminho integrado ate a Dany.
+`test_research_runtime.py` ja fazia parte da suite e tambem cobre o caminho integrado ate a Dany.
+
+O run `33072136183` detectou a lacuna do disclosure natural. A correcao foi aplicada em `17f8eaa...`.
+
+O run final `33072680019`, no head `17f8eaa2ee61276a7e4c9b6367be2f8444dd737d`, concluiu com:
+
+- Python Core full unit suite: **PASS**;
+- Critical Runtime regression suite: **PASS**;
+- Desktop frontend build: **PASS**;
+- Tauri Rust check: **PASS**.
 
 ## Gate de fonte primaria
 
@@ -192,37 +204,31 @@ O `ResearchQualityEvaluator` registra fontes autoritativas, fontes primarias, ob
 
 ## Estado da Etapa 09
 
-O workflow `tests` do commit `385e2fddc897ff8072f7f676262fcb0ab43f8745` concluiu com sucesso. A Etapa 09 ainda nao deve ser marcada como totalmente encerrada ate remover a sobreposicao historica de `capabilities.knowledge = True` em `NedCognitiveBridge.status()` e confirmar a fonte unica de verdade do capability.
+O workflow `tests` do commit `385e2fddc897ff8072f7f676262fcb0ab43f8745` concluiu com sucesso. A Etapa 09 ainda possui uma limpeza historica isolada: remover a sobreposicao `capabilities.knowledge = True` em `NedCognitiveBridge.status()` e confirmar o Core/ChatService como fonte unica de verdade do capability.
 
-## Gate atual da Etapa 10
+## Gate final da Etapa 10
 
-- query planning deterministico: **IMPLEMENTED / TESTED / CI GREEN EM LOTE ANTERIOR**;
-- multi-query: **IMPLEMENTED / TESTED / CI GREEN EM LOTE ANTERIOR**;
-- deduplicacao cross-query: **IMPLEMENTED / TESTED / CI GREEN EM LOTE ANTERIOR**;
-- gate de fonte primaria: **IMPLEMENTED / TESTED**;
-- freshness awareness: **IMPLEMENTED / TESTED**;
-- freshness verification por sinal de publicacao: **IMPLEMENTED / TESTED**;
-- classificacao conservadora de conflito entre fontes: **IMPLEMENTED / TESTED / CORRIGIDA APOS REGRESSAO REAL**;
-- estrutura claim -> evidence: **IMPLEMENTED / TESTED**;
-- contrato de sintese estruturada: **IMPLEMENTED / TESTED**;
-- Dany exige disclosure de conflitos: **IMPLEMENTED / TESTED**;
-- Dany governa freshness nao verificada: **IMPLEMENTED / TESTED**;
-- caminho `research -> resposta -> Dany`: **IMPLEMENTED / TESTED**;
-- CI profissional ampliada: **IMPLEMENTED**;
-- contradicao semantica ampla: **NAO IMPLEMENTADA PROPOSITALMENTE NESTE LOTE**;
-- CI final do head atual: **PENDING**.
+- query planning deterministico: **VALIDATED**;
+- multi-query: **VALIDATED**;
+- deduplicacao cross-query: **VALIDATED**;
+- gate de fonte primaria: **VALIDATED**;
+- freshness awareness: **VALIDATED**;
+- freshness verification por sinal de publicacao: **VALIDATED**;
+- classificacao conservadora de conflito entre fontes: **VALIDATED**;
+- estrutura claim -> evidence: **VALIDATED**;
+- contrato de sintese estruturada: **VALIDATED**;
+- Dany exige disclosure de conflitos: **VALIDATED**;
+- Dany governa freshness nao verificada: **VALIDATED**;
+- caminho `research -> resposta -> Dany`: **VALIDATED**;
+- CI profissional ampliada: **VALIDATED**;
+- CI final da etapa: **GREEN**.
 
-## CI atual
+## Observacoes para evolucao futura
 
-O `RACHEL CI` do commit `85055ac...` teve Core completo, frontend e Tauri verdes, mas falhou no teste novo de conflito por nao reconhecer `version is 3.13`. A regressao foi corrigida em `176e676...`.
+A Etapa 10 esta encerrada para o escopo definido no roadmap. Melhorias posteriores podem incluir metadata HTML estruturada, contradicao semantica mais ampla e benchmarks adicionais de pesquisa profunda. Essas extensoes nao bloqueiam o gate atual e nao devem reabrir indefinidamente a etapa ja validada.
 
-O head atual da Rachel e `081fcb570ffcde863a791b70496983471808664a`, que inclui a correcao, contrato de sintese, testes integrados e reforco da CI. O run `33072136183` foi disparado e ainda deve ser tratado como pendente ate conclusao dos tres jobs.
+## Proximo passo
 
-## Proximos passos
-
-1. confirmar o `RACHEL CI` do head atual;
-2. corrigir qualquer regressao sem enfraquecer os gates;
-3. se a CI fechar verde, considerar o nucleo funcional da Etapa 10 pronto para fechamento;
-4. melhorar extracao de metadata HTML estruturada apenas se houver ganho real e testavel;
-5. avaliar contradicao semantica mais ampla como melhoria futura, sem substituir o detector deterministico;
-6. reconciliar a limpeza restante da Etapa 09 antes de seguir para a proxima etapa principal do roadmap.
+1. reconciliar a limpeza restante da Etapa 09;
+2. iniciar a Etapa 11 — Browser governado — com auditoria da infraestrutura existente antes de adicionar novas dependencias;
+3. manter leitura e efeitos do browser separados por politica Cyber desde o primeiro lote.
