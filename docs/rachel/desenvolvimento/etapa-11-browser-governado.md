@@ -1,121 +1,211 @@
 # Rachel — Etapa 11: Browser Governado
 
-**Estado:** Em implementacao incremental  
+**Estado:** EM VALIDACAO INCREMENTAL  
 **Data:** 2026-08-27  
 **Repositorio:** `restoffkaua08-afk/rachel-ia`  
 **Branch oficial:** `main`
 
 ## Objetivo
 
-Adicionar navegacao browser real e governada sem transformar o browser em uma superficie de execucao irrestrita. A etapa deve reutilizar a politica de rede/SSRF ja existente, separar leitura de efeitos e permitir que Cyber governe click, formulario, login, upload e download antes de qualquer um desses efeitos ser habilitado.
+Adicionar navegacao browser real e governada sem transformar o browser em uma superficie de execucao irrestrita. A etapa reutiliza a politica de rede/SSRF existente, separa leitura de efeitos remotos e faz o Cyber governar click, formulario, login, upload e download antes de qualquer efeito ser executado.
 
-## Auditoria inicial
+## Auditoria e origem
 
-O repositorio nao possuia `browser_runtime.py` nem integracao Playwright encontrada na auditoria inicial. O runtime web existente ja possui `WebPolicy`, normalizacao de URL e `validate_url()` com bloqueio de hosts/redes internas, portanto a Etapa 11 deve reutilizar essa fronteira em vez de criar uma segunda politica de rede independente.
+A Etapa 11 foi iniciada em lotes anteriores com um boundary read-only:
 
-O registry atual possui `web.fetch`, `web.search` e `web.research`, mas ainda nao possui ferramentas `browser.*`.
+- `214caa43f51b955bd25f6d5f5a616c4549c4fdfb` — `feat(browser): adicionar runtime governado read-only`;
+- `aff9f5b2f99e4f0bb9b31e10b3ef4da2db598fb9` — `test(browser): validar navegacao read-only e politica SSRF`;
+- `0d3b2b25741d2f6b56a9db6038d10a9afbf0ea9f` — `ci(browser): validar runtime governado na regressao`.
 
-O `RACHEL_CORE/pyproject.toml` nao declara Playwright como dependencia do Core. Por isso, o primeiro lote mantem Playwright como backend lazy/opcional do Runtime, evitando contaminar o Core e evitando exigir binarios de browser para toda execucao de CI.
+Esse boundary ja possuia `BrowserPageEvidence`, `BrowserRuntime`, backend Playwright lazy e reaproveitamento de `WebPolicy`/`validate_url` para evitar uma segunda politica de rede independente.
 
-## Lote 11A — boundary read-only
+## Arquitetura de rede
 
-Foi criado:
+```text
+BrowserRuntime
+    |
+    v
+PlaywrightBrowserBackend
+    |
+    +--> URL inicial -> validate_url
+    |
+    +--> requests/subrequests -> guard -> validate_url
+    |
+    +--> URL final -> validate_url
+    |
+    v
+Internet publica autorizada
+```
 
-- `RACHEL_PLATFORM/RUNTIME/SRC/browser_runtime.py`.
+Playwright continua sendo carregado somente quando uma operacao real solicita browser. O Core e os testes de contrato nao dependem de binarios Chromium para iniciar.
+
+## Sublote — alinhamento de efeitos ao Cyber
 
 Commit:
 
-- `214caa43f51b955bd25f6d5f5a616c4549c4fdfb` — `feat(browser): adicionar runtime governado read-only`.
+- `231f1f90b7ed6c0c28d360e909c666f22293ff0b` — `feat(browser): alinhar efeitos ao Cyber e expor leitura`.
 
-### Arquitetura
-
-O modulo introduz:
-
-- `BrowserPageEvidence`;
-- `BrowserRuntime`;
-- `PlaywrightBrowserBackend`;
-- `BrowserError`;
-- `BrowserUnavailableError`.
-
-O backend Playwright e importado apenas quando uma operacao real de browser e solicitada. Isso mantem testes e Core independentes da instalacao de Chromium/Playwright.
-
-### Politica de rede
-
-O BrowserRuntime reutiliza:
+A classificacao passou a usar o vocabulario que `CyberPolicy` realmente entende:
 
 ```text
-web_runtime.WebPolicy
-        +
-web_runtime.validate_url
+browser.open
+browser.title
+browser.read
+    -> read
+
+browser.click
+browser.form
+browser.login
+browser.upload
+browser.download
+    -> external
 ```
 
-A validacao ocorre no URL solicitado e o backend foi desenhado para aplicar a mesma validacao a cada request HTTP(S) interceptado pela pagina, reduzindo risco de SSRF por redirect ou subrequest.
+Isso evita efeitos declarativos sem policy correspondente. `read` pertence ao conjunto LOW do Cyber; `external` pertence ao conjunto MEDIUM e requer autorizacao.
 
-O URL final tambem e validado antes de ser exposto como evidencia.
+Tambem foi adicionado `BrowserRuntime.read()`, que devolve URL solicitada, URL final, titulo, texto visivel e tamanho do texto dentro do limite do WebPolicy.
 
-### Separacao de efeitos
-
-O boundary classifica desde o primeiro lote:
-
-```text
-open/title/read
-    -> external-read
-
-click/form/login/upload/download
-    -> external-effect
-```
-
-Neste lote apenas navegacao/leitura esta habilitada. Operacoes de efeito ainda nao foram implementadas.
-
-Isso evita adicionar formulario/login/click antes de existir contrato Cyber explicito para cada classe de efeito.
-
-## Testes
-
-Foi criado:
-
-- `RACHEL_PLATFORM/RUNTIME/TESTS/test_browser_runtime.py`.
+## Testes do BrowserRuntime
 
 Commit:
 
-- `aff9f5b2f99e4f0bb9b31e10b3ef4da2db598fb9` — `test(browser): validar navegacao read-only e politica SSRF`.
+- `95f80140873ee2ab88fff85061ec50d7b2739f2d` — `test(browser): validar leitura e efeitos governados`.
 
-Os testes cobrem:
+Os testes comprovam:
 
-- evidencia de pagina governada;
-- projecao minima de titulo;
-- bloqueio de `localhost` pela politica SSRF;
-- separacao de efeitos read-only vs effectful;
+- navegacao read-only com evidencia;
+- titulo governado;
+- leitura de texto visivel;
+- bloqueio de localhost/SSRF;
+- separacao `read` vs `external`;
 - rejeicao de acao desconhecida;
-- rejeicao de backend que devolve contrato invalido;
-- garantia de que efeitos permanecem desabilitados no status.
+- rejeicao de backend com contrato invalido;
+- status que nao anuncia efeitos remotos como habilitados.
+
+## Registry oficial
+
+Commit:
+
+- `890eca8787a07ecd67762323f639ab5ae5428fe1` — `feat(browser): registrar ferramentas governadas`.
+
+O schema de `RACHEL_PLATFORM/CONFIG/tools.registry.json` foi elevado para `1.7`.
+
+Ferramentas registradas:
+
+```text
+browser.status
+browser.open
+browser.title
+browser.read
+browser.click
+browser.form
+browser.login
+browser.upload
+browser.download
+```
+
+As operacoes de efeito sao visiveis no contrato, mas a descricao deixa explicito que o executor ainda esta desabilitado. Isso permite que planner, Cyber, UI e testes conhecam a capacidade sem anunciar funcionalidade inexistente.
+
+## Integracao com ToolCoordinator
+
+Commit:
+
+- `bbe540ddcf0b664645a8d8e131b03fed313a79ca` — `feat(browser): integrar browser governado ao ToolCoordinator`.
+
+`ToolCoordinator` agora possui uma dependencia injetavel `BrowserRuntime` e executa:
+
+- `browser.status`;
+- `browser.open`;
+- `browser.title`;
+- `browser.read`.
+
+Todas passam pelo mesmo pipeline de tools:
+
+```text
+Ned
+ |
+ v
+ToolCoordinator
+ |
+ +--> CyberPolicy
+ |
+ +--> ApprovalStore (quando necessario)
+ |
+ +--> KingEventBus
+ |
+ +--> JhonLogger
+ |
+ v
+BrowserRuntime
+```
+
+Para `click/form/login/upload/download`, o fluxo sem approval e interrompido pelo Cyber em `approval_required`. Caso um approval seja fornecido, o executor ainda retorna erro explicito de capacidade nao habilitada. A Rachel portanto nao pode fingir que clicou/preencheu/enviou quando o executor interativo ainda nao existe.
+
+## Teste integrado ToolCoordinator -> Browser
+
+Foi criado:
+
+- `RACHEL_PLATFORM/RUNTIME/TESTS/test_browser_tools.py`.
+
+Commit:
+
+- `da81d0401df1a25a9f7d9315489b1f18a0bf9fc0` — `test(browser): validar integração governada no ToolCoordinator`.
+
+O teste usa backend fake e bancos temporarios e comprova:
+
+- `browser.title` executa sem approval e reporta `effective_effect=read`;
+- `browser.read` retorna texto visivel;
+- `browser.form` sem approval retorna `approval_required`;
+- o efeito recebido pelo Cyber e `external`;
+- um approval e criado;
+- ferramentas `browser.*` sao descobertas pelo registry.
 
 ## CI
 
-O workflow `RACHEL CI` foi atualizado para incluir explicitamente `test_browser_runtime.py` na regressao critica.
-
 Commit:
 
-- `0d3b2b25741d2f6b56a9db6038d10a9afbf0ea9f` — `ci(browser): validar runtime governado na regressao`.
+- `3124f23276f6cd8546f3c9e85d6c484ff9dbb0f7` — `ci(browser): incluir integração do browser governado`.
+
+A regressao critica inclui agora:
+
+- `test_browser_runtime.py`;
+- `test_browser_tools.py`.
+
+No run `33074979083`, no head `3124f23276f6cd8546f3c9e85d6c484ff9dbb0f7`, a verificacao registrou:
+
+- Python Core + Runtime contracts: **PASS**;
+- Desktop frontend build: **PASS**;
+- Tauri Rust check: **RUNNING NA ULTIMA CONSULTA**.
+
+A Etapa 11 nao deve ser classificada como `VALIDATED` ate o job final fechar verde e os sublotes restantes serem concluidos.
 
 ## Gate atual
 
-- boundary de browser: **IMPLEMENTED**;
+- boundary browser: **IMPLEMENTED**;
 - backend Playwright lazy: **IMPLEMENTED**;
-- reutilizacao de WebPolicy/SSRF: **IMPLEMENTED**;
-- validacao de requests durante navegacao: **IMPLEMENTED**;
-- leitura de titulo/conteudo: **IMPLEMENTED NO BOUNDARY**;
-- testes unitarios governados: **IMPLEMENTED**;
-- CI do lote: **PENDING**;
-- ferramentas `browser.*` no ToolCoordinator: **PENDING**;
-- instalacao/configuracao reproduzivel do Playwright: **PENDING**;
-- click/form/login/upload/download: **PENDING E DELIBERADAMENTE DESABILITADOS**;
-- aprovacao Cyber para efeitos: **PENDING**;
-- Agent Loop usando browser: **PENDING**.
+- WebPolicy/SSRF compartilhada: **IMPLEMENTED / TESTED**;
+- validacao de requests durante navegacao: **IMPLEMENTED / TESTED**;
+- abrir pagina: **IMPLEMENTED / TESTED**;
+- obter titulo: **IMPLEMENTED / TESTED**;
+- ler texto: **IMPLEMENTED / TESTED**;
+- registry `browser.*`: **IMPLEMENTED**;
+- ToolCoordinator: **IMPLEMENTED / TESTED**;
+- leitura = Cyber LOW: **IMPLEMENTED / TESTED**;
+- efeitos = Cyber approval: **IMPLEMENTED / TESTED**;
+- efeito remoto sem approval -> `approval_required`: **IMPLEMENTED / TESTED**;
+- click/form/login/upload/download depois do approval: **PENDING**;
+- roteamento natural deterministico no Ned: **PENDING**;
+- sessao persistente/tab state: **PENDING**;
+- smoke real Playwright com browser instalado: **PENDING PARA AMBIENTE APROPRIADO**;
+- CI final da etapa: **PENDING**.
 
-## Proximo lote
+## Proximos passos
 
-1. validar o lote 11A em CI;
-2. registrar `browser.status`, `browser.open` e `browser.title` no registry;
-3. integrar somente as operacoes read-only ao `ToolCoordinator`;
-4. testar o caminho ToolCoordinator -> BrowserRuntime com backend fake;
-5. somente depois materializar dependencias/install de Playwright e iniciar efeitos governados.
+1. confirmar Tauri/CI completa do head `3124f232...`;
+2. adicionar roteamento natural confiavel para pedidos de navegacao;
+3. criar contrato de sessao/tab que impeça efeitos sem pagina alvo conhecida;
+4. implementar click/form/login/upload/download em sublotes independentes;
+5. vincular approvals a acao + alvo + parametros para impedir reutilizacao indevida;
+6. testar que approval de uma operacao nao autoriza outra;
+7. executar smoke Playwright real quando dependencia/browser estiver disponivel;
+8. fechar Etapa 11 somente com CI completa verde e gate funcional comprovado.
