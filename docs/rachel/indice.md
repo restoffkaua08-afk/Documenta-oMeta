@@ -7,6 +7,7 @@
 - [`arquitetura/arquitetura-atual.md`](arquitetura/arquitetura-atual.md)
 - [`arquitetura/runtime-cognitivo.md`](arquitetura/runtime-cognitivo.md)
 - [`arquitetura/membros-e-responsabilidades.md`](arquitetura/membros-e-responsabilidades.md)
+- **[`arquitetura/revisao-estrategica-rachel-v1.md`](arquitetura/revisao-estrategica-rachel-v1.md)** — consolidacao atual do que a Rachel e, no que deve se tornar, melhorias obrigatorias, riscos e pontos fortes apos os ultimos planos.
 - **[`arquitetura/external-capabilities-na-rachel.md`](arquitetura/external-capabilities-na-rachel.md)** — aplicacao especifica do Capability Registry/Provider Router, Jina/RAG, IA externa, weather, location, documents, voz e demais providers na Rachel.
 
 ## Tracker definitivo
@@ -42,6 +43,8 @@
 ## Regra de leitura
 
 Para progresso atual, usar `status-atual.md` e o roadmap definitivo. Para External Capabilities, a especificacao transversal define a estrategia do Meta e `external-capabilities-na-rachel.md` define como ela e aplicada especificamente na Rachel.
+
+A revisao estrategica da V1 serve como mapa conceitual da identidade atual/futura e nao substitui os gates do roadmap.
 
 Documentos de etapas servem como evidencias detalhadas. O ciclo arquitetural antigo e o roadmap profissional antigo permanecem apenas como historico.
 
