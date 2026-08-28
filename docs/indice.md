@@ -16,12 +16,13 @@ Este diretorio e a fonte documental oficial do Projeto Meta: um ecossistema de e
 10. [`resumos/resumo-executivo.md`](resumos/resumo-executivo.md)
 11. [`status/matriz-de-gates.md`](status/matriz-de-gates.md)
 12. [`integracao/contratos-entre-projetos.md`](integracao/contratos-entre-projetos.md)
-13. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
-14. [`decisoes/indice.md`](decisoes/indice.md)
-15. [`historico/linha-do-tempo.md`](historico/linha-do-tempo.md)
-16. [`riscos/registro-de-riscos.md`](riscos/registro-de-riscos.md)
-17. [`operacao/indice.md`](operacao/indice.md)
-18. [`validacao/criterios-de-completude.md`](validacao/criterios-de-completude.md)
+13. [`integracao/external-capabilities-public-apis.md`](integracao/external-capabilities-public-apis.md)
+14. [`rachel/desenvolvimento/roadmap-profissional.md`](rachel/desenvolvimento/roadmap-profissional.md)
+15. [`decisoes/indice.md`](decisoes/indice.md)
+16. [`historico/linha-do-tempo.md`](historico/linha-do-tempo.md)
+17. [`riscos/registro-de-riscos.md`](riscos/registro-de-riscos.md)
+18. [`operacao/indice.md`](operacao/indice.md)
+19. [`validacao/criterios-de-completude.md`](validacao/criterios-de-completude.md)
 
 ## Mapas de referencia
 
