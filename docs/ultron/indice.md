@@ -10,6 +10,7 @@
 - [`seguranca/validacao-sandbox-e-supply-chain.md`](seguranca/validacao-sandbox-e-supply-chain.md)
 - [`integracao/protocolo-de-compatibilidade.md`](integracao/protocolo-de-compatibilidade.md)
 - [`desenvolvimento/roadmap-e-gates.md`](desenvolvimento/roadmap-e-gates.md)
+- [`desenvolvimento/plano-mestre-conclusao.md`](desenvolvimento/plano-mestre-conclusao.md) — **tracker definitivo U0–U17**
 
 ## Status e implementacao (a partir de 2026-08-24)
 
@@ -22,9 +23,12 @@
 
 ## Estado
 
-ULTRON possui planejamento arquitetural detalhado nas fontes. **A partir de 2026-08-24**, a implementacao foi iniciada e os dois primeiros gates foram entregues:
+ULTRON possui o nucleo local U0–U5 aprovado. O plano definitivo possui 18 gates;
+6 estao aprovados e 12 permanecem necessarios para producao real:
 
 - **Gate U0 (Escopo e Contratos)** — ✅ Aprovado. 76 testes, 92.71% cobertura, ruff+mypy limpos.
-- **Gate U1 (Registry Ready)** — ✅ Aprovado e estabilizado. 111 testes, 89,18% cobertura. Registry SQLite+FTS5 + API HTTP + portal Obsidian entregues.
+- **U0–U5** — aprovados na baseline `a34aeaf`; suite final com 208 testes e 91,66% de cobertura.
+- **U6–U17** — pendentes; proxima etapa: fundacao cloud real.
+- **Progresso oficial:** 6/18 gates, ou **33,3%**.
 
 Repositorio oficial: https://github.com/restoffkaua08-afk/ultron
