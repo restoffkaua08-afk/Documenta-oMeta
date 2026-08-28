@@ -2,12 +2,14 @@
 
 ## Estado documental
 
-- Estado: Planejado
+- Estado: Arquitetura transversal aprovada; implementacao ainda pendente
 - Tipo: especificacao transversal de arquitetura e implementacao
 - Escopo: Rachel, Jarvis, ULTRON e Zane
 - Fonte de descoberta inicial: https://github.com/public-apis/public-apis
 - Data da avaliacao inicial: 2026-08-27
 - Regra principal: este documento define uma estrategia de integracao. Ele nao e evidencia de que qualquer provider abaixo ja esteja implementado ou operacional.
+- Incorporacao no ULTRON: gates U8/U9 do [`../ultron/desenvolvimento/plano-mestre-conclusao.md`](../ultron/desenvolvimento/plano-mestre-conclusao.md)
+- Arquitetura detalhada: [`../ultron/arquitetura/external-capabilities-provider-registry.md`](../ultron/arquitetura/external-capabilities-provider-registry.md)
 
 ---
 
