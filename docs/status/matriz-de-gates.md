@@ -1,6 +1,6 @@
 # Matriz de Gates do Projeto Meta
 
-**Atualizado em:** 2026-08-24
+**Atualizado em:** 2026-08-28
 
 Esta matriz separa existencia documental, implementacao e validacao. O estado mais fraco prevalece quando as evidencias divergem.
 
@@ -16,10 +16,11 @@ Esta matriz separa existencia documental, implementacao e validacao. O estado ma
 | Jarvis - baseline standalone | Sim | A inventariar | Nao | Nao aberto | Inspecionar repositorio, versao upstream, testes e licenca |
 | **ULTRON - U0 Escopo e Contratos** | Sim | Sim | Sim | **Aprovado** | **Repo `restoffkaua08-afk/ultron`; commit `f240df6`; 76 testes, 92.71% cobertura, ruff+mypy limpos** |
 | **ULTRON - U1 Registry Ready** | Sim | Sim | Sim | **Aprovado e estabilizado** | **Base `10ff301`; 111 testes, 89,18% cobertura; lint, format, mypy e build aprovados; portal + API + Registry SQLite/FTS5 entregues** |
-| ULTRON - U2 Installation Ready | Sim | Nao | Nao | Planejado | — |
-| ULTRON - U3 Security Ready | Sim | Nao | Nao | Planejado | — |
-| ULTRON - U4 Graph Ready | Sim | Nao | Nao | Planejado | — |
-| ULTRON - U5 Zane Compatibility | Sim | Nao | Nao | Planejado | — |
+| **ULTRON - U2 Installation Ready** | Sim | Sim | Sim | **Aprovado** | `65ff7a5`; 149 testes, 91,15% |
+| **ULTRON - U3 Security Ready** | Sim | Sim | Sim | **Aprovado** | `5627b1f`; 168 testes, 91,51% |
+| **ULTRON - U4 Graph Ready** | Sim | Sim | Sim local | **Aprovado local** | `30e0698`; 186 testes, 92,61%; validacao cloud em U6 |
+| **ULTRON - U5 Zane Compatibility** | Sim | Sim | Sim | **Aprovado** | `a34aeaf`; 208 testes, 91,66% |
+| **ULTRON - U6 a U17 Producao** | Sim | Nao | Nao | **Planejado — 12 gates** | Plano mestre definitivo; proxima etapa U6 |
 | Zane - Z0 requisitos | Sim | Nao | Nao | Aguardando | Depende dos inventarios finais de Rachel e Jarvis |
 
 ## Evidencias aceitas
