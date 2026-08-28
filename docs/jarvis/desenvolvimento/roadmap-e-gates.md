@@ -1,5 +1,9 @@
 # Jarvis - Roadmap e Gates
 
+> Este documento mantém os gates arquiteturais originais. O acompanhamento
+> fechado das 24 etapas, critérios de aceite e percentual oficial está no
+> [Plano mestre de conclusão](plano-mestre-conclusao.md).
+
 ## Fase J0 - Protecao e importacao
 
 - criar repositorio/branch;
@@ -77,11 +81,8 @@ Adiciona:
 
 ## Estado atual
 
-O repositório e a baseline foram importados e registrados. As correções
-JARVIS-001 a JARVIS-005 estão implementadas na `main`, com foco atual em
-confiabilidade e governança. Nenhum gate está verde: ainda faltam auditoria
-integral, execução completa da suíte, perfis mínimos de segurança e os demais
-critérios listados acima. Consulte
-[Histórico de alterações](historico-de-alteracoes.md) para evidências e
-commits.
-
+O repositório e a baseline foram importados e registrados. As entregas
+JARVIS-001 a JARVIS-014 estão implementadas na `main`. O plano mestre registra
+4 de 24 etapas concluídas, 8 parciais e 12 pendentes em 28 de agosto de 2026.
+Nenhum gate de release está verde: ainda faltam validação integral, competência
+com modelos reais, segurança fim a fim e aceite no Windows de destino.

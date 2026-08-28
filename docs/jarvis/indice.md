@@ -9,6 +9,7 @@
 - [`seguranca/governanca-e-auditoria.md`](seguranca/governanca-e-auditoria.md)
 - [`integracao/contratos-e-consolidacao.md`](integracao/contratos-e-consolidacao.md)
 - [`desenvolvimento/roadmap-e-gates.md`](desenvolvimento/roadmap-e-gates.md)
+- [`desenvolvimento/plano-mestre-conclusao.md`](desenvolvimento/plano-mestre-conclusao.md)
 
 ## Estado
 
@@ -19,5 +20,6 @@ arquitetura planejada, implementação concluída e validação pendente.
 
 ## Acompanhamento da evolução
 
+- [Plano mestre: 24 etapas até a V1](desenvolvimento/plano-mestre-conclusao.md)
 - [Histórico completo de alterações](desenvolvimento/historico-de-alteracoes.md)
 - [Registros técnicos individuais](desenvolvimento/alteracoes/)

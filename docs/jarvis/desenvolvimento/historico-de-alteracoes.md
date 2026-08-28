@@ -166,3 +166,13 @@ validação no Windows e empacotamento antes da release.
 - Documento técnico:
   `alteracoes/JARVIS-014-modelos-avancados.md`.
 
+## DOC-JARVIS-001 — plano mestre de conclusão
+
+- Data: 2026-08-28.
+- Consolidado o escopo fechado da V1 em 24 etapas profissionais.
+- Definidos estados, critérios globais de conclusão e seis marcos.
+- Registrados 4 itens concluídos, 8 parciais e 12 pendentes.
+- Definido o gate final `JARVIS_V1_STABLE` com aceite em Windows, benchmark,
+  segurança, documentação, release e integração opcional com o Ultron.
+- O número de commits deixou de ser usado como aproximação de progresso.
+- Documento: [Plano mestre de conclusão](plano-mestre-conclusao.md).
