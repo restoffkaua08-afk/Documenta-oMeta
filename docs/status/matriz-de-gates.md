@@ -20,7 +20,8 @@ Esta matriz separa existencia documental, implementacao e validacao. O estado ma
 | **ULTRON - U3 Security Ready** | Sim | Sim | Sim | **Aprovado** | `5627b1f`; 168 testes, 91,51% |
 | **ULTRON - U4 Graph Ready** | Sim | Sim | Sim local | **Aprovado local** | `30e0698`; 186 testes, 92,61%; validacao cloud em U6 |
 | **ULTRON - U5 Zane Compatibility** | Sim | Sim | Sim | **Aprovado** | `a34aeaf`; 208 testes, 91,66% |
-| **ULTRON - U6 a U7 Fundacao cloud/identidade** | Sim | Nao | Nao | **Planejado — 2 gates** | Proxima etapa U6 |
+| **ULTRON - U6 Fundacao cloud** | Sim | Parcial | Local | **Em andamento; gate fechado** | `45b82fa`; hardening SQL e contratos aprovados; faltam Supabase dedicado, migrations, RLS, Advisors e restore reais |
+| **ULTRON - U7 Identidade** | Sim | Nao | Nao | **Planejado** | Depende das fronteiras cloud de U6 |
 | **ULTRON - U8 Capability/Provider Registry** | Sim | Nao | Nao | **Planejado** | Schemas, registries, routing, health, quota e ledger |
 | **ULTRON - U9 OpenAPI/Generated Adapters** | Sim | Nao | Nao | **Planejado** | Discovery controlado, parser, geracao, sandbox e aprovacao |
 | **ULTRON - U10 a U19 Producao/aceite** | Sim | Nao | Nao | **Planejado — 10 gates** | Plano mestre definitivo U0–U19 |
