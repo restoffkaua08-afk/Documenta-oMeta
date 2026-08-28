@@ -6,7 +6,7 @@
 |---|---|---|
 | Rachel | Evolucao profissional | Etapa 1 validada; Etapas 2 a 4 reportadas e pendentes de gate consolidado |
 | Jarvis | Especificacao standalone | Baseline de implementacao a inventariar apos o gate da Rachel |
-| **ULTRON** | **Nucleo local completo; producao em andamento** | **U0–U5 aprovados; 6/18 gates (33,3%); U6–U17 pendentes** |
+| **ULTRON** | **Nucleo local completo; producao em andamento** | **U0–U5 aprovados; 6/20 gates (30,0%); U6–U19 pendentes** |
 | Zane | Especificacao arquitetural | Arquitetura propria e roadmap Z0-Z9 definidos; implementacao nao iniciada |
 
 ## Foco atual
@@ -28,6 +28,7 @@ Detalhamento: [`matriz-de-gates.md`](matriz-de-gates.md).
 - **2026-08-24** — U1 estabilizado após revisão funcional; documentação e evidências sincronizadas.
 - **2026-08-25** — U2–U5 aprovados; nucleo local fechado com 208 testes.
 - **2026-08-28** — Roadmap definitivo U0–U17 publicado; progresso oficial 33,3%.
+- **2026-08-28** — External Capabilities elevaram o roadmap a U0–U19; Capability/Provider Registry e OpenAPI receberam gates proprios.
 
 Detalhes em [`../ultron/status/status-atual.md`](../ultron/status/status-atual.md).
 
