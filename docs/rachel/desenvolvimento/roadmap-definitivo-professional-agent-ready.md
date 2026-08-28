@@ -1,616 +1,756 @@
 # Rachel — Roadmap Definitivo para `Professional Agent Ready`
 
-**Versao:** 1.0  
+**Versao:** 1.1  
 **Data:** 2026-08-27  
 **Repositorio de codigo:** `restoffkaua08-afk/rachel-ia`  
 **Repositorio de documentacao:** `restoffkaua08-afk/Documenta-oMeta`  
 **Branch oficial de desenvolvimento:** `main`  
-**Quantidade fixa de etapas:** **15**
+**Quantidade fixa de etapas:** **15**  
+**Arquitetura complementar:** [`../arquitetura/external-capabilities-na-rachel.md`](../arquitetura/external-capabilities-na-rachel.md)
 
 ---
 
-## 1. Objetivo deste documento
+## 1. Objetivo
 
-Este documento passa a ser a referencia principal para responder uma pergunta simples:
+Este documento e o tracker oficial para responder:
 
 > **Quanto falta para a Rachel estar realmente pronta?**
 
-O projeto sera considerado concluido somente quando **todas as 15 etapas abaixo estiverem em estado `VALIDATED` e o Gate Final de Release estiver integralmente verde**.
+Rachel V1 so sera concluida quando **15/15 etapas estiverem `VALIDATED`** e o Gate Final da Etapa 15 estiver integralmente verde.
 
-Nao sera suficiente existir codigo, pastas, interfaces bonitas ou testes isolados. `VALIDATED` significa que a capacidade existe, esta ligada ao caminho real da Rachel, possui regressao automatizada, respeita seguranca e foi comprovada no comportamento que promete.
+`VALIDATED` exige implementacao, integracao no caminho real, testes, seguranca, observabilidade e evidencia reproduzivel. Codigo existente sem gate nao conta como conclusao formal.
 
-Este roadmap e finito. Ele nao deve crescer indefinidamente toda vez que surgir uma ideia nova. Melhorias que nao sejam necessarias para cumprir o contrato de produto V1 devem ir para um backlog posterior, sem impedir a conclusao da Rachel V1.
+O roadmap continua finito. A incorporacao de External Capabilities **nao cria uma Etapa 16**. As novas capacidades foram distribuidas nas etapas tecnicamente corretas sem transformar providers externos em dependencias do cerebro cognitivo.
 
 ---
 
-## 2. Definicao oficial de "Rachel completa"
-
-A Rachel V1 recebe o selo:
+## 2. Definicao oficial de Rachel completa
 
 ```text
 PROFESSIONAL_AGENT_READY = TRUE
 ```
 
-somente se conseguir, como um produto unico e standalone:
+A Rachel deve conseguir, de forma standalone:
 
-- iniciar de forma reproduzivel;
-- conversar por chat de forma persistente e streaming;
-- selecionar modelos sem acoplamento a um unico provider;
-- compreender intencoes sem exigir comandos artificiais do usuario;
-- planejar tarefas multi-etapa;
-- executar ferramentas reais com governanca Cyber;
-- pausar para aprovacao quando necessario;
-- retomar exatamente a operacao aprovada, sem self-approval;
-- manipular arquivos em escopos autorizados;
-- trabalhar com Git;
-- detectar, testar, compilar, verificar tipos e lintar projetos quando suportado;
-- compreender repositorios grandes usando contexto limitado;
-- pesquisar web com fontes, freshness e conflitos explicitados;
-- usar conhecimento documental sem misturar memoria pessoal com RAG;
-- usar navegador governado;
-- integrar ferramentas MCP de forma segura;
-- usar voz pela mesma sessao cognitiva do chat;
-- possuir desktop profissional com estados de plano/tool/approval/erro;
-- recuperar-se de falhas previsiveis sem inventar sucesso;
-- possuir logs, eventos, metricas e diagnostico;
-- possuir instalacao/release reproduzivel;
-- passar os gates de seguranca, performance, regressao e E2E da Etapa 15.
+- iniciar e atualizar de forma reproduzivel;
+- conversar por chat persistente e streaming;
+- compreender intencoes naturais;
+- planejar e executar tarefas multi-etapa;
+- usar ferramentas reais com Cyber/approval;
+- retomar exatamente uma operacao autorizada;
+- trabalhar com arquivos, Git e validacao de projetos;
+- usar modelos locais e providers substituiveis;
+- compreender repositorios grandes com contexto limitado;
+- usar memoria e conhecimento sem misturar RAG com memoria pessoal;
+- pesquisar web com evidencias, freshness e conflitos;
+- navegar e interagir via browser governado;
+- consumir MCP e External Capabilities por contratos internos;
+- usar voz na mesma sessao cognitiva;
+- expor tudo por desktop profissional;
+- degradar corretamente quando provider/rede/tool falhar;
+- proteger segredos, localizacao, documentos e dados pessoais;
+- possuir diagnostico, logs, metricas e recovery;
+- passar security, performance, E2E e release gates.
 
-A Rachel nao precisa de ZANE, Jarvis ou ULTRON para cumprir este contrato. Ela deve chegar completa como projeto independente antes de ser congelada como predecessora do ZANE.
+Rachel nao depende de Jarvis, ULTRON ou Zane para ser completa. ULTRON pode distribuir componentes, Jarvis pode consumir capabilities operacionais e Zane recebera a consolidacao futura, mas a V1 da Rachel deve operar com capabilities essenciais instaladas localmente.
 
 ---
 
-## 3. Estados permitidos no tracker
+## 3. Regra arquitetural de External Capabilities
+
+A Rachel passa a adotar oficialmente o principio **capability-first**:
+
+```text
+correto: weather.get_forecast(location, days)
+incorreto: open_meteo.get_forecast(...)
+```
+
+Fluxo alvo:
+
+```text
+Runtime Cognitivo / Agent Loop
+          |
+          v
+Capability/Tool contract
+          |
+          v
+ToolCoordinator + Cyber
+          |
+          +--> local tools
+          +--> browser
+          +--> MCP
+          +--> External Capability Runtime
+                    |
+                    +--> Capability Registry
+                    +--> Provider Registry
+                    +--> Provider Router
+                    +--> Secret Manager adapter
+                    +--> Rate Limit Manager
+                    +--> Health Manager
+                    +--> Usage Ledger
+                    +--> HTTP client governado
+                    +--> retry/circuit breaker
+                    +--> normalized errors
+                    |
+                    +--> providers aprovados
+```
+
+Nenhum provider externo deve ser hardcoded no `NedCognitiveBridge`, prompt, memoria ou planner.
+
+---
+
+## 4. Estados permitidos
 
 | Estado | Significado |
 |---|---|
 | `VALIDATED` | Implementado, integrado, testado e gate comprovado. |
-| `IMPLEMENTED_REVALIDATION_REQUIRED` | Codigo principal existe, mas falta fechar ou reconciliar o gate formal atual. |
-| `IN_PROGRESS` | Implementacao ativa; ainda existem itens obrigatorios do gate. |
-| `PARTIAL` | Existem pecas antecipadas, mas a etapa como um todo ainda nao foi executada. |
-| `PLANNED` | Especificada, ainda nao concluida no codigo. |
-| `BLOCKED` | Nao pode avancar por dependencia ou regressao aberta. |
+| `IMPLEMENTED_REVALIDATION_REQUIRED` | Codigo substancial existe, mas o gate formal precisa ser reconciliado. |
+| `IN_PROGRESS` | Implementacao ativa. |
+| `PARTIAL` | Pecas existem, etapa ainda incompleta. |
+| `PLANNED` | Especificada, sem conclusao de codigo. |
+| `BLOCKED` | Dependencia/regressao impede avanco. |
 
-Uma etapa so muda para `VALIDATED` mediante evidencia verificavel.
+External Capabilities nao alteram retroativamente um gate validado apenas por adicionar providers novos. Expansoes entram como subgates futuros e sao validadas nas etapas de ownership e no Gate 15.
 
 ---
 
-## 4. Snapshot atual — 2026-08-27
+## 5. Snapshot atual
 
-A leitura combinada do repositorio, dos documentos de desenvolvimento e das CIs atuais produz o seguinte estado:
-
-| # | Etapa | Estado atual | Observacao principal |
+| # | Etapa | Estado atual | Observacao |
 |---:|---|---|---|
-| 1 | CI profissional | `VALIDATED` com higiene pendente | `RACHEL CI` profissional existe e vem sendo usada. O workflow legado `tests` ainda apresenta timeout intermitente/atual em `test_agent_bridge`, portanto o Gate Final continua exigindo que toda CI oficial fique verde ou que workflows obsoletos sejam formalmente removidos. |
-| 2 | Cerebro unico + Intent Router | `IMPLEMENTED_REVALIDATION_REQUIRED` | Caminho cognitivo atual ja esta muito alem do estado original, mas falta reconciliar o gate formal e eliminar divergencias documentais antigas. |
-| 3 | Runtime persistente + streaming | `IMPLEMENTED_REVALIDATION_REQUIRED` | Backend residente, streaming/cancelamento e contratos existem; precisa de revalidacao final consolidada. |
-| 4 | Tool Runtime profissional | `VALIDATED` | Filesystem, Git, dev/process e approvals governados possuem evidencia historica e regressao. |
-| 5 | Agent Loop real | `IMPLEMENTED_REVALIDATION_REQUIRED` | `AgentLoopRuntime` esta ativo, persistente, governado e usado em etapas posteriores; falta documento/gate final dedicado. |
-| 6 | Model Router | `VALIDATED` | Router, privacidade, fallback e CI automatizada validados. Smoke com providers reais fica no gate de ambiente/release. |
-| 7 | Project Intelligence | `VALIDATED` | Working set, symbols, contexto <= 8000 tokens, <= 19 arquivos e integracao ao Agent Loop validados. |
-| 8 | Dany Professional | `VALIDATED` | A implementacao foi utilizada e revalidada por etapas posteriores de research, com gates de grounding/freshness/conflito. |
-| 9 | Knowledge Port real | `IMPLEMENTED_REVALIDATION_REQUIRED` | Adapter SQLite, bootstrap, isolamento RAG/memoria e testes existem. A antiga sobreposicao de `knowledge=True` foi removida; precisa fechar a CI/gate documental final. |
-| 10 | Web Research Professional | `VALIDATED` | Multi-query, fontes primarias, freshness, claim-evidence, conflitos e Dany validados. |
-| 11 | Browser governado | `IN_PROGRESS` | Read-only, registry, ToolCoordinator, Cyber e roteamento natural avancaram; session/tab state e efeitos interativos continuam obrigatorios. |
-| 12 | MCP Runtime | `PLANNED` | Ainda precisa registry MCP real, discovery, normalizacao, Cyber e uso pelo agente. |
-| 13 | Voz integrada ao Agent Loop | `PARTIAL` | Existem runtimes/testes de voz, mas falta provar que voz usa exatamente a mesma sessao/Agent Loop do chat. |
-| 14 | Desktop UX profissional | `PARTIAL` | Frontend/Tauri ja existem e buildam, mas ainda falta fechar a UX operacional completa do agente. |
-| 15 | Hardening + Release | `PLANNED/PARTIAL` | Existem pecas de seguranca, dataset/model contract e CI, mas o gate final de produto ainda nao foi executado. |
+| 1 | CI profissional | `VALIDATED` com higiene pendente | `RACHEL CI` e referencia; workflow legado `tests` ainda precisa reconciliar timeout. |
+| 2 | Cerebro unico + Intent Router | `IMPLEMENTED_REVALIDATION_REQUIRED` | Deve incorporar routing futuro por `capability_id`, sem provider concreto. |
+| 3 | Runtime persistente + streaming | `IMPLEMENTED_REVALIDATION_REQUIRED` | Backend residente/streaming existem; gate final precisa consolidacao. |
+| 4 | Tool Runtime profissional | `VALIDATED` | Boundary sera reutilizado por MCP/External Capabilities; nao reabrir. |
+| 5 | Agent Loop real | `IMPLEMENTED_REVALIDATION_REQUIRED` | Revalidacao deve incluir capability fake sem acoplamento a provider. |
+| 6 | Model Router | `VALIDATED` | Core validado; Groq/Gemini/HF entram como expansoes configuraveis depois da fundacao externa. |
+| 7 | Project Intelligence | `VALIDATED` | Sem mudanca de ownership. |
+| 8 | Dany Professional | `VALIDATED` | Deve continuar governando evidencias de providers externos. |
+| 9 | Knowledge Port / RAG | `IMPLEMENTED_REVALIDATION_REQUIRED` | Baseline real existe; Jina embeddings/reranking e vector backend entram como expansao posterior. |
+| 10 | Web Research Professional | `VALIDATED` | Jina Search/Reader, arXiv e CrossRef entram como providers do pipeline, sem substituir Dany/evidence layer. |
+| 11 | Browser governado | `IN_PROGRESS` | Continua independente de Jina Reader; session/tab/effects ainda obrigatorios. |
+| 12 | External Capability + MCP Runtime | `PLANNED` | Etapa ampliada para fundacao de registries/providers + MCP, preservando o papel original de extensibilidade. |
+| 13 | Voz integrada ao Agent Loop | `PARTIAL` | SpeechProvider local/cloud passa a ser contrato; cloud STT sem fallback silencioso. |
+| 14 | Desktop UX profissional | `PARTIAL` | Deve incluir status/config/diagnostico de capabilities/providers. |
+| 15 | Hardening + Release | `PLANNED/PARTIAL` | Passa a incluir falhas, privacidade e E2E de providers externos. |
 
-### Leitura honesta do progresso
+### Progresso formal
 
-Pela metrica **estritamente formal**, ha **6 de 15 etapas atualmente marcaveis como `VALIDATED`** neste snapshot: 1, 4, 6, 7, 8 e 10. Isso equivale a **40% dos gates formalmente fechados**.
-
-Esse numero subestima a maturidade real porque as etapas 2, 3, 5 e 9 ja possuem implementacoes substanciais e a 11 esta em execucao. Considerando codigo ja existente, integracoes realizadas e pendencias de gate, a maturidade de engenharia esta aproximadamente na faixa de **60–65%**, mas isso **nao e um percentual de release**.
-
-Portanto, neste ponto a Rachel esta **bem avancada, mas ainda nao pode ser chamada de quase pronta para V1**. O trecho restante inclui quatro etapas relevantes (12–15), conclusao do browser e reconciliacao de gates anteriores.
+- `VALIDATED`: **6/15 = 40%**;
+- maturidade de engenharia estimada: **aprox. 60–65%**;
+- o novo plano nao muda artificialmente esse percentual, pois nenhuma External Capability foi marcada como implementada apenas por existir na documentacao.
 
 ---
 
-# 5. As 15 etapas definitivas
+# 6. As 15 etapas definitivas
 
 ## ETAPA 1 — CI profissional e rede de seguranca
-
-### Objetivo
-
-Garantir que toda alteracao relevante em `main` seja automaticamente compilada/testada e que regressao nao seja confundida com entrega concluida.
 
 ### Obrigatorio
 
 - Core test suite;
-- Runtime critical regressions;
-- JSON/config validation;
+- Runtime regressions;
+- config validation;
 - frontend production build;
-- Tauri `cargo check`;
-- falha real deve resultar em workflow vermelho;
-- workflows oficiais sem falsos verdes por `|| true` em testes obrigatorios;
-- nenhum workflow oficial permanentemente vermelho no release.
-
-### Gate de conclusao
-
-`VALIDATED` quando a rede principal de CI funciona e, no Gate 15, todas as workflows oficiais relevantes da `main` estao verdes ou obsoletas foram removidas/documentadas.
-
----
-
-## ETAPA 2 — Cerebro unico + roteamento de intencao
-
-### Objetivo
-
-Existir um unico caminho cognitivo canonico para chat e acoes, sem dois cerebros divergentes nem prompts que anunciem capacidades falsas.
-
-### Obrigatorio
-
-- entrypoint cognitivo canonico;
-- chat comum usa fast path sem planner pesado desnecessario;
-- intents claras sao resolvidas deterministicamente quando possivel;
-- fallback para modelo somente quando a heuristica e insuficiente;
-- planner nunca inventa nome de tool;
-- tool arguments validados;
-- approvals retomam plano exato e nao replanejam operacao aprovada;
-- status/capabilities refletem implementacao real.
+- Tauri check/build;
+- nenhum falso verde;
+- workflows oficiais verdes no release.
 
 ### Gate
 
-E2E: conversa simples, research, memoria, filesystem, projeto e browser devem chegar ao dominio correto sem o usuario conhecer nomes internos de membros/tools.
+Rede de CI confiavel e release sem workflow oficial permanentemente vermelho.
+
+---
+
+## ETAPA 2 — Cerebro unico + Intent Router
+
+### Objetivo
+
+Um unico caminho cognitivo canonico para chat e acoes.
+
+### Obrigatorio
+
+- fast path;
+- planner tipado;
+- intents deterministicas quando confiaveis;
+- tool/capability IDs validos;
+- argumentos validados;
+- approval retoma plano exato;
+- capabilities reais refletidas no status;
+- intent de clima/localizacao/documento/research deve apontar para capability abstrata, nunca provider.
+
+### External Capability subgate
+
+Quando a Etapa 12 existir, testar exemplos como:
+
+```text
+"previsao do tempo" -> weather.get_forecast
+"onde fica ..."     -> location.geocode
+"leia esta pagina"  -> research.read_url ou browser.read conforme intencao
+```
+
+### Gate
+
+E2E chega ao dominio/capability correto sem o usuario conhecer nomes internos.
 
 ---
 
 ## ETAPA 3 — Runtime persistente, streaming e cancelamento
 
-### Objetivo
-
-Transformar Rachel em processo residente responsivo, e nao um sidecar reiniciado a cada mensagem.
-
 ### Obrigatorio
 
-- runtime residente;
-- protocolo IPC estavel;
-- streaming real;
-- cancelamento cooperativo;
-- resposta parcial cancelada nao pode virar mensagem concluida;
-- continuidade de conversation/session;
+- processo residente;
+- IPC estavel;
+- streaming/cancelamento;
+- session continuity;
 - health/readiness;
 - graceful shutdown;
-- metricas de TTFT, total, model e tool separadas.
+- metricas de model/tool/provider separadas quando aplicavel.
 
-### Gate
+### External Capability subgate
 
-Teste E2E deve manter uma sessao, enviar varias mensagens, cancelar uma geracao, continuar a conversa e encerrar/reiniciar sem corromper estado.
+Chamadas externas devem herdar correlation id, deadline/cancelamento e nao bloquear o runtime inteiro.
 
 ---
 
 ## ETAPA 4 — Tool Runtime profissional
 
-### Objetivo
+### Estado
 
-Permitir que Rachel execute trabalho real de forma tipada e auditavel.
+`VALIDATED` para o escopo atual.
 
-### Obrigatorio
+### Regra para novas capabilities
 
-- filesystem escopado;
-- read/write/patch/copy/move/delete governados;
-- Git tipado sem shell generico como caminho principal;
-- dev detect/test/build/lint/typecheck;
-- ownership de processos iniciados pela Rachel;
-- approvals one-shot;
-- verificacao pos-acao;
-- rollback/backup quando aplicavel;
-- fallback generico reduzido e endurecido.
+Reutilizar:
 
-### Gate
+```text
+ToolSpec -> schema -> Cyber -> ApprovalStore -> ToolCoordinator -> executor -> verify -> ToolResult
+```
 
-Rachel deve modificar um projeto autorizado, mostrar diff, executar validacao e nunca anunciar sucesso quando o resultado real falhou.
+External Capabilities e MCP nao criam um executor paralelo fora desse boundary.
 
 ---
 
 ## ETAPA 5 — Agent Loop real
 
-### Objetivo
-
-Ligar Ned + executor + Cyber em um loop multi-etapa persistente e governado.
-
 ### Obrigatorio
 
-- estados de run persistentes;
-- budgets de iteracao/tool/time/falhas;
+- persisted runs;
+- budgets;
 - plan -> execute -> observe -> verify;
-- dependencies entre steps;
-- pause/waiting approval;
-- resume exato;
-- cancelamento;
-- retry limitado;
+- dependencies;
+- approval pause/resume;
+- cancellation;
+- retries limitados;
 - checkpoint;
-- sem self-approval;
-- verificacao de resultados;
-- falha terminal controlada.
+- no self-approval;
+- terminal failure controlada.
 
-### Gate
+### External Capability subgate
 
-Um objetivo multi-etapa deve atravessar planejamento, pelo menos duas tools, verificacao, uma pausa de approval em cenario sensivel e retomada sem replanejamento indevido.
+O Agent Loop pede `capability_id`, nao request HTTP. Revalidacao deve provar uma capability fake com provider fake, incluindo erro normalizado e verificacao.
 
 ---
 
 ## ETAPA 6 — Model Router
 
-### Objetivo
+### Estado
 
-Separar inteligencia do provider de inferencia.
+Base `VALIDATED`.
 
-### Obrigatorio
+### Ownership externo
 
-- perfis fast/general/reasoning/coding/vision;
-- local-only/hybrid/cloud-enabled;
-- protecao de conteudo sensivel;
-- fallback;
-- circuit/failure handling basico;
-- health por provider;
-- streaming sem duplicacao em fallback;
-- provider opcional por configuracao.
+Adicionar futuramente, por configuracao:
 
-### Gate
+- Groq: low-latency chat/classify/summarize e Whisper quando aplicavel;
+- Gemini: multimodal/reasoning/coding;
+- Hugging Face/inference providers: diversidade de modelos quando justificada.
 
-CI automatizada valida contratos; Etapa 15 executa smoke em provider real do ambiente-alvo.
+O provider local continua primeira classe. `local-only` permanece fail-closed e provider cloud nunca recebe dado sensivel apenas porque local falhou.
+
+### Dependencia
+
+Adapters reais adicionais devem usar os contratos/health/secret/usage da Etapa 12 quando a fundacao existir. Smoke real fica na Etapa 15.
 
 ---
 
 ## ETAPA 7 — Project Intelligence
 
-### Objetivo
+### Estado
 
-Trabalhar em repositorios grandes sem despejar o repositorio inteiro no contexto.
+`VALIDATED`.
 
-### Obrigatorio
+### Regra
 
-- project discovery;
-- repo map;
-- dependency map;
-- symbol index;
-- search;
-- working set;
-- project instructions;
-- project memory;
-- contexto real <= 8.000 tokens estimados;
-- <= 19 arquivos;
-- Agent Loop usando o boundary limitado.
-
-### Gate
-
-Projeto sintetico >= 500 arquivos continua produzindo working set pequeno e relevante.
+External Capabilities nao alteram o boundary de contexto. Research/API output entra somente como evidencia/contexto limitado quando solicitado; nunca como dump irrestrito.
 
 ---
 
 ## ETAPA 8 — Dany Professional
 
-### Objetivo
+### Estado
 
-Impedir que qualidade seja confundida com texto bem-formado.
+`VALIDATED`.
 
-### Obrigatorio
+### External Capability extension
 
-- consistencia com tool result;
-- falha de comando nao pode virar sucesso;
-- citacoes obrigatorias quando pesquisa exigir;
-- grounding em evidencias;
-- controle de alegacoes de numeros/URLs/comandos;
-- disclosure de incerteza;
-- checks de codigo baseados em execucao real;
-- conflitos/freshness quando aplicavel;
-- mesmo gate em streaming e nao-streaming.
+Dany deve considerar:
 
-### Gate
+- provider result;
+- provenance;
+- fallback;
+- freshness;
+- citations;
+- partial/error state;
+- normalized error;
+- ausencia de falso sucesso.
 
-Fixtures negativas devem provar que Dany bloqueia resposta aparentemente boa, mas incompatível com a evidencia.
+Provider externo nao e fonte automaticamente confiavel.
 
 ---
 
-## ETAPA 9 — Knowledge Port real
+## ETAPA 9 — Knowledge Port real + RAG evolutivo
 
-### Objetivo
-
-Conectar conhecimento documental governado ao Core sem transformar memoria pessoal em RAG.
-
-### Obrigatorio
+### Obrigatorio baseline
 
 - adapter real;
-- somente `document_chunk` como conhecimento recuperavel;
-- isolamento de memoria pessoal;
-- evidence injection no prompt;
-- capability derivada do backend real;
-- DB ausente tratado de forma segura;
-- fluxo Visao -> Bran/Storage -> KnowledgePort -> ChatService;
-- configuracao documentada.
+- somente `document_chunk` como conhecimento;
+- memoria pessoal isolada;
+- evidence injection;
+- capability real no status;
+- DB ausente seguro;
+- Visao -> storage -> KnowledgePort -> ChatService.
 
-### Gate
+### Expansao planejada
 
-Documento indexado precisa aparecer como evidencia em consulta relevante; memoria pessoal com as mesmas palavras nao pode vazar como documento.
+```text
+knowledge.embed
+knowledge.rerank
+documents.extract
+documents.ocr
+```
+
+Arquitetura:
+
+```text
+Documento
+ -> Visao/extractor
+ -> chunks governados
+ -> EmbeddingProvider (local/Jina opcional)
+ -> vector backend (local ou Supabase+pgvector configurado)
+ -> retrieval
+ -> RerankProvider (local/Jina opcional)
+ -> KnowledgePort
+```
+
+Regras:
+
+- Jina nao define schema interno;
+- embedding tambem e dado e segue privacy policy;
+- OCR cloud exige classificacao de documento;
+- SQLite atual continua baseline valida;
+- pgvector nao e pre-requisito para fechar o adapter local.
 
 ---
 
 ## ETAPA 10 — Web Research Professional
 
-### Objetivo
+### Estado
 
-Pesquisa auditavel, recente quando solicitado e explicitamente baseada em evidencias.
+Pipeline principal `VALIDATED`.
 
-### Obrigatorio
+### Expansao de providers
 
-- query planning;
-- multi-query;
-- primary source preference/gate;
-- deduplicacao;
-- authority ranking;
-- publication signal;
-- freshness verification;
-- claim -> evidence;
-- conflict detection;
-- synthesis contract;
-- Dany disclosure gates.
+Capabilities:
 
-### Gate
+```text
+research.search
+research.read_url
+research.search_papers
+research.resolve_doi
+news.search
+news.latest
+```
 
-Pesquisa atual e pesquisa conflitante devem produzir comportamento diferente de uma busca simples e nao podem inventar freshness.
+Providers candidatos:
 
----
+- Jina Search/Reader;
+- arXiv;
+- CrossRef;
+- Wikipedia/Wikidata;
+- news provider aprovado quando realmente necessario.
 
-## ETAPA 11 — Browser governado
+Todos entram por `Source Normalizer` e pelo pipeline de evidence/freshness/conflict ja existente.
 
-### Objetivo
-
-Permitir navegacao e interacao web reais sem liberar um navegador irrestrito ao agente.
-
-### Obrigatorio
-
-- Playwright/backend reproduzivel;
-- SSRF policy em URL inicial, redirects e requests/subrequests;
-- `browser.open/title/read`;
-- session/tab state persistente;
-- alvo conhecido para acao posterior;
-- `click` governado;
-- `form` governado;
-- `login` governado;
-- upload/download governados;
-- approval ligado a tool + target + argumentos;
-- approval nao reutilizavel para outra acao;
-- efeitos externos nunca executados silenciosamente;
-- roteamento natural;
-- smoke real Playwright.
-
-### Gate
-
-E2E deve abrir uma pagina real de teste, ler titulo/conteudo, solicitar approval para efeito, executar somente apos approval e provar que approval diferente/reutilizado e rejeitado.
+**Jina Reader nao substitui Browser Governado.** Research leitura e browser interativo possuem semanticas diferentes.
 
 ---
 
-## ETAPA 12 — MCP Runtime
-
-### Objetivo
-
-Dar extensibilidade real e padronizada sem acoplar cada integracao diretamente ao Core.
+## ETAPA 11 — Browser Governado
 
 ### Obrigatorio
 
-- config/registry de servidores;
-- lifecycle connect/disconnect;
-- discovery de tools;
-- schema normalization;
-- namespace/IDs estaveis;
-- capabilities;
-- health;
+- backend Playwright reproduzivel;
+- SSRF em URL inicial/redirect/subrequest;
+- open/title/read;
+- session/tab state;
+- click/form/login/upload/download;
+- approval ligado a target+tool+args;
+- approval one-shot;
+- routing natural;
+- smoke real.
+
+### External Capability relation
+
+Depois da Etapa 12, browser pode consultar `security.scan_url` antes de download/navegacao conforme policy. Isso e enriquecimento, nao dependencia para concluir o boundary basico.
+
+---
+
+## ETAPA 12 — External Capability + MCP Runtime
+
+### Objetivo
+
+Criar a camada de extensibilidade externa padronizada da Rachel, abrangendo MCP e APIs/providers aprovados sem acoplamento ao Core cognitivo.
+
+### 12A — Capability/Provider foundation
+
+Obrigatorio:
+
+- Capability Registry versionado;
+- Provider Registry;
+- `CapabilityProvider` contract;
+- Provider Router;
+- ExecutionContext com correlation/deadline/privacy/cost/authorization;
+- Secret Manager adapter;
+- HTTP client governado;
+- output schema validation;
+- normalized errors;
 - timeout;
-- erros controlados;
-- Cyber effect mapping;
+- retry seguro;
+- circuit breaker;
+- Rate Limit Manager;
+- Health Manager;
+- Usage Ledger;
+- cache policy;
+- data classification `PUBLIC/INTERNAL/PERSONAL/SENSITIVE/SECRET`.
+
+### 12B — MCP Runtime
+
+- registry/config de servidores;
+- connect/disconnect lifecycle;
+- discovery;
+- schema normalization;
+- stable namespace;
+- health/timeouts;
+- Cyber mapping;
 - approvals;
 - allowlist/trust policy;
-- secrets fora de prompts/logs;
-- Agent Loop podendo escolher tool MCP;
-- servidor fake para CI.
+- secrets fora de logs/prompts;
+- fake MCP server para CI;
+- Agent Loop usando MCP via ToolCoordinator.
+
+### 12C — Primeiros providers de prova
+
+Implementar poucos adapters para provar arquitetura, nesta ordem preferencial:
+
+1. `weather.get_forecast` -> Open-Meteo;
+2. `location.geocode` -> Nominatim/OSM;
+3. `research.read_url` -> Jina Reader;
+4. `routes.calculate` -> OpenRouteService quando contrato base estiver estavel.
+
+Depois, conectar providers especializados aos dominios 6/9/10/13.
+
+### 12D — Criterio de aceite de provider
+
+Uma API so entra como `enabled` se possuir:
+
+- utilidade clara;
+- HTTPS;
+- auth compreendida;
+- secret handling;
+- rate limit tratado;
+- timeout/retry seguro;
+- schema de output;
+- normalized error;
+- privacy classification;
+- health;
+- observabilidade;
+- unit test;
+- contract/integration test;
+- fallback quando critica;
+- data de verificacao de pricing/free tier quando relevante.
 
 ### Gate
 
-Cadastrar servidor MCP fake, descobrir uma tool, executa-la atraves do ToolCoordinator/Agent Loop e provar que uma tool de efeito sensivel e bloqueada sem approval.
+- capability fake e provider fake em CI;
+- pelo menos uma capability real sem secret em contract test;
+- um provider com `secret_ref` testado sem expor segredo;
+- fallback respeita privacy;
+- rate limit/timeout/circuit breaker testados;
+- MCP fake descoberto/executado;
+- ToolCoordinator/Cyber governam ambos;
+- Agent Loop escolhe capability, nao provider;
+- CI completa verde.
 
 ---
 
 ## ETAPA 13 — Voz integrada ao mesmo Agent Loop
 
-### Objetivo
-
-Voz nao pode ser outro assistente. Deve ser apenas outro transporte para a mesma Rachel.
-
 ### Obrigatorio
 
 - wake/STT/TTS quando habilitados;
-- mesma conversation/session;
-- voz chama o entrypoint cognitivo canonico;
-- tools e approvals funcionam igual ao chat;
+- mesma session do chat;
+- mesmo runtime/Agent Loop;
+- approvals identicos;
 - barge-in/cancel;
-- erro de STT/TTS nao derruba runtime;
-- estados de escuta/fala visiveis;
-- fallback quando dispositivo nao existe;
-- testes com adapters fake;
-- smoke em hardware alvo antes do release.
+- fallback de dispositivo;
+- adapters fake;
+- smoke hardware alvo.
 
-### Gate
+### SpeechProvider
 
-Uma tarefa iniciada por voz deve criar o mesmo tipo de run, usar as mesmas policies e poder continuar no chat sem perder contexto.
+```text
+Whisper local
+Groq Whisper opcional
+BRAINIALL opcional apos avaliacao
+```
+
+Audio classificado nao pode migrar para cloud por fallback silencioso.
 
 ---
 
 ## ETAPA 14 — Desktop UX profissional
 
-### Objetivo
-
-Transformar o runtime tecnico em produto utilizavel sem depender do terminal para operacao normal.
-
 ### Obrigatorio
 
-- chat streaming;
-- history;
-- memory/knowledge quando expostos;
+- streaming/history;
 - plan/run viewer;
 - tool cards;
-- approvals claros;
-- diff viewer para alteracoes de codigo/arquivo;
+- approvals;
+- diff viewer;
 - cancel/pause/resume;
-- erros acionaveis;
+- diagnostics;
 - model/provider status;
-- browser state quando ativo;
+- browser state;
 - settings;
-- diagnostics/doctor;
-- logs acessiveis sem vazar segredo;
-- loading/empty/offline states;
-- keyboard/accessibility minima;
-- production build;
-- Tauri check/build;
-- sem botoes para capacidades inexistentes.
+- offline/degraded states;
+- accessibility minima;
+- production build/Tauri.
 
-### Gate
+### External Capability UX
 
-Um usuario deve conseguir executar pelo desktop o fluxo chat -> plano -> tool -> approval -> resultado sem abrir terminal.
+- capability status;
+- provider ativo quando util para diagnostico;
+- local/cloud policy;
+- degraded/rate-limited/auth-error state;
+- secret setup sem reexibir segredo;
+- usage/fallback diagnostics;
+- localizacao somente com consentimento/escopo;
+- nenhuma UI anuncia provider/capability inexistente.
 
 ---
 
-## ETAPA 15 — Hardening, Release e selo final
+## ETAPA 15 — Hardening, E2E e Release
 
-### Objetivo
+### 15A — Security
 
-Provar que a soma das 14 etapas forma um produto robusto, e nao apenas modulos isolados.
-
-### 15A — Security hardening
-
-Obrigatorio testar:
+Testar:
 
 - path traversal;
 - SSRF;
 - prompt/tool injection;
-- permission escalation;
-- approval replay;
-- approval mismatch;
-- secret leakage/redaction;
+- approval replay/mismatch;
+- secret leakage;
 - unsafe shell fallback;
-- destructive operations;
-- malicious/invalid MCP schema;
+- malicious MCP schema;
 - browser target mismatch;
-- data corruption/migration failure.
+- provider auth failure;
+- capability/provider mismatch;
+- fallback proibido por privacidade;
+- localizacao pessoal enviada sem necessidade;
+- documento sensivel enviado para OCR/conversion cloud sem policy;
+- malformed provider response.
 
-### 15B — Reliability e recovery
+### 15B — Reliability/recovery
 
-- restart recovery;
-- crash recovery;
-- SQLite/schema migrations;
-- cancellation;
-- timeout;
-- model failure/fallback;
-- tool failure;
-- browser failure;
-- MCP failure;
-- no false success;
-- logs/traces suficientes para diagnostico.
+- restart/crash recovery;
+- migrations;
+- cancellation/timeouts;
+- model/tool/browser/MCP/provider failure;
+- rate limit recovery;
+- circuit breaker;
+- offline degradation;
+- no false success.
 
 ### 15C — Performance
 
-Medir no hardware-alvo:
+Medir no hardware alvo:
 
-- startup;
-- TTFT;
-- total latency;
-- planner overhead;
-- tool latency;
+- startup/TTFT/total;
+- planner/tool/provider latency;
 - project context build;
 - memory/knowledge lookup;
-- uso de RAM/CPU;
-- ausencia de crescimento de memoria descontrolado em sessao longa.
-
-Targets devem ser realistas para o hardware/modelo real e ficar versionados como benchmark, nao como promessa artificial.
+- external capability p50/p95;
+- RAM/CPU;
+- long-session growth.
 
 ### 15D — E2E profissional
 
-Suite obrigatoria deve provar:
+Obrigatorio provar:
 
 1. conversa persistente;
-2. streaming e cancelamento;
-3. memoria com consentimento;
-4. esquecimento/delete;
-5. conhecimento documental;
-6. web research com citacoes;
-7. pesquisa com conflito/freshness;
-8. project intelligence;
-9. arquivo read/write/patch;
-10. Git status/diff/commit controlado;
-11. build/test falhando e sendo reportado corretamente;
-12. plano multi-etapa;
-13. approval e resume;
-14. browser read;
-15. browser effect governado;
-16. MCP tool;
-17. voz/shared session;
-18. desktop end-to-end;
-19. restart/recovery;
-20. doctor/health.
+2. streaming/cancel;
+3. memoria/forget;
+4. knowledge documental;
+5. research com citation/freshness/conflict;
+6. project intelligence;
+7. filesystem/Git/dev validation;
+8. Agent Loop + approval resume;
+9. browser read/effect;
+10. MCP tool;
+11. External Capability sem secret (`weather`);
+12. geocode com dado minimizado;
+13. provider failure + fallback permitido;
+14. provider failure + fallback bloqueado por privacy;
+15. voz/shared session;
+16. desktop end-to-end;
+17. restart/recovery;
+18. doctor/health;
+19. provider/usage diagnostics;
+20. no false success.
 
 ### 15E — Release engineering
 
-- versionamento semantico;
-- release notes;
+- semver/release notes;
 - installer Windows reproduzivel;
-- dependencias/runtime empacotados ou onboarding claro;
-- configuracao `.env.example` sem segredos;
-- migration path;
-- uninstall sem apagar dados do usuario silenciosamente;
-- checksums/artefatos quando aplicavel;
-- documentacao de instalacao e troubleshooting;
-- tag `v1.0.0` somente depois do gate.
+- onboarding/dependencies;
+- `.env.example` sem segredos;
+- migration/uninstall seguro;
+- checksums quando aplicavel;
+- install/troubleshooting docs;
+- RC congelado;
+- `v1.0.0` somente apos gate.
 
 ### 15F — Rachel Model
 
-Pesos proprios **nao sao requisito para a Rachel V1 ser completa**. O sistema deve permanecer provider-agnostic.
-
-Treinamento/fine-tuning e permitido apenas se:
-
-- hardware adequado;
-- dataset aprovado;
-- privacy gate;
-- benchmark baseline;
-- processo de promocao/reversao;
-- licenca da base compativel.
-
-Se essas condicoes nao existirem, Rachel V1 usa providers configuraveis e continua completa.
+Pesos proprios continuam opcionais. Rachel V1 deve permanecer provider-agnostic.
 
 ---
 
-# 6. Gate Final — `Professional Agent Ready`
+# 7. Packs e prioridade
 
-O selo final so pode ser emitido quando TODOS os itens abaixo forem verdadeiros:
+## Core/high priority
+
+| Dominio | Capability | Providers candidatos | Ownership |
+|---|---|---|---|
+| Models | `models.chat` | local, Groq, Gemini, HF | 6/12 |
+| Research | `research.search` | atual, Jina Search | 10/12 |
+| Reader | `research.read_url` | WebClient, Jina Reader | 10/12 |
+| RAG | `knowledge.embed/rerank` | local, Jina | 9/12 |
+| Weather | `weather.get_forecast` | Open-Meteo | 12 |
+| Location | `location.geocode` | Nominatim/OSM | 12 |
+| Routes | `routes.calculate` | OpenRouteService | 12 |
+| Papers | `research.search_papers` | arXiv | 10/12 |
+| DOI | `research.resolve_doi` | CrossRef | 10/12 |
+| Compute | `compute.query` | WolframAlpha/equivalente | 12 |
+| OCR | `documents.ocr` | local, OCR.Space opcional | 9/12 |
+| STT | `audio.transcribe` | Whisper local, Groq opcional | 13/12 |
+
+## Optional packs
+
+- currency/finance;
+- holidays;
+- translation;
+- news especializado;
+- CloudConvert/iLovePDF;
+- workspace connectors;
+- optional vision/NLP providers;
+- BRAINIALL.
+
+Nao bloqueiam V1 salvo decisao futura explicita.
+
+---
+
+# 8. Fronteiras de projeto
+
+## Rachel
+
+Governanca pessoal, memoria/conhecimento, desktop, consentimento, models, research, browser, voz e consumo de capabilities aprovadas.
+
+## Jarvis
+
+Runtime operacional, coding/dev, repository analysis, skill installation, sandbox, security intake, generated tools e API discovery operacional. O security pack completo de intake permanece prioritariamente aqui.
+
+## ULTRON
+
+Registry/distribuicao de skills, agents, tools, MCP, provider manifests, OpenAPI specs, adapters, versionamento e compatibility/security metadata. Nao monopoliza execucao.
+
+## Zane
+
+Produto consolidado futuro. Recebe contratos maduros, nao internals privados dos predecessores.
+
+---
+
+# 9. Ordem de execucao atualizada
+
+```text
+1. reconciliar CI legado e gates 2/3/5/9
+2. concluir Etapa 11 Browser
+3. Etapa 12A Capability/Provider foundation
+4. Etapa 12B MCP Runtime
+5. Etapa 12C providers simples: weather/geocode/Jina Reader
+6. conectar providers especializados a Model Router / Knowledge / Research
+7. Etapa 13 SpeechProvider + shared session
+8. Etapa 14 UX de capabilities/providers
+9. Etapa 15 hardening + E2E + release
+```
+
+### Regra de nao implementacao prematura
+
+Antes da fundacao da Etapa 12:
+
+- nao adicionar SDKs de dezenas de APIs;
+- nao adicionar chaves reais;
+- nao hardcodar providers no planner;
+- nao mover memoria para pgvector apenas por Jina;
+- nao substituir Browser por Jina Reader;
+- nao trazer marketplace ULTRON para dentro da Rachel;
+- nao mover skill intake do Jarvis para Rachel;
+- nao assumir free tier como infraestrutura permanente.
+
+---
+
+# 10. Gate Final — `Professional Agent Ready`
+
+Somente quando:
 
 ```text
 15 / 15 etapas = VALIDATED
 ```
 
-E adicionalmente:
+E:
 
-- [ ] `main` e a unica fonte oficial da V1;
-- [ ] nenhuma regressao conhecida P0/P1 aberta;
-- [ ] todas as workflows oficiais de release estao verdes;
-- [ ] nenhum teste obrigatorio e mascarado como sucesso;
-- [ ] frontend production build passa;
-- [ ] Tauri build/check passa;
-- [ ] installer funciona em instalacao limpa;
-- [ ] `rachel doctor`/equivalente reporta estado coerente;
-- [ ] chat real foi testado com provider real;
-- [ ] terminal/CLI smoke funciona para diagnostico;
-- [ ] desktop smoke funciona;
-- [ ] E2E das capacidades essenciais passa;
-- [ ] security suite passa;
-- [ ] recovery suite passa;
-- [ ] benchmark de hardware-alvo registrado;
-- [ ] nenhuma capability critica e hardcoded como `true` sem backend real;
-- [ ] nenhuma acao de tool pode declarar sucesso sem evidencia;
-- [ ] segredos nao estao no repositorio/logs/prompts;
-- [ ] documentacao corresponde ao codigo atual;
-- [ ] existe release candidate congelado;
-- [ ] `v1.0.0` criada somente apos a validacao do release candidate.
+- [ ] `main` e fonte oficial;
+- [ ] nenhuma P0/P1 aberta;
+- [ ] workflows oficiais verdes;
+- [ ] frontend/Tauri/installer passam;
+- [ ] provider real local testado;
+- [ ] External Capability Registry/Router testado;
+- [ ] weather/geocode E2E passa;
+- [ ] provider failure/fallback/privacy gates passam;
+- [ ] knowledge/research/Jina adapters configurados nao quebram evidencias;
+- [ ] voz usa mesma sessao;
+- [ ] browser e MCP passam;
+- [ ] security/recovery/performance suites passam;
+- [ ] secrets nao aparecem em repo/log/prompt;
+- [ ] localizacao/documentos obedecem privacy policy;
+- [ ] nenhuma capability critica e hardcoded `true` sem backend;
+- [ ] nenhuma tool/provider declara sucesso sem evidencia;
+- [ ] documentacao corresponde ao codigo;
+- [ ] release candidate congelado;
+- [ ] `v1.0.0` criada somente depois do RC validado.
 
-Somente entao:
+Entao:
 
 ```text
 RACHEL_STATUS = PROFESSIONAL_AGENT_READY
@@ -618,13 +758,11 @@ RACHEL_VERSION = 1.0.0
 ACTIVE_FEATURE_DEVELOPMENT = FROZEN
 ```
 
-Depois disso, Rachel passa para manutencao/referencia e o desenvolvimento principal segue no ZANE.
-
 ---
 
-# 7. Regra de acompanhamento para nao se perder
+# 11. Regra de acompanhamento
 
-A partir deste documento, cada etapa deve manter quatro campos:
+Cada etapa mantem:
 
 ```text
 STATE
@@ -633,70 +771,35 @@ LAST_VALIDATED_CI
 OPEN_GATE_ITEMS
 ```
 
-Ao terminar um sublote:
-
-1. implementar;
-2. criar teste;
-3. rodar/observar CI;
-4. corrigir regressao;
-5. atualizar documento da etapa;
-6. atualizar este tracker somente se o estado realmente mudou.
-
-Nao aumentar percentual porque "muito codigo foi escrito". O que aumenta a contagem formal e fechar gates.
-
----
-
-# 8. Pendencias prioritarias a partir deste snapshot
-
-Ordem recomendada para reduzir incerteza rapidamente:
-
-1. corrigir/reconciliar o workflow legado `tests` que atualmente pode falhar por timeout em `test_agent_bridge`;
-2. revalidar formalmente Etapas 2, 3 e 5 e criar/atualizar suas evidencias finais;
-3. fechar Etapa 9 apos a limpeza de capability e CI atual;
-4. concluir Etapa 11 inteira, nao apenas read-only;
-5. executar Etapa 12 MCP;
-6. fechar Etapa 13 voz compartilhando a sessao do Agent Loop;
-7. fechar Etapa 14 Desktop UX;
-8. executar Etapa 15 como release candidate real.
-
----
-
-# 9. Como interpretar "falta muito?"
-
-Neste snapshot:
+Toda capability/provider novo deve documentar:
 
 ```text
-VALIDATED                         6
-IMPLEMENTED_REVALIDATION_REQUIRED 4
-IN_PROGRESS                       1
-PARTIAL                            2
-PLANNED                            2
-TOTAL                             15
+CAPABILITY_ID
+PROVIDER_ID
+SCHEMA_VERSION
+PRIVACY_CLASS
+SECRET_REF
+RATE_LIMIT_POLICY
+TIMEOUT
+FALLBACK
+HEALTH
+TESTS
+LAST_VERIFIED_PRICING_DATE (quando aplicavel)
 ```
 
-Os itens `PARTIAL` correspondem principalmente a voz e desktop, que ja possuem base mas ainda nao fecharam o contrato profissional. As etapas 12 e 15 ainda exigem trabalho substancial.
-
-A Rachel ja possui uma fundacao forte e varias capacidades profissionais reais. Entretanto, **nao deve ser chamada de 90% ou quase pronta enquanto Browser, MCP, voz integrada, UX final e hardening/release ainda nao estiverem fechados**.
-
-A melhor leitura atual e:
-
-> **codigo/maturidade: aproximadamente 60–65%; release formal: 6/15 gates fechados.**
-
-Esse numero devera subir rapidamente quando 2, 3, 5 e 9 forem revalidadas, porque grande parte do codigo ja existe. O progresso final sera mais lento na Etapa 15, pois ela exige provar o produto inteiro em conjunto.
+Nao elevar percentual por quantidade de codigo. O tracker sobe quando gates fecham.
 
 ---
 
-# 10. Fonte de verdade
+# 12. Fontes de verdade
 
-Este documento **substitui o antigo `roadmap-profissional.md` como tracker principal de progresso**, preservando o arquivo antigo apenas como registro historico.
-
-Os documentos `etapa-XX-*.md` continuam sendo as evidencias detalhadas de cada etapa.
-
-Em caso de divergencia entre um documento antigo e o codigo/CI atual:
+Ordem:
 
 1. codigo atual;
 2. testes/CI atuais;
-3. este roadmap atualizado;
-4. documentos historicos.
+3. este roadmap;
+4. `docs/rachel/arquitetura/external-capabilities-na-rachel.md` para a arquitetura especifica;
+5. `docs/integracao/external-capabilities-public-apis.md` para estrategia transversal;
+6. documentos historicos.
 
-Nenhuma capacidade sera considerada pronta apenas porque uma documentacao antiga diz que esta pronta.
+Os documentos `etapa-XX` continuam registrando implementacao e evidencia detalhada.
