@@ -17,11 +17,11 @@
 | U3 | Security Ready | **Aprovado** | `5627b1f`; 168 testes, 91,51% |
 | U4 | Graph Ready | **Aprovado local** | `30e0698`; 186 testes, 92,61% |
 | U5 | Zane Compatibility | **Aprovado** | `a34aeaf`; 208 testes, 91,66% |
-| U6–U17 | Producao real | **Pendentes** | 12 gates definidos no plano mestre |
+| U6–U19 | Producao real | **Pendentes** | 14 gates definidos no plano mestre |
 
 ## Progresso oficial
 
-- **6 de 18 gates aprovados: 33,3%.**
+- **6 de 20 gates aprovados: 30,0%.**
 - Nucleo arquitetural local: completo.
 - Produto de producao: ainda Alpha.
 - Proxima etapa: U6, fundacao cloud real.
@@ -34,6 +34,7 @@
 - **2026-08-24** — U1 estabilizado: filtros, paginação, status, busca por versão, rotas e documentação corrigidos.
 - **2026-08-25** — U2–U5 aprovados; baseline final do nucleo local `a34aeaf`.
 - **2026-08-28** — Plano mestre definitivo U0–U17 criado; produto medido em 33,3% por gates.
+- **2026-08-28** — External Capabilities incorporadas; roadmap ampliado para U0–U19 e 30,0%.
 
 ## O que está implementado
 
@@ -111,7 +112,7 @@
 ## Roadmap antigo de pendencias
 
 > A secao abaixo e historica. U2–U5 ja foram concluidos. As pendencias atuais
-> estao no plano mestre U6–U17.
+> estao no plano mestre U6–U19.
 
 ## O que ainda precisava ser feito (U2 → U5)
 
