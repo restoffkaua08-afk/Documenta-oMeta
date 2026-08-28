@@ -166,7 +166,7 @@ Gate `ULTRON_SECURITY_READY` aprovado para os contratos locais. O backend cloud 
 Gate `ULTRON_GRAPH_READY` aprovado para os contratos locais. Aplicação da migration, Advisors e testes RLS ocorrerão quando o projeto Supabase for conectado.
 
 
-### U5 — 🚧 Em desenvolvimento (fundação `c752c41`)
+### U5 — ✅ Aprovado (`a34aeaf`)
 
 - Catálogo remoto gera snapshot local atômico, determinístico e protegido por SHA-256
 - Falha de rede usa o último snapshot íntegro; adulteração falha de forma fechada
@@ -177,12 +177,14 @@ Gate `ULTRON_GRAPH_READY` aprovado para os contratos locais. Aplicação da migr
 - E2E prova cache disponível, ferramentas nativas intactas e nenhuma mutação parcial
 - Fonte única mapeia cada método Python para REST e MCP sem divergência
 - Todas as mutações exigem confirmação; `/api/v1/protocol` expõe o contrato versionado
-- Servidor MCP Streamable HTTP stateless executável em `/mcp`
-- Descoberta MCP expõe exatamente as oito operações e reutiliza o Registry da API
+- Servidor MCP Streamable HTTP stateless executável na URL canônica `/mcp/`
+- Cliente oficial MCP negocia sessão real com o Ultron executado por Uvicorn
+- Descoberta HTTP expõe exatamente as oito operações e reutiliza o Registry da API
 - Lifecycle persistente e transacional isolado por organização e consumer
-- Instalação resolve raiz e dependências sem executar código no servidor web
+- E2E instala e ativa uma capability sem executar código no servidor web
+- A mesma prova confirma isolamento entre organizações pelo transporte real
 - Conflitos fazem rollback; ativação é idempotente; remoção protege dependências
 - Blueprint Supabase impede associação de consumer entre organizações por chave composta
-- 207 testes, 91,44% de cobertura, lint, formatação, tipagem e build aprovados
+- 208 testes, 91,66% de cobertura, lint, formatação, tipagem e build aprovados
 
-Pendente: E2E MCP sobre transporte HTTP real e prova final do gate.
+Gate `ULTRON_ZANE_COMPATIBLE` aprovado. Zane, Claude, Codex e outros consumers podem usar o mesmo contrato, enquanto a indisponibilidade do Ultron não impede a inicialização nem afeta capacidades nativas.
