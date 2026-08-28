@@ -118,3 +118,25 @@
   - Funciona com JS desabilitado (degradação graciosa).
   - Bundle < 50KB.
 - **Verificação:** U1.
+
+## DEC-U-010 — ULTRON como control plane opcional de External Capabilities
+
+- **Data:** 2026-08-28
+- **Estado:** Ativa; implementacao planejada em U8/U9
+- **Contexto:** O Projeto Meta precisa descobrir e distribuir APIs/providers sem
+  acoplar agents a SDKs externos nem tornar o Ultron requisito de execucao.
+- **Decisao:** O Ultron registra e distribui `capability`, `provider`,
+  `openapi-definition` e `generated-adapter`. O consumer mantem policy, secrets,
+  routing efetivo, cache local e autoridade de instalar/ativar/executar.
+- **Consequencias:**
+  - roadmap cresce de 18 para 20 gates;
+  - U8 implementa Capability/Provider Registry;
+  - U9 implementa discovery OpenAPI e geracao segura;
+  - adapters gerados nascem desabilitados;
+  - operacao offline e independência de Rachel/Jarvis/Zane permanecem anti-gates.
+- **Alternativas rejeitadas:**
+  - clientes HTTP hardcoded em cada agent: acoplamento e duplicacao;
+  - Ultron como proxy obrigatorio de toda execucao: viola independencia;
+  - ativacao automatica de OpenAPI descoberta: risco de supply chain/SSRF.
+- **Detalhes:**
+  [`../arquitetura/external-capabilities-provider-registry.md`](../arquitetura/external-capabilities-provider-registry.md).
