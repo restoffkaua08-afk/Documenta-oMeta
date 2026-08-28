@@ -5,16 +5,26 @@
 > **Repositório:** https://github.com/restoffkaua08-afk/ultron
 > **Documentação mestra:** https://github.com/restoffkaua08-afk/documenta-oMeta
 
+> **Tracker definitivo:** [`../desenvolvimento/plano-mestre-conclusao.md`](../desenvolvimento/plano-mestre-conclusao.md)
+
 ## Estado por gate
 
 | Gate | Descrição | Estado | Evidência |
 |---|---|---|---|
 | U0 | Escopo e contratos | **Aprovado** | commit `f240df6`; 76 testes, 92.71% cobertura, ruff+mypy limpos |
 | U1 | Registry Ready | **Aprovado e estabilizado** | base `10ff301`; 111 testes, 89,18% cobertura e build reproduzido |
-| U2 | Installation Ready | Não aberto | — |
-| U3 | Security Ready | Não aberto | — |
-| U4 | Graph Ready | Não aberto | — |
-| U5 | Zane Compatibility | Não aberto | — |
+| U2 | Installation Ready | **Aprovado** | `65ff7a5`; 149 testes, 91,15% |
+| U3 | Security Ready | **Aprovado** | `5627b1f`; 168 testes, 91,51% |
+| U4 | Graph Ready | **Aprovado local** | `30e0698`; 186 testes, 92,61% |
+| U5 | Zane Compatibility | **Aprovado** | `a34aeaf`; 208 testes, 91,66% |
+| U6–U17 | Producao real | **Pendentes** | 12 gates definidos no plano mestre |
+
+## Progresso oficial
+
+- **6 de 18 gates aprovados: 33,3%.**
+- Nucleo arquitetural local: completo.
+- Produto de producao: ainda Alpha.
+- Proxima etapa: U6, fundacao cloud real.
 
 ## Linha do tempo
 
@@ -22,6 +32,8 @@
 - **2026-08-24** — Repositório `restoffkaua08-afk/ultron` criado; gate **U0 aprovado**.
 - **2026-08-24** — Gate **U1 aprovado**. Registry SQLite+FTS5, API HTTP e portal Obsidian entregues e publicados.
 - **2026-08-24** — U1 estabilizado: filtros, paginação, status, busca por versão, rotas e documentação corrigidos.
+- **2026-08-25** — U2–U5 aprovados; baseline final do nucleo local `a34aeaf`.
+- **2026-08-28** — Plano mestre definitivo U0–U17 criado; produto medido em 33,3% por gates.
 
 ## O que está implementado
 
@@ -96,7 +108,12 @@
 - ruff format: 25 arquivos formatados
 - wheel e source distribution construídos com sucesso
 
-## O que ainda precisa ser feito (U2 → U5)
+## Roadmap antigo de pendencias
+
+> A secao abaixo e historica. U2–U5 ja foram concluidos. As pendencias atuais
+> estao no plano mestre U6–U17.
+
+## O que ainda precisava ser feito (U2 → U5)
 
 ### U2 — Installation Ready
 - Resolução de dependências (semver real, lockfile) usando lib `packaging`
