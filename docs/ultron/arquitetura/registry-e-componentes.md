@@ -22,6 +22,22 @@ Grafo/ordem de passos, dependencias, condicoes, entradas, saidas e compensacoes.
 
 Unidade distribuivel que agrupa agents, skills, workflows, configuracoes e assets permitidos.
 
+### Capability
+
+Contrato logico versionado, independente de provider, com schemas de entrada e
+saida, efeito, classe de dados, cache e politica de fallback.
+
+### Provider
+
+Implementacao substituivel de uma ou mais capabilities. Declara hosts, auth
+abstrata, health, quota, custo, privacidade e compatibilidade; nunca secrets.
+
+### OpenAPI definition e generated adapter
+
+Recursos de discovery e geracao controlada. Specs e adapters nascem candidatos,
+passam por seguranca/sandbox e sao publicados desabilitados. Detalhes em
+[`external-capabilities-provider-registry.md`](external-capabilities-provider-registry.md).
+
 ## Componentes do sistema
 
 ```text
@@ -73,4 +89,3 @@ Uma versao publicada nao deve ser alterada silenciosamente. Correcoes geram nova
 ## Multi-consumidor
 
 Zane, Jarvis, Rachel e ferramentas de desenvolvimento podem consumir ULTRON por adapters independentes. Nenhum consumidor e necessario para o ULTRON iniciar como plataforma.
-
