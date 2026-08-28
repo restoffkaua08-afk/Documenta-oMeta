@@ -12,6 +12,7 @@
 - [`integracao/protocolo-de-compatibilidade.md`](integracao/protocolo-de-compatibilidade.md)
 - [`desenvolvimento/roadmap-e-gates.md`](desenvolvimento/roadmap-e-gates.md)
 - [`desenvolvimento/plano-mestre-conclusao.md`](desenvolvimento/plano-mestre-conclusao.md) — **tracker definitivo U0–U19**
+- [`desenvolvimento/etapa-u6-fundacao-cloud.md`](desenvolvimento/etapa-u6-fundacao-cloud.md) — execucao, evidencias e bloqueios do U6
 
 ## Status e implementacao (a partir de 2026-08-24)
 
@@ -29,7 +30,8 @@ ULTRON possui o nucleo local U0–U5 aprovado. O plano definitivo possui 20 gate
 
 - **Gate U0 (Escopo e Contratos)** — ✅ Aprovado. 76 testes, 92.71% cobertura, ruff+mypy limpos.
 - **U0–U5** — aprovados na baseline `a34aeaf`; suite final com 208 testes e 91,66% de cobertura.
-- **U6–U19** — pendentes; proxima etapa: fundacao cloud real.
+- **U6** — em andamento; hardening local concluido, gate cloud ainda fechado.
+- **U7–U19** — pendentes.
 - **U8/U9** — novos gates formais para Capability/Provider Registry e OpenAPI generation.
 - **Progresso oficial:** 6/20 gates, ou **30,0%**.
 
