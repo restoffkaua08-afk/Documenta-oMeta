@@ -17,14 +17,16 @@
 | U3 | Security Ready | **Aprovado** | `5627b1f`; 168 testes, 91,51% |
 | U4 | Graph Ready | **Aprovado local** | `30e0698`; 186 testes, 92,61% |
 | U5 | Zane Compatibility | **Aprovado** | `a34aeaf`; 208 testes, 91,66% |
-| U6–U19 | Producao real | **Pendentes** | 14 gates definidos no plano mestre |
+| U6 | Fundacao cloud real | **Em andamento; gate fechado** | `45b82fa`; 214 testes, 91,66%; hardening local concluido |
+| U7–U19 | Producao real | **Pendentes** | 13 gates definidos no plano mestre |
 
 ## Progresso oficial
 
 - **6 de 20 gates aprovados: 30,0%.**
 - Nucleo arquitetural local: completo.
 - Produto de producao: ainda Alpha.
-- Proxima etapa: U6, fundacao cloud real.
+- Etapa ativa: U6, fundacao cloud real; subetapa U6.1 concluida.
+- Proxima acao: projeto Supabase dedicado, migrations oficiais e RLS real.
 
 ## Linha do tempo
 
@@ -35,6 +37,7 @@
 - **2026-08-25** — U2–U5 aprovados; baseline final do nucleo local `a34aeaf`.
 - **2026-08-28** — Plano mestre definitivo U0–U17 criado; produto medido em 33,3% por gates.
 - **2026-08-28** — External Capabilities incorporadas; roadmap ampliado para U0–U19 e 30,0%.
+- **2026-08-28** — U6.1 publicado (`45b82fa`): grants minimos, limites multi-tenant compostos e 214 testes; gate cloud permanece fechado.
 
 ## O que está implementado
 
