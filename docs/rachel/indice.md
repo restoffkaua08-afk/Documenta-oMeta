@@ -7,10 +7,16 @@
 - [`arquitetura/arquitetura-atual.md`](arquitetura/arquitetura-atual.md)
 - [`arquitetura/runtime-cognitivo.md`](arquitetura/runtime-cognitivo.md)
 - [`arquitetura/membros-e-responsabilidades.md`](arquitetura/membros-e-responsabilidades.md)
+- **[`arquitetura/external-capabilities-na-rachel.md`](arquitetura/external-capabilities-na-rachel.md)** — aplicacao especifica do Capability Registry/Provider Router, Jina/RAG, IA externa, weather, location, documents, voz e demais providers na Rachel.
 
 ## Tracker definitivo
 
 - **[`desenvolvimento/roadmap-definitivo-professional-agent-ready.md`](desenvolvimento/roadmap-definitivo-professional-agent-ready.md)** — fonte principal para saber quanto falta, quais sao as 15 etapas e quando a Rachel pode ser declarada completa.
+
+## Arquitetura transversal relacionada
+
+- [`../integracao/external-capabilities-public-apis.md`](../integracao/external-capabilities-public-apis.md) — estrategia compartilhada de External Capabilities para Rachel, Jarvis, ULTRON e Zane.
+- [`../integracao/contratos-entre-projetos.md`](../integracao/contratos-entre-projetos.md) — fronteiras e contratos entre os quatro projetos.
 
 ## Capacidades
 
@@ -35,6 +41,8 @@
 
 ## Regra de leitura
 
-Para progresso atual, usar `status-atual.md` e o roadmap definitivo. Documentos de etapas servem como evidencias detalhadas. O ciclo arquitetural antigo e o roadmap profissional antigo permanecem apenas como historico.
+Para progresso atual, usar `status-atual.md` e o roadmap definitivo. Para External Capabilities, a especificacao transversal define a estrategia do Meta e `external-capabilities-na-rachel.md` define como ela e aplicada especificamente na Rachel.
 
-Em caso de divergencia, prevalecem: codigo atual -> CI/testes atuais -> roadmap definitivo -> documentos historicos.
+Documentos de etapas servem como evidencias detalhadas. O ciclo arquitetural antigo e o roadmap profissional antigo permanecem apenas como historico.
+
+Em caso de divergencia, prevalecem: codigo atual -> CI/testes atuais -> roadmap definitivo -> arquitetura especifica atualizada -> documentos historicos.
