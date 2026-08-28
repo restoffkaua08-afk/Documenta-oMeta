@@ -1,6 +1,6 @@
 # ULTRON — Plano Mestre Definitivo de Conclusao
 
-**Versao do plano:** 1.0  
+**Versao do plano:** 1.1
 **Data-base:** 2026-08-28  
 **Repositorio:** `restoffkaua08-afk/ultron`  
 **Baseline auditada:** `a34aeaf`  
@@ -17,7 +17,7 @@ Este e o tracker oficial para responder, sem ambiguidade:
 - quais evidencias tornam uma etapa aprovada;
 - quando o produto pode ser chamado de completo e pronto para producao.
 
-O Ultron somente sera considerado **pronto, pronto** quando os 18 gates U0–U17
+O Ultron somente sera considerado **pronto, pronto** quando os 20 gates U0–U19
 estiverem aprovados, o gate final `ULTRON_PRODUCTION_ACCEPTED` estiver verde e
 nao houver pendencia critica, excecao temporaria vencida ou validacao simulada
 substituindo infraestrutura real.
@@ -36,12 +36,12 @@ auditoria externa e aceite operacional.
 
 | Indicador | Valor atual |
 |---|---:|
-| Etapas totais | 18 |
+| Etapas totais | 20 |
 | Etapas aprovadas | 6 |
-| Etapas restantes | 12 |
-| Progresso por gates | **33,3%** |
+| Etapas restantes | 14 |
+| Progresso por gates | **30,0%** |
 | Gates do nucleo local | **6/6 aprovados** |
-| Gates de producao real | **0/12 aprovados** |
+| Gates de producao real | **0/14 aprovados** |
 | Estado honesto | **Nucleo local completo; produto em Alpha** |
 
 O percentual mede gates aprovados, nao horas trabalhadas. Uma etapa so conta
@@ -80,7 +80,7 @@ Cada etapa exige todas as evidencias aplicaveis:
 Documento, mock, blueprint SQL, screenshot ou mensagem de conclusao nao aprovam
 isoladamente um gate de producao.
 
-## 5. Roadmap fechado U0–U17
+## 5. Roadmap fechado U0–U19
 
 ### U0 — Escopo e contratos — APROVADO
 
@@ -172,7 +172,55 @@ somente no corpo da requisicao.
 
 **Gate:** `ULTRON_IDENTITY_READY`.
 
-### U8 — API e MCP de producao — PENDENTE
+### U8 — Capability Registry e Provider Registry — PENDENTE
+
+**Objetivo:** transformar capabilities e providers em recursos formais,
+versionados, pesquisaveis e distribuiveis sem acoplar consumers a fornecedores.
+
+**Entregaveis:**
+
+- `CapabilityManifest` com schemas logicos, side effects, dados e cache policy;
+- `ProviderManifest` com auth abstrata, hosts, health, quota, custo e privacidade;
+- novos kinds strict/frozen, migrations SQLite/Postgres e busca dedicada;
+- relacoes formais com agents, skills, workflows e packs;
+- estados de lifecycle, compatibilidade, deprecacao e revogacao;
+- Provider Router de referencia substituivel, Health Manager, Rate Limit Manager
+  e Usage Ledger;
+- snapshots locais assinados para operacao offline;
+- documentacao descrita em
+  [`../arquitetura/external-capabilities-provider-registry.md`](../arquitetura/external-capabilities-provider-registry.md).
+
+**Aceite:** capability e provider possuem contratos versionados; dois providers
+intercambiaveis passam a mesma suite; health degradado causa fallback somente
+quando policy, privacidade e idempotencia permitem; consumer inicia e usa
+adapter instalado com Ultron offline.
+
+**Gate:** `ULTRON_CAPABILITY_PROVIDER_READY`.
+
+### U9 — OpenAPI discovery e adapters gerados — PENDENTE
+
+**Objetivo:** descobrir APIs e gerar candidatos de tools/adapters sem converter
+conteudo externo nao confiavel em codigo ativo.
+
+**Entregaveis:**
+
+- fontes APIs.guru, URL/spec do usuario e Git fixado por commit;
+- manifests de OpenAPI definition e generated adapter;
+- parser com limites para OpenAPI 3.0/3.1/3.2 e Swagger/OpenAPI 2.0;
+- protecoes SSRF, redirects, references, tamanho, profundidade e schema bombs;
+- inferencia revisavel de capability e efeitos;
+- geracao deterministica de adapter, tool schema, testes e proveniencia;
+- static analysis, sandbox contract tests, quarentena e aprovacao;
+- publicacao assinada e desabilitada por padrao;
+- explicabilidade de aprovacao, rejeicao e quarentena.
+
+**Aceite:** E2E `discover → parse → generate → validate → publish disabled`
+passa; specs maliciosas falham fechadas; nenhuma tool e executada/ativada antes
+de autorizacao; output gerado e reproduzivel pelo mesmo digest.
+
+**Gate:** `ULTRON_OPENAPI_GENERATION_READY`.
+
+### U10 — API e MCP de producao — PENDENTE
 
 **Objetivo:** tornar os contratos externos seguros, estaveis e operaveis.
 
@@ -192,7 +240,7 @@ clients antigos recebem janela de compatibilidade documentada.
 
 **Gate:** `ULTRON_PROTOCOL_PRODUCTION_READY`.
 
-### U9 — Artefatos, publicacao e supply chain real — PENDENTE
+### U11 — Artefatos, publicacao e supply chain real — PENDENTE
 
 **Objetivo:** publicar, armazenar e distribuir agents/skills de modo verificavel.
 
@@ -212,7 +260,7 @@ publicada e imutavel; instalacao reproduz o mesmo digest em ambientes distintos.
 
 **Gate:** `ULTRON_SUPPLY_CHAIN_PRODUCTION_READY`.
 
-### U10 — Workers e sandbox isolado real — PENDENTE
+### U12 — Workers e sandbox isolado real — PENDENTE
 
 **Objetivo:** executar validacoes e tarefas fora da aplicacao web em isolamento
 comprovado.
@@ -233,7 +281,7 @@ falha; timeout mata toda a arvore; repeticao nao duplica efeitos.
 
 **Gate:** `ULTRON_SANDBOX_RUNTIME_READY`.
 
-### U11 — Portal de produto completo — PENDENTE
+### U13 — Portal de produto completo — PENDENTE
 
 **Objetivo:** entregar a experiencia multiusuario final, responsiva e acessivel.
 
@@ -242,6 +290,7 @@ falha; timeout mata toda a arvore; repeticao nao duplica efeitos.
 - onboarding, login, organizacoes e perfis;
 - catalogo, busca, filtros, detalhes, grafo e lineage;
 - publicacao, instalacao, ativacao, remocao e rollback governados;
+- catalogo de capabilities/providers, OpenAPI, adapters, health, quota e lineage;
 - telas de permissoes, aprovacoes, quarentena, revogacao e auditoria;
 - estados de loading, vazio, erro, offline e conflito;
 - responsividade mobile/desktop, acessibilidade WCAG 2.2 AA e navegacao por teclado;
@@ -253,7 +302,7 @@ alvo; nenhuma mutacao sensivel ocorre sem confirmacao e feedback auditavel.
 
 **Gate:** `ULTRON_PORTAL_READY`.
 
-### U12 — CLI, SDKs e integracoes reais — PENDENTE
+### U14 — CLI, SDKs e integracoes reais — PENDENTE
 
 **Objetivo:** permitir adocao consistente fora do portal.
 
@@ -266,13 +315,14 @@ alvo; nenhuma mutacao sensivel ocorre sem confirmacao e feedback auditavel.
 - exemplos executaveis e quickstarts;
 - matriz de versoes e testes de compatibilidade;
 - modo offline documentado e comportamento de falha consistente.
+- quickstarts de capability/provider e tool gerada sem SDK de vendor no agent.
 
 **Aceite:** um ambiente limpo instala o cliente e conclui quickstart; E2E real
 passa para cada consumer oficialmente suportado.
 
 **Gate:** `ULTRON_ECOSYSTEM_READY`.
 
-### U13 — Observabilidade e operacao — PENDENTE
+### U15 — Observabilidade e operacao — PENDENTE
 
 **Objetivo:** tornar o sistema diagnosticavel antes de receber uso real.
 
@@ -280,6 +330,7 @@ passa para cada consumer oficialmente suportado.
 
 - logs estruturados, metricas e traces com correlation ID;
 - dashboards de disponibilidade, latencia, erros, filas e banco;
+- metricas de health, fallback, quota, custo e freshness por provider;
 - SLI/SLO e error budget iniciais;
 - alertas acionaveis, sem ruido excessivo;
 - health, readiness e dependency checks;
@@ -292,7 +343,7 @@ runbooks; nenhum segredo aparece nos logs.
 
 **Gate:** `ULTRON_OPERATIONS_READY`.
 
-### U14 — CI/CD, ambientes e release — PENDENTE
+### U16 — CI/CD, ambientes e release — PENDENTE
 
 **Objetivo:** entregar mudancas com seguranca e reproducibilidade.
 
@@ -312,7 +363,7 @@ anterior e migrations nao quebram a janela de compatibilidade.
 
 **Gate:** `ULTRON_DELIVERY_READY`.
 
-### U15 — Confiabilidade, escala e disaster recovery — PENDENTE
+### U17 — Confiabilidade, escala e disaster recovery — PENDENTE
 
 **Objetivo:** comprovar limites e recuperacao do sistema completo.
 
@@ -320,6 +371,7 @@ anterior e migrations nao quebram a janela de compatibilidade.
 
 - metas de carga e capacidade documentadas;
 - testes de carga de API, MCP, busca, grafo, banco, fila e storage;
+- carga de discovery, health checks e roteamento/fallback multi-provider;
 - concorrencia de instalacao/publicacao e race conditions testadas;
 - soak test e analise de vazamento de recursos;
 - degradacao controlada e circuit breakers;
@@ -332,7 +384,7 @@ de dependencia nao corrompe estado nem derruba capacidades nativas do consumer.
 
 **Gate:** `ULTRON_RELIABILITY_READY`.
 
-### U16 — Seguranca, privacidade e conformidade final — PENDENTE
+### U18 — Seguranca, privacidade e conformidade final — PENDENTE
 
 **Objetivo:** fechar riscos antes do lancamento.
 
@@ -340,6 +392,7 @@ de dependencia nao corrompe estado nem derruba capacidades nativas do consumer.
 
 - threat model final e data-flow diagram atualizados;
 - revisao OWASP de API, autenticacao, SSRF, supply chain e multi-tenant;
+- revisao especifica de OpenAPI hostil, geracao de codigo e provider substitution;
 - teste de penetracao ou auditoria independente proporcional ao risco;
 - triagem e correcao de vulnerabilidades criticas/altas;
 - inventario de dados, minimizacao, exportacao e exclusao;
@@ -352,7 +405,7 @@ mitigacao; exclusao/exportacao e resposta a incidente sao ensaiadas.
 
 **Gate:** `ULTRON_SECURITY_ACCEPTED`.
 
-### U17 — Beta, aceite e lancamento — PENDENTE
+### U19 — Beta, aceite e lancamento — PENDENTE
 
 **Objetivo:** provar que o produto completo resolve o uso real e pode ser
 operado com seguranca.
@@ -368,7 +421,7 @@ operado com seguranca.
 - tag `v1.0.0`, release notes e baseline de producao;
 - auditoria final da documentacao contra codigo e infraestrutura.
 
-**Aceite:** todos os gates U0–U16 permanecem verdes; zero bug bloqueante ou
+**Aceite:** todos os gates U0–U18 permanecem verdes; zero bug bloqueante ou
 critico aberto; smoke test de producao passa; rollback final e suporte estao
 prontos; owner assina o aceite.
 
@@ -378,37 +431,40 @@ prontos; owner assina o aceite.
 
 1. U6 antes de qualquer declaracao cloud.
 2. U7 antes de expor lifecycle multiusuario.
-3. U8 depende de U6 e U7.
-4. U9 depende de U6–U8.
-5. U10 depende das politicas de U7–U9.
-6. U11 e U12 podem avancar em paralelo depois dos contratos de U8.
-7. U13 e U14 devem existir antes de staging final.
-8. U15 depende do sistema integrado U6–U14.
-9. U16 audita o sistema completo.
-10. U17 e exclusivamente aceite, nao local para empurrar pendencias tecnicas.
+3. U8 depende dos contratos de U6 e da identidade/policy de U7.
+4. U9 depende de U8; discovery nunca antecede os schemas confiaveis.
+5. U10 depende de U6–U9 para expor contratos de producao.
+6. U11 e U12 protegem e isolam specs/adapters antes de uso real.
+7. U13 e U14 podem avancar em paralelo depois dos contratos de U10–U12.
+8. U15 e U16 devem existir antes de staging final.
+9. U17 depende do sistema integrado U6–U16.
+10. U18 audita o sistema completo.
+11. U19 e exclusivamente aceite, nao local para empurrar pendencias tecnicas.
 
 ## 7. Tracker oficial
 
 | Etapa | Gate | Estado | Progresso acumulado |
 |---|---|---|---:|
-| U0 | `ULTRON_SCOPE_READY` | Aprovado | 5,6% |
-| U1 | `ULTRON_REGISTRY_READY` | Aprovado | 11,1% |
-| U2 | `ULTRON_INSTALLATION_READY` | Aprovado | 16,7% |
-| U3 | `ULTRON_SECURITY_READY` | Aprovado | 22,2% |
-| U4 | `ULTRON_GRAPH_READY` | Aprovado local | 27,8% |
-| U5 | `ULTRON_ZANE_COMPATIBLE` | Aprovado | **33,3%** |
-| U6 | `ULTRON_CLOUD_DATA_READY` | Proxima | 33,3% |
-| U7 | `ULTRON_IDENTITY_READY` | Pendente | 33,3% |
-| U8 | `ULTRON_PROTOCOL_PRODUCTION_READY` | Pendente | 33,3% |
-| U9 | `ULTRON_SUPPLY_CHAIN_PRODUCTION_READY` | Pendente | 33,3% |
-| U10 | `ULTRON_SANDBOX_RUNTIME_READY` | Pendente | 33,3% |
-| U11 | `ULTRON_PORTAL_READY` | Pendente | 33,3% |
-| U12 | `ULTRON_ECOSYSTEM_READY` | Pendente | 33,3% |
-| U13 | `ULTRON_OPERATIONS_READY` | Pendente | 33,3% |
-| U14 | `ULTRON_DELIVERY_READY` | Pendente | 33,3% |
-| U15 | `ULTRON_RELIABILITY_READY` | Pendente | 33,3% |
-| U16 | `ULTRON_SECURITY_ACCEPTED` | Pendente | 33,3% |
-| U17 | `ULTRON_PRODUCTION_ACCEPTED` | Pendente | 33,3% |
+| U0 | `ULTRON_SCOPE_READY` | Aprovado | 5,0% |
+| U1 | `ULTRON_REGISTRY_READY` | Aprovado | 10,0% |
+| U2 | `ULTRON_INSTALLATION_READY` | Aprovado | 15,0% |
+| U3 | `ULTRON_SECURITY_READY` | Aprovado | 20,0% |
+| U4 | `ULTRON_GRAPH_READY` | Aprovado local | 25,0% |
+| U5 | `ULTRON_ZANE_COMPATIBLE` | Aprovado | **30,0%** |
+| U6 | `ULTRON_CLOUD_DATA_READY` | Proxima | 30,0% |
+| U7 | `ULTRON_IDENTITY_READY` | Pendente | 30,0% |
+| U8 | `ULTRON_CAPABILITY_PROVIDER_READY` | Pendente | 30,0% |
+| U9 | `ULTRON_OPENAPI_GENERATION_READY` | Pendente | 30,0% |
+| U10 | `ULTRON_PROTOCOL_PRODUCTION_READY` | Pendente | 30,0% |
+| U11 | `ULTRON_SUPPLY_CHAIN_PRODUCTION_READY` | Pendente | 30,0% |
+| U12 | `ULTRON_SANDBOX_RUNTIME_READY` | Pendente | 30,0% |
+| U13 | `ULTRON_PORTAL_READY` | Pendente | 30,0% |
+| U14 | `ULTRON_ECOSYSTEM_READY` | Pendente | 30,0% |
+| U15 | `ULTRON_OPERATIONS_READY` | Pendente | 30,0% |
+| U16 | `ULTRON_DELIVERY_READY` | Pendente | 30,0% |
+| U17 | `ULTRON_RELIABILITY_READY` | Pendente | 30,0% |
+| U18 | `ULTRON_SECURITY_ACCEPTED` | Pendente | 30,0% |
+| U19 | `ULTRON_PRODUCTION_ACCEPTED` | Pendente | 30,0% |
 
 ## 8. Proxima acao unica
 
@@ -445,4 +501,3 @@ O Ultron nao pode ser declarado completo se qualquer condicao abaixo existir:
 - consumer deixa de iniciar quando o Ultron fica indisponivel;
 - documentacao contradiz codigo ou infraestrutura;
 - gate aprovado apenas por declaracao.
-
