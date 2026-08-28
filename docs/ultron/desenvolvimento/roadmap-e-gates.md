@@ -1,4 +1,8 @@
-# ULTRON - Roadmap e Gates
+# ULTRON — Roadmap Historico U0–U5
+
+> Este documento preserva o roadmap do nucleo local. O tracker definitivo para
+> conclusao do produto e producao agora e
+> [`plano-mestre-conclusao.md`](plano-mestre-conclusao.md), com 18 etapas U0–U17.
 
 ## U0 - Escopo e contratos
 
@@ -73,7 +77,8 @@ Nenhum gate pode ser aprovado se:
 
 ## Estado atual
 
-Planejado. Nenhum gate esta comprovadamente verde com as fontes analisadas.
+U0–U5 estao aprovados. Isso conclui o nucleo local, mas nao o produto de
+producao. U6–U17 estao definidos no plano mestre definitivo.
 
 
 ---
