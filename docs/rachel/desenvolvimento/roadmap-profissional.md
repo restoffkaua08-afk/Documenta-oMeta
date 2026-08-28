@@ -1,34 +1,21 @@
 # Rachel - Roadmap Profissional
 
-## Objetivo final
+> **STATUS: HISTORICO / SUPERADO COMO TRACKER PRINCIPAL**
 
-Declarar `Professional Agent Ready` somente quando a Rachel puder conversar, planejar, executar com autorizacao, trabalhar com projetos, usar conhecimento e ferramentas, recuperar-se de falhas e ser instalada com evidencias de seguranca e regressao.
+Este arquivo preserva o roadmap profissional original da Rachel, mas nao deve mais ser usado para medir o progresso atual.
 
-## Etapas
+A fonte de verdade para acompanhamento passa a ser:
 
-| # | Etapa | Prioridade | Estado inicial consolidado |
-|---:|---|---|---|
-| 1 | CI minimo | P0 | Concluida |
-| 2 | Cérebro unico + intent router | P0 | Implementacao registrada; gate a confirmar |
-| 3 | Runtime persistente + streaming | P0 | Implementada; regressao a reconfirmar |
-| 4 | Tool Runtime profissional | P0 | Declarada concluida no documento de aceite |
-| 5 | Agent Loop real | P0 | Planejada |
-| 6 | Model Router | P0/P1 | Planejada |
-| 7 | Project Intelligence | P1 | Planejada |
-| 8 | Dany profissional | P1 | Planejada |
-| 9 | Knowledge Port real | P1 | Planejada |
-| 10 | Pesquisa web profissional | P1 | Planejada |
-| 11 | Browser governado | P1 | Planejada |
-| 12 | MCP Runtime | P1/P2 | Planejada |
-| 13 | Voz integrada ao Agent Loop | P1/P2 | Planejada |
-| 14 | Desktop UX profissional | P1/P2 | Planejada; ha uma entrega antecipada de interface |
-| 15 | Hardening + Rachel Model + release | P2 | Planejada e condicionada |
+- `docs/rachel/desenvolvimento/roadmap-definitivo-professional-agent-ready.md`
 
-## Regra de gate
+O novo documento fixa **15 etapas definitivas**, define o significado de `VALIDATED`, registra o snapshot atual, explicita o Gate Final `Professional Agent Ready` e separa maturidade de codigo de prontidao real de release.
 
-Nenhuma etapa deve ser considerada concluida somente por possuir arquivos. O gate deve combinar testes, build, seguranca, evidencias e verificacao do comportamento descrito.
+Os documentos `etapa-XX-*.md` continuam sendo as evidencias detalhadas de cada etapa.
 
-## Rachel Model
+## Regra
 
-O modelo proprio permanece no roadmap como capacidade condicional. Seu treinamento so pode ocorrer se hardware, dataset, avaliacao e autorizacao permitirem. Ate la, a Rachel deve funcionar com providers substituiveis e nao pode depender de pesos proprios.
+Quando houver divergencia entre este arquivo historico e o tracker definitivo, prevalece o tracker definitivo, sustentado pelo codigo e pela CI atuais.
 
+## Objetivo final preservado
+
+A Rachel so deve ser declarada `Professional Agent Ready` quando puder conversar, planejar, executar com autorizacao, trabalhar com projetos, usar memoria/conhecimento, pesquisar, navegar, usar extensoes MCP, operar pela mesma sessao em voz/chat, recuperar-se de falhas e ser instalada/reproduzida com evidencias de seguranca, performance, regressao e E2E.
