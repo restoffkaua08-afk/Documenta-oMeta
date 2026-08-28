@@ -1,58 +1,74 @@
 # Rachel - Status Atual
 
-**Data da consolidacao documental:** 2026-08-21  
-**Branch de evolucao registrada:** `evolution/rachel-professional-agent`
+**Data da consolidacao:** 2026-08-27  
+**Branch oficial:** `main`  
+**Tracker principal:** [`desenvolvimento/roadmap-definitivo-professional-agent-ready.md`](desenvolvimento/roadmap-definitivo-professional-agent-ready.md)
 
 ## Resumo executivo
 
-A Rachel concluiu um ciclo arquitetural legado de 15 etapas, mas esse fechamento nao produziu um produto pronto para producao. Uma auditoria posterior definiu um novo roadmap de 15 etapas com o criterio final `Professional Agent Ready`.
+A Rachel possui um roadmap profissional **finito de 15 etapas**. Ela so sera considerada completa quando as 15 estiverem `VALIDATED` e o Gate Final da Etapa 15 estiver integralmente verde.
 
-## Ciclo arquitetural legado
+### Snapshot atual
 
-| Classificacao | Quantidade |
+| Estado | Quantidade |
 |---|---:|
-| Ready | 12 |
-| Blocked | 3 |
-| Reserved | 3 |
-| Deferred | 1 |
-| Unavailable | 1 |
+| `VALIDATED` | 6 |
+| `IMPLEMENTED_REVALIDATION_REQUIRED` | 4 |
+| `IN_PROGRESS` | 1 |
+| `PARTIAL` | 2 |
+| `PLANNED` | 2 |
+| **TOTAL** | **15** |
 
-Estado registrado: `ARCHITECTURE CLOSED - PRODUCTION NOT READY`.
+Etapas formalmente `VALIDATED` no snapshot atual: **1, 4, 6, 7, 8 e 10**.
 
-Os oito dominios nao prontos eram: memory, model, learning, evaluation-promotion, agent-runtime, browser, privacy e training-runtime.
+Etapas com implementacao substancial que precisam reconciliar/fechar gate: **2, 3, 5 e 9**.
 
-## Novo ciclo profissional
+Etapa ativa: **11 — Browser governado**.
 
-| Etapa | Estado documental | Observacao |
-|---|---|---|
-| 1 - CI minimo | Concluida | Commit `0d27273`; 372 testes passaram e 11 xfails foram documentados |
-| 2 - Cérebro unico + intent router | Parcial/confirmacao pendente | O contrato do Lote 1 existe, mas falta declaracao final inequivoca |
-| 3 - Runtime persistente + streaming | Implementada; gate a reconfirmar | Core, Runtime, frontend e Tauri foram registrados como PASS |
-| 4 - Tool Runtime profissional | Declarada concluida | Documento do Lote 3 afirma conclusao e CI verde; deve ser confrontado com a branch |
-| 5 - Agent Loop real | Nao iniciada | Proxima grande capacidade do roadmap |
-| 6 a 15 | Planejadas | Sem evidencia suficiente de inicio neste conjunto documental |
+Ainda faltam como blocos principais: **12 — MCP**, **13 — voz integrada**, **14 — Desktop UX profissional** e **15 — hardening/release**.
 
-## Interface paralela
+## Progresso
 
-Foi registrada uma entrega separada de interface no commit `aec1989`, contendo design system, bridge HTTP/SSE, web chat, refatoracao do desktop e documentacao de build.
+- progresso formal por gates: **6/15 = 40%**;
+- maturidade de engenharia estimada, considerando etapas ja implementadas mas ainda nao formalmente fechadas: **aprox. 60–65%**;
+- isso nao significa que o release esteja 60–65% pronto: Etapa 15 mede o produto inteiro e pode revelar regressões transversais.
 
-O relatorio tambem recomenda validacao da build em ambiente Windows completo. Assim, a classificacao correta e: implementada e commitada, com execucao/build real a reconfirmar.
+## Alerta de CI atual
 
-## Proxima verificacao obrigatoria
+O workflow profissional `RACHEL CI` continua sendo a referencia principal de regressao. O workflow legado `tests` apresentou uma falha por timeout em `test_agent_bridge.py::AgentBridgeTests::test_dashboard_contains_agent_status` no head recente, enquanto o Core do mesmo run passou 78/78 testes.
 
-Auditar a branch `evolution/rachel-professional-agent` para confirmar:
+Esse timeout deve ser corrigido/reconciliado. Para a V1 final nao sera aceito manter workflow oficial permanentemente vermelho ou mascarar falha obrigatoria como sucesso.
 
-- existencia dos commits mencionados;
-- correspondencia entre documentos e codigo;
-- CI real e seu historico;
-- gates das etapas 2, 3 e 4;
-- build do frontend web e desktop;
-- ponto exato para iniciar a Etapa 5.
+## Definicao curta de pronto
 
-## Conclusao operacional
+A Rachel V1 so recebe:
 
-O ponto mais conservador e tecnicamente defensavel e:
+```text
+PROFESSIONAL_AGENT_READY = TRUE
+```
 
-> Rachel possui uma baseline arquitetural fechada e uma branch profissional com entregas documentadas nas etapas iniciais, mas o repositorio atual ainda precisa ser auditado antes de declarar as etapas 2, 3 e 4 definitivamente encerradas ou iniciar o Agent Loop.
+quando:
 
-Ver tambem [`indice.md`](indice.md) e [`evidencias/baseline-e-readiness.md`](evidencias/baseline-e-readiness.md).
+- 15/15 etapas = `VALIDATED`;
+- CI oficial = verde;
+- chat real e desktop = testados;
+- Agent Loop = multi-etapa, persistente e governado;
+- tools/arquivos/Git = funcionais;
+- knowledge/research/browser/MCP = funcionais;
+- voz usa a mesma sessao cognitiva;
+- installer/release = reproduzivel;
+- seguranca/recovery/performance/E2E = aprovados;
+- nenhuma capability critica e anunciada sem backend real;
+- nenhuma acao e declarada como sucesso sem evidencia real.
+
+## Ordem imediata
+
+1. corrigir/reconciliar o timeout do workflow legado `tests`;
+2. fechar formalmente gates 2, 3, 5 e 9;
+3. concluir Etapa 11;
+4. implementar Etapa 12;
+5. concluir Etapa 13;
+6. concluir Etapa 14;
+7. executar Etapa 15 e criar o release candidate.
+
+Para detalhes completos, criterios por etapa e o Gate Final, usar exclusivamente o [`roadmap definitivo`](desenvolvimento/roadmap-definitivo-professional-agent-ready.md).
