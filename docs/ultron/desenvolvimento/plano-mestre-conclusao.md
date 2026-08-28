@@ -3,7 +3,7 @@
 **Versao do plano:** 1.1
 **Data-base:** 2026-08-28  
 **Repositorio:** `restoffkaua08-afk/ultron`  
-**Baseline auditada:** `a34aeaf`  
+**Baseline auditada:** `45b82fa`
 **Versao atual do produto:** `0.1.0` (`Alpha`)  
 **Owner:** Kauã
 
@@ -129,7 +129,7 @@ teste local com 10.000 nos. O blueprint Supabase ainda nao equivale a banco real
 Entregou operacao offline segura, equivalencia Python/REST/MCP, servidor MCP,
 lifecycle persistente local e E2E com cliente MCP oficial sobre HTTP real.
 
-### U6 — Fundacao cloud real — PENDENTE
+### U6 — Fundacao cloud real — EM ANDAMENTO
 
 **Objetivo:** substituir blueprints por infraestrutura Supabase executada e
 reproduzivel.
@@ -150,6 +150,14 @@ ambiente de teste; testes provam isolamento entre duas organizacoes no Postgres
 real; backup e restauracao recuperam estado consistente.
 
 **Gate:** `ULTRON_CLOUD_DATA_READY`.
+
+**Incremento U6.1 publicado:** hardening dos candidatos SQL com grants
+especificos, revogacao de defaults, foreign keys compostas para organizacao e
+namespace e seis contratos estaticos. Suite completa: 214 testes, 91,66% de
+cobertura, Ruff, MyPy e build aprovados. Evidencia: `45b82fa`. O gate permanece
+fechado ate existir projeto Supabase dedicado, migrations oficiais, RLS real,
+Advisors e restauracao ensaiada. Detalhes em
+[`etapa-u6-fundacao-cloud.md`](etapa-u6-fundacao-cloud.md).
 
 ### U7 — Identidade, organizacoes e autorizacao — PENDENTE
 
@@ -451,7 +459,7 @@ prontos; owner assina o aceite.
 | U3 | `ULTRON_SECURITY_READY` | Aprovado | 20,0% |
 | U4 | `ULTRON_GRAPH_READY` | Aprovado local | 25,0% |
 | U5 | `ULTRON_ZANE_COMPATIBLE` | Aprovado | **30,0%** |
-| U6 | `ULTRON_CLOUD_DATA_READY` | Proxima | 30,0% |
+| U6 | `ULTRON_CLOUD_DATA_READY` | Em andamento | 30,0% |
 | U7 | `ULTRON_IDENTITY_READY` | Pendente | 30,0% |
 | U8 | `ULTRON_CAPABILITY_PROVIDER_READY` | Pendente | 30,0% |
 | U9 | `ULTRON_OPENAPI_GENERATION_READY` | Pendente | 30,0% |
@@ -468,10 +476,11 @@ prontos; owner assina o aceite.
 
 ## 8. Proxima acao unica
 
-Iniciar **U6 — Fundacao cloud real**. O primeiro incremento deve criar a
-estrutura de migrations oficial, aplicar o schema em um projeto Supabase de
-desenvolvimento e executar testes reais de RLS entre duas organizacoes. Nenhum
-novo recurso visual deve preceder essa fundacao.
+Continuar **U6 — Fundacao cloud real**. O hardening local U6.1 esta concluido.
+A proxima acao e identificar um projeto Supabase de desenvolvimento dedicado,
+gerar migrations oficiais pelo CLI, aplicar o schema e executar testes reais de
+RLS entre duas organizacoes. Nenhum novo recurso visual deve preceder essa
+fundacao.
 
 ## 9. Politica de manutencao documental
 
