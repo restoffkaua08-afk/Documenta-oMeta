@@ -1,121 +1,146 @@
 # Rachel — Etapa 09: Knowledge Port real
 
-**Estado:** Em implementacao incremental  
-**Data:** 2026-08-26  
+**Estado:** Implementada; revalidacao final em andamento  
+**Data de atualizacao:** 2026-08-28  
 **Repositorio:** `restoffkaua08-afk/rachel-ia`  
 **Branch oficial:** `main`
 
 ## Objetivo
 
-Conectar o Core da Rachel ao conhecimento documental governado que a Visao ja indexa no runtime. Antes desta etapa, `build_container()` usava `NullKnowledgeAdapter`, portanto `ChatService._system_prompt()` consultava um port de conhecimento que sempre retornava vazio.
+Conectar o Core da Rachel ao conhecimento documental governado indexado pelo runtime, preservando a separacao fundamental entre memoria pessoal e conhecimento/RAG.
 
-O objetivo nao e misturar memoria pessoal com RAG. O Knowledge Port deve expor somente chunks documentais aprovados e indexados pela Visao.
+Antes desta etapa, o bootstrap usava `NullKnowledgeAdapter`. A arquitetura atual usa um adapter SQLite real e entrega evidencias documentais ao `ChatService`.
 
-## Auditoria do estado existente
-
-A auditoria confirmou:
-
-- `KnowledgePort` do Core exige `search(query, limit)`;
-- `ChatService` ja possui o ponto correto de injecao de evidencia em `_system_prompt()`;
-- `VisaoIngestor` extrai documentos por `DocumentExtractor`;
-- os chunks aprovados sao armazenados por `CognitiveMemory.remember()`;
-- esses registros ficam na tabela `cognitive_memories`;
-- chunks de documentos possuem `metadata.kind=document_chunk`;
-- memorias pessoais, preferencias e decisoes compartilham a mesma tabela, portanto o adapter precisa filtrar explicitamente os chunks documentais;
-- o bootstrap do Core ainda utilizava `NullKnowledgeAdapter`.
-
-## Implementacao realizada
+## Implementacao consolidada
 
 ### SQLiteKnowledgeAdapter
 
-Foi criado:
+Arquivo:
 
 - `RACHEL_CORE/src/rachel_core/adapters/knowledge_sqlite.py`.
 
-Commit:
+Garantias:
 
-- `d22a2ecb829b52b076462589fbe0b9d39e19f196` — `feat(knowledge): adicionar adapter SQLite para evidencias documentais`.
+- implementa `KnowledgePort.search()`;
+- leitura do banco governado de Bran/Visao;
+- somente registros ativos;
+- filtro estrito `metadata.kind=document_chunk`;
+- preferencias, instrucoes e memorias pessoais nao sao expostas como RAG;
+- ranking lexical com metadados de confianca/importancia;
+- limites defensivos;
+- banco ausente degrada para resultado vazio sem quebrar o chat;
+- erros SQLite sao tratados como indisponibilidade do backend.
 
-Caracteristicas:
+Commit base:
 
-- implementa o contrato `KnowledgePort.search()`;
-- leitura somente do banco governado de Bran/Visao;
-- filtra `status=active`;
-- filtra estritamente `metadata.kind=document_chunk`;
-- nao devolve preferencias, instrucoes ou outras memorias pessoais como evidencia de RAG;
-- ranking lexical simples acrescido de confidence/importance;
-- limite defensivo de resultados;
-- banco inexistente retorna lista vazia sem quebrar chat;
-- `status()` informa backend, existencia do banco e quantidade de chunks documentais;
-- erro SQLite e tratado como indisponibilidade do adapter em vez de crash silencioso do processo.
+- `d22a2ecb829b52b076462589fbe0b9d39e19f196`.
 
-### Testes do adapter
+### Bootstrap real
 
-Foi criado:
+`RACHEL_CORE/src/rachel_core/bootstrap.py` constroi `SQLiteKnowledgeAdapter` em vez de `NullKnowledgeAdapter`.
 
-- `RACHEL_CORE/tests/test_knowledge_sqlite.py`.
-
-Commit:
-
-- `4e497f8b0c2eeff4c4b0d73acb8a3536d9fbe79e` — `test(knowledge): validar busca documental SQLite`.
-
-Os testes comprovam:
-
-- busca retorna chunks documentais relevantes;
-- memoria pessoal contendo os mesmos termos nao vaza para o Knowledge Port;
-- ranking seleciona o chunk mais relevante;
-- status conta somente documentos;
-- ausencia do arquivo de banco e segura.
-
-### Bootstrap conectado ao adapter real
-
-`RACHEL_CORE/src/rachel_core/bootstrap.py` deixou de instanciar `NullKnowledgeAdapter` e passou a construir `SQLiteKnowledgeAdapter`.
-
-Commit:
-
-- `7e017d5c22b7ed18dac91d071a4f14f72147d557` — `feat(knowledge): conectar KnowledgePort SQLite ao Core`.
-
-A resolucao do banco usa:
+Resolucao do banco:
 
 1. `RACHEL_KNOWLEDGE_DB_PATH` quando configurado;
-2. caso contrario, o banco `bran-cognitive.db` irmao do `RACHEL_HOME/core`, que corresponde ao layout de estado usado pelo runtime.
+2. fallback para `bran-cognitive.db` no layout local da Rachel.
 
-O `Container` passou tambem a expor explicitamente `knowledge`, deixando o backend selecionado auditavel sem depender de internals do `ChatService`.
+O `Container` expoe `knowledge`, tornando o backend auditavel.
 
-### Prova de evidencia chegando ao chat
+Commit base:
 
-Foi criado:
+- `7e017d5c22b7ed18dac91d071a4f14f72147d557`.
 
-- `RACHEL_CORE/tests/test_knowledge_chat_integration.py`.
+### Configuracao
+
+`RACHEL_CORE/.env.example` documenta `RACHEL_KNOWLEDGE_DB_PATH`.
+
+### Capability verdadeira
+
+O Core possui teste dedicado para garantir que o status de conhecimento seja derivado do backend real e nao de um `knowledge=True` ficticio:
+
+- `RACHEL_CORE/tests/test_knowledge_bootstrap.py`.
+
+A sobreposicao historica enganosa no bridge foi removida durante a evolucao posterior. O gate final exige continuar sem capability hardcoded.
+
+## Evidencias automatizadas
+
+### Core
+
+- `RACHEL_CORE/tests/test_knowledge_sqlite.py`;
+- `RACHEL_CORE/tests/test_knowledge_chat_integration.py`;
+- `RACHEL_CORE/tests/test_knowledge_bootstrap.py`.
+
+Esses testes cobrem:
+
+- recuperacao de documento relevante;
+- isolamento de memoria pessoal;
+- ranking;
+- banco ausente;
+- evidence injection no system prompt;
+- bootstrap usando adapter real;
+- status coerente com backend real.
+
+### Runtime
+
+- `RACHEL_PLATFORM/RUNTIME/TESTS/test_knowledge_port_integration.py`.
+
+Esse contrato comprova o caminho de integracao documental pelo runtime sem transformar memoria pessoal em conhecimento.
+
+## Reforco da CI em 2026-08-28
+
+O workflow profissional `RACHEL CI` ja executava a suite completa do Core. Para tornar o gate da Etapa 09 explicitamente protegido tambem no Runtime, o teste:
+
+```text
+test_knowledge_port_integration.py
+```
+
+foi adicionado a `Critical runtime regression suite`.
 
 Commit:
 
-- `484b4a1eb11bea79647dea1aee9b54e8270b1259` — `test(knowledge): provar evidencias documentais no chat`.
+- `83214703f5058b8f71e3b770bbb066ed303ff8fd` — `ci(knowledge): incluir integração do Knowledge Port na regressão crítica`.
 
-O teste cria um chunk documental no schema real de `cognitive_memories`, usa o `SQLiteKnowledgeAdapter` com um modelo de gravacao e executa `ChatService.chat()`.
+O workflow desse head foi disparado e permanece pendente no momento desta atualizacao. A etapa nao sera marcada `VALIDATED` antes da conclusao verde.
 
-O gate exige que o system prompt entregue ao modelo contenha:
+## Relacao com External Capabilities / Jina
 
-- a secao `Evidencias recuperadas`;
-- o conteudo do chunk relevante;
-- a origem documental;
-- nenhum documento irrelevante quando a consulta nao possui match.
+A Etapa 09 possui uma baseline local funcional e nao depende de Jina, Supabase ou pgvector para existir.
 
-## Trabalho ainda necessario
+Expansoes futuras, depois da fundacao da Etapa 12, poderao adicionar:
 
-1. confirmar CI dos commits da etapa;
-2. tornar `capabilities.knowledge` derivado do adapter real no status do Core, em vez de um valor fixo;
-3. remover a sobreposicao enganosa `knowledge=True` no bridge cognitivo quando a fonte real nao estiver disponivel;
-4. documentar/configurar `RACHEL_KNOWLEDGE_DB_PATH` em `.env.example`;
-5. adicionar teste de bootstrap garantindo que o Core usa `SQLiteKnowledgeAdapter`;
-6. validar o fluxo Visao -> CognitiveMemory -> KnowledgePort -> ChatService com um teste de integracao de runtime sempre que isso puder ser feito sem criar dependencia circular entre Core e Runtime;
-7. somente entao marcar o gate da Etapa 09 como validado.
+```text
+knowledge.embed
+knowledge.rerank
+documents.extract
+documents.ocr
+```
+
+Regras arquiteturais:
+
+- Jina e provider substituivel, nao fonte da semantica interna;
+- embeddings tambem sao dados e obedecem privacy policy;
+- documento sensivel nao pode ser enviado a OCR/embedding cloud por fallback silencioso;
+- vector backend e substituivel;
+- memoria pessoal continua separada de RAG;
+- ausencia de provider externo nao invalida a capacidade local existente.
 
 ## Gate atual
 
-- KnowledgePort SQLite real: **IMPLEMENTED / CI PENDING**;
-- isolamento entre conhecimento documental e memoria pessoal: **IMPLEMENTED / TESTED**;
-- bootstrap sem NullKnowledgeAdapter: **IMPLEMENTED / CI PENDING**;
-- documentos recuperados como evidencia no chat: **IMPLEMENTED / TESTED / CI PENDING**;
-- `capabilities.knowledge` refletindo verdade: **PENDING**;
-- CI final da Etapa 09: **PENDING**.
+- KnowledgePort SQLite real: **PASS**;
+- isolamento documento x memoria pessoal: **PASS**;
+- bootstrap sem NullKnowledgeAdapter: **PASS**;
+- evidence injection no chat: **PASS**;
+- configuracao do banco documentada: **PASS**;
+- capability derivada do backend real: **PASS**;
+- integracao Runtime dedicada: **IMPLEMENTED / CI EXPLICITA EM VALIDACAO**;
+- CI final do head com regressao dedicada: **PENDING**.
+
+## Criterio para encerramento
+
+Marcar `ETAPA 09 — VALIDATED` somente quando o head que inclui `test_knowledge_port_integration.py` na regressao critica concluir com sucesso em:
+
+- Python Core + Runtime contracts;
+- Desktop frontend build;
+- Tauri Rust check.
+
+Jina/RAG vetorial permanecem expansoes planejadas e nao devem bloquear o fechamento da baseline local correta.
