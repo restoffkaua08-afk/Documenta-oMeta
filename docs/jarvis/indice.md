@@ -8,6 +8,7 @@
 - [`modelos/model-router.md`](modelos/model-router.md)
 - [`seguranca/governanca-e-auditoria.md`](seguranca/governanca-e-auditoria.md)
 - [`integracao/contratos-e-consolidacao.md`](integracao/contratos-e-consolidacao.md)
+- [`integracao/capability-provider-public-apis.md`](integracao/capability-provider-public-apis.md)
 - [`desenvolvimento/roadmap-e-gates.md`](desenvolvimento/roadmap-e-gates.md)
 - [`desenvolvimento/plano-mestre-conclusao.md`](desenvolvimento/plano-mestre-conclusao.md)
 
@@ -20,6 +21,6 @@ arquitetura planejada, implementação concluída e validação pendente.
 
 ## Acompanhamento da evolução
 
-- [Plano mestre: 24 etapas até a V1](desenvolvimento/plano-mestre-conclusao.md)
+- [Plano mestre: 29 etapas até a V1](desenvolvimento/plano-mestre-conclusao.md)
 - [Histórico completo de alterações](desenvolvimento/historico-de-alteracoes.md)
 - [Registros técnicos individuais](desenvolvimento/alteracoes/)

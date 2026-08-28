@@ -6,7 +6,7 @@ Este documento define o caminho fechado para transformar o fork do OpenJarvis
 em um produto standalone estável, instalável no Windows e capaz de atuar como
 agente de engenharia de software no terminal.
 
-O plano possui **24 etapas**. Quando todas estiverem aprovadas, o Jarvis poderá
+O plano possui **29 etapas**. Quando todas estiverem aprovadas, o Jarvis poderá
 ser classificado como `JARVIS_V1_STABLE`. Novas ideias depois disso serão
 evolução de produto, não requisitos ocultos para considerar a versão 1 pronta.
 
@@ -30,10 +30,10 @@ calculado pelo número de commits ou de arquivos criados.
 
 | Indicador | Estado |
 |---|---:|
-| Etapas concluídas | 4 de 24 |
-| Etapas parciais | 8 de 24 |
-| Etapas pendentes | 12 de 24 |
-| Progresso oficial | 16,7% |
+| Etapas concluídas | 4 de 29 |
+| Etapas parciais | 10 de 29 |
+| Etapas pendentes | 15 de 29 |
+| Progresso oficial | 13,8% |
 | Melhorias rastreadas | JARVIS-001 a JARVIS-014 |
 | Gate atual | Fundação técnica e modo Code |
 | Release estável | Ainda não autorizada |
@@ -195,27 +195,120 @@ confirmar instalação; registrar origem; atualizar e remover com segurança.
 hash de integridade; política de atualização; rollback e remoção comprovados;
 tratamento de repositório privado por credencial segura.
 
-### Etapa 14 — MCP e ferramentas externas
+**Dependências:** etapas 04, 05 e 14; a análise externa de reputação será
+fornecida pela etapa 18, sem substituir validação local.
+
+### Etapa 14 — Núcleo Capability/Provider
+
+**Estado:** `PENDENTE`
+
+**Escopo:** contratos versionados de Capability e Provider; schemas de entrada
+e saída; registries locais; resolver; router; `ExecutionContext`; adaptação do
+Tool Registry e engines existentes sem duplicá-los.
+
+**Aceite:** agente pede capability em vez de provider concreto; registries
+rejeitam versões e schemas inválidos; seleção respeita RBAC, efeitos e classe de
+dados; ao menos um engine e uma tool existente operam pelo novo contrato.
+
+**Dependências:** etapas 02, 04, 05 e 08.
+
+### Etapa 15 — Operação resiliente de providers
+
+**Estado:** `PARCIAL`
+
+**Escopo:** Provider Gateway, `secret_ref`, cliente HTTP governado, allowlist,
+erros normalizados, health, quota, rate limit, cache, timeout, cancelamento,
+retry idempotente, circuit breaker, Usage Ledger e kill switch.
+
+**Fundações existentes:** credentials, SSRF/redirect checks em `http_request`,
+health de engines e telemetria. Ainda não formam um gateway uniforme.
+
+**Aceite:** provider sem chave e autenticado aprovados; segredo ausente dos
+resultados/logs; fallback não reduz privacidade; testes injetam auth error,
+quota, timeout, schema inválido e indisponibilidade; preço/free tier possui
+data de verificação e nunca é tratado como garantia.
+
+**Dependências:** etapas 05 e 14. Integra-se posteriormente às etapas 19, 24 e
+26 para geração, observabilidade e diagnóstico.
+
+### Etapa 16 — MCP governado
 
 **Estado:** `PENDENTE`
 
 **Escopo:** cliente MCP compatível, descoberta, autorização por servidor,
-timeouts, cancelamento, schemas, auditoria e isolamento de falhas.
+namespaces, timeouts, cancelamento, schemas, auditoria, lifecycle e isolamento
+de falhas. Tools MCP são providers/capabilities externos não confiáveis.
 
 **Aceite:** conectar ao menos dois servidores de referência; uma falha externa
-não derruba a sessão; permissões são exibidas antes do uso.
+não derruba a sessão; permissões são exibidas antes do uso; colisões são
+determinísticas; transporte fecha sem vazamento; servidor não altera policy.
 
-### Etapa 15 — Navegador e pesquisa governados
+**Dependências:** etapas 05, 14 e 15.
+
+### Etapa 17 — Research e evidências normalizadas
+
+**Estado:** `PARCIAL`
+
+**Escopo:** `research.search`, `research.read_url`, papers, DOI e knowledge
+lookup; Jina Search/Reader, mecanismo web existente, arXiv, CrossRef,
+Wikipedia/Wikidata; normalização, freshness, conflitos e síntese citada.
+
+**Fundações existentes:** `DeepResearchAgent`, web search e stores de
+conhecimento. O agente atual é orientado principalmente a dados privados e não
+implementa o contrato completo de evidência pública.
+
+**Aceite:** cada afirmação relevante referencia `EvidenceItem` rastreável;
+fontes têm origem, provider, coleta e hash; conflitos e ausência são expostos;
+prompt injection de páginas não altera policy; falha parcial degrada com
+honestidade; mocks e pesquisa real opt-in passam.
+
+**Dependências:** etapas 09, 14, 15 e 20.
+
+### Etapa 18 — Threat intelligence para repositórios e skills
+
+**Estado:** `PENDENTE`
+
+**Escopo:** Safe Browsing/URLScan, VirusTotal, NVD, GitGuardian, AbuseIPDB e OTX
+como sinais opcionais; análise local de manifests, scripts, dependências,
+segredos, URLs, symlinks e capabilities; risk score e quarentena.
+
+**Aceite:** saídas `allow`, `require_review`, `quarantine` e `deny` possuem
+razões; nenhum provider isolado decide instalação; indisponibilidade externa
+não vira aprovação; sandbox precede ativação; rollback e trilha de origem são
+comprovados; amostras seguras de teste cobrem falsos positivos e negativos.
+
+**Dependências:** etapas 05, 13, 14 e 15.
+
+### Etapa 19 — OpenAPI e adapters candidatos
+
+**Estado:** `PENDENTE`
+
+**Escopo:** receber spec do usuário ou APIs.guru; resolver referências com
+limites; analisar auth, servers e efeitos; derivar capabilities; gerar adapter
+e manifest em sandbox; executar validação estática e contract tests.
+
+**Aceite:** specs maliciosas, enormes ou com referências inseguras são
+recusadas; código gerado nunca executa automaticamente; adapter entra
+desativado; ativação exige policy/aprovação; pelo menos duas specs de referência
+geram adapters determinísticos e testados; remoção é segura.
+
+**Dependências:** etapas 05, 07, 12, 14, 15 e 18.
+
+### Etapa 20 — Navegador e pesquisa governados
 
 **Estado:** `PENDENTE`
 
 **Escopo:** pesquisa web, navegação, downloads, proteção contra prompt
-injection, lista de domínios e rastreabilidade das fontes.
+injection, lista de domínios, classificação de dados e rastreabilidade das
+fontes. Navegador é executor; resultados de research seguem a etapa 17.
 
 **Aceite:** tarefas públicas reais aprovadas; conteúdo web não altera políticas
-do agente; downloads e credenciais respeitam o sandbox.
+do agente; downloads e credenciais respeitam o sandbox; ações de leitura e de
+efeito são separadas; páginas e arquivos preservam origem para evidência.
 
-### Etapa 16 — Integração Ultron
+**Dependências:** etapas 05, 14, 15 e 17.
+
+### Etapa 21 — Integração Ultron
 
 **Estado:** `PENDENTE`
 
@@ -223,9 +316,17 @@ do agente; downloads e credenciais respeitam o sandbox.
 versionamento e degradação quando o Ultron estiver indisponível.
 
 **Aceite:** Jarvis permanece standalone; conexão e desconexão não corrompem
-sessões; contratos e permissões possuem testes de compatibilidade.
+sessões; contratos e permissões possuem testes de compatibilidade; manifests de
+capability/provider são validados, armazenados localmente e registrados
+desativados; ULTRON indisponível não bloqueia capabilities essenciais já
+instaladas.
 
-### Etapa 17 — Contratos Rachel e futuro Zane
+**Fronteira:** catálogo, marketplace, assinatura e distribuição pertencem ao
+ULTRON. Resolver e executar localmente pertencem ao Jarvis.
+
+**Dependências:** etapas 13 a 19.
+
+### Etapa 22 — Contratos Rachel e futuro Zane
 
 **Estado:** `PENDENTE`
 
@@ -237,7 +338,7 @@ possui testes; decisões de fusão ficam reservadas ao projeto Zane.
 
 ## Marco D — Memória, operação e experiência
 
-### Etapa 18 — Sessões e memória por projeto
+### Etapa 23 — Sessões e memória por projeto
 
 **Estado:** `PARCIAL`
 
@@ -247,17 +348,18 @@ backup, exclusão e separação entre conversa e memória duradoura.
 **Falta para concluir:** testes de migração e corrupção; comando de inspeção;
 política de retenção; memória longa com consentimento e escopo explícito.
 
-### Etapa 19 — Observabilidade, auditoria e custos
+### Etapa 24 — Observabilidade, auditoria e custos
 
 **Estado:** `PENDENTE`
 
 **Escopo:** logs estruturados, trace por tarefa, uso de tokens, latência,
-custos, chamadas de ferramentas, decisões de aprovação e dados sensíveis.
+custos, calls de capability/provider/tool, fallback, quota, health, decisões de
+aprovação e dados sensíveis.
 
 **Aceite:** diagnóstico exportável sem segredos; correlação ponta a ponta;
 limites e alertas configuráveis; rotação e retenção documentadas.
 
-### Etapa 20 — UX profissional do terminal
+### Etapa 25 — UX profissional do terminal
 
 **Estado:** `PENDENTE`
 
@@ -267,24 +369,26 @@ aprovações, cancelamento, atalhos, acessibilidade e mensagens acionáveis.
 **Aceite:** fluxo completo sem editar TOML manualmente; erros dizem causa e
 próxima ação; Ctrl+C recupera o terminal e preserva estado consistente.
 
-### Etapa 21 — Diagnóstico e autorrecuperação
+### Etapa 26 — Diagnóstico e autorrecuperação
 
 **Estado:** `PARCIAL`
 
-**Escopo:** `jarvis code --check`, saúde de modelo, engine, Git, ferramentas,
-configuração, armazenamento, rede e sugestões seguras de reparo.
+**Escopo:** `jarvis code --check`, saúde de modelo, engine, capability/provider
+registries, quotas, circuit breakers, Git, ferramentas, configuração,
+armazenamento, rede e sugestões seguras de reparo.
 
 **Falta para concluir:** códigos de saída documentados; modo JSON; diagnóstico
 de provedores e Ultron; testes de falhas comuns e reparos reversíveis.
 
 ## Marco E — Prova de competência
 
-### Etapa 22 — Benchmark completo de engenharia
+### Etapa 27 — Benchmark completo de engenharia
 
 **Estado:** `PARCIAL`
 
 **Escopo:** tarefas basic e multifile, backend, frontend, banco, integração,
-depuração, segurança, refatoração e projeto iniciado do zero.
+depuração, segurança, refatoração, projeto iniciado do zero e execução agentic
+via capabilities, incluindo falha e fallback de provider.
 
 **Falta para concluir:** executar o próprio Jarvis com modelos reais; definir
 amostra repetida; medir sucesso, regressão, custo e tempo; impedir vazamento das
@@ -293,7 +397,7 @@ soluções esperadas; publicar resultados reproduzíveis.
 **Meta mínima:** pelo menos 80% de aprovação global e 100% nos casos críticos
 de segurança e preservação de dados, em três execuções por cenário prioritário.
 
-### Etapa 23 — Testes de sistema e estabilidade prolongada
+### Etapa 28 — Testes de sistema e estabilidade prolongada
 
 **Estado:** `PENDENTE`
 
@@ -305,14 +409,14 @@ recursos dentro dos limites documentados; execução prolongada registrada.
 
 ## Marco F — Distribuição e aceite final
 
-### Etapa 24 — Instalador, máquina final e release V1
+### Etapa 29 — Instalador, máquina final e release V1
 
 **Estado:** `PENDENTE`
 
 **Escopo:** artefato Windows versionado, verificação de integridade, instalação,
 upgrade, rollback, desinstalação, manual e teste de aceite no computador final.
 
-**Pré-requisitos:** etapas 01 a 23 concluídas.
+**Pré-requisitos:** etapas 01 a 28 concluídas.
 
 **Aceite final:**
 
@@ -335,10 +439,12 @@ A sequência oficial é:
 
 1. concluir 02, 03 e 05 para estabilizar a fundação;
 2. concluir 08 e implementar 09 a 12 para elevar competência;
-3. concluir 13 e implementar 14 a 17 para integrações;
-4. concluir 18 e 21, implementar 19 e 20 para operação;
-5. concluir 22 e 23 com evidência real;
-6. executar 24 somente depois de todos os gates anteriores.
+3. implementar 14 e 15 como fundação das capabilities externas;
+4. concluir 13 e implementar 16 a 20 para MCP, research, segurança e OpenAPI;
+5. implementar 21 e 22 sem quebrar a independência standalone;
+6. concluir 23 e 26 e implementar 24 e 25 para operação profissional;
+7. concluir 27 e 28 com evidência real;
+8. executar 29 somente depois de todos os gates anteriores.
 
 Etapas independentes podem avançar em paralelo, mas nenhuma será marcada como
 concluída fora da definição global de concluído.
@@ -360,17 +466,22 @@ concluída fora da definição global de concluído.
 | 11 | Revisão independente | PENDENTE |
 | 12 | Qualidade e arquitetura | PENDENTE |
 | 13 | Skills por repositório | PARCIAL |
-| 14 | MCP e ferramentas externas | PENDENTE |
-| 15 | Navegador e pesquisa | PENDENTE |
-| 16 | Integração Ultron | PENDENTE |
-| 17 | Contratos Rachel/Zane | PENDENTE |
-| 18 | Sessões e memória | PARCIAL |
-| 19 | Observabilidade e custos | PENDENTE |
-| 20 | UX do terminal | PENDENTE |
-| 21 | Diagnóstico e recuperação | PARCIAL |
-| 22 | Benchmark completo | PARCIAL |
-| 23 | Estabilidade prolongada | PENDENTE |
-| 24 | Instalador e release V1 | PENDENTE |
+| 14 | Núcleo Capability/Provider | PENDENTE |
+| 15 | Operação de providers | PARCIAL |
+| 16 | MCP governado | PENDENTE |
+| 17 | Research e evidências | PARCIAL |
+| 18 | Threat intelligence no intake | PENDENTE |
+| 19 | OpenAPI e adapters candidatos | PENDENTE |
+| 20 | Navegador e pesquisa | PENDENTE |
+| 21 | Integração Ultron | PENDENTE |
+| 22 | Contratos Rachel/Zane | PENDENTE |
+| 23 | Sessões e memória | PARCIAL |
+| 24 | Observabilidade e custos | PENDENTE |
+| 25 | UX do terminal | PENDENTE |
+| 26 | Diagnóstico e recuperação | PARCIAL |
+| 27 | Benchmark completo | PARCIAL |
+| 28 | Estabilidade prolongada | PENDENTE |
+| 29 | Instalador e release V1 | PENDENTE |
 
 ## Regra de manutenção
 

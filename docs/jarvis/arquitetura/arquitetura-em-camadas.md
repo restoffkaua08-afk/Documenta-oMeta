@@ -20,6 +20,11 @@ Adapters para engines locais e cloud autorizadas. As fontes planejam Ollama, lla
 
 Registry e executores tipados para filesystem, terminal governado, Git, browser, web, MCP, APIs e integracoes.
 
+Entre providers e tools existirá uma fronteira lógica de capabilities. Agentes
+pedem contratos como `research.read_url` ou `repository.inspect`; o runtime
+seleciona um provider autorizado e converte o resultado para um schema estável.
+Essa fronteira reutiliza Tool Registry, policy e telemetria existentes.
+
 ## Camada 4 - Skills
 
 Capacidades compostas por prompts, tools e pipelines. Skills declaram dependencias, versao, entradas, saidas e politica.
@@ -67,12 +72,17 @@ request
   -> auth/session
   -> router/profile
   -> agent/planner
-  -> policy
-  -> tool/model execution
+  -> capability resolution
+  -> policy/data classification
+  -> provider/tool/model execution
   -> verification
   -> events/stream
   -> response
 ```
+
+Consulte o
+[plano Capability/Provider](../integracao/capability-provider-public-apis.md)
+para contratos, fronteiras e critérios de aceite.
 
 ## Runtime standalone
 
@@ -86,4 +96,3 @@ Jarvis deve possuir configuracao e capacidades minimas proprias. Integracoes fut
 - execucao local documentada;
 - deteccao clara de dependencias opcionais;
 - nenhum caminho absoluto de maquina em registry operacional.
-

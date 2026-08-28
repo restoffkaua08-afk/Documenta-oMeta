@@ -176,3 +176,22 @@ validação no Windows e empacotamento antes da release.
   segurança, documentação, release e integração opcional com o Ultron.
 - O número de commits deixou de ser usado como aproximação de progresso.
 - Documento: [Plano mestre de conclusão](plano-mestre-conclusao.md).
+
+## DOC-JARVIS-002 — incorporação de External Capabilities
+
+- Data: 2026-08-28.
+- Fonte transversal estudada integralmente:
+  `docs/integracao/external-capabilities-public-apis.md`.
+- O plano mestre passou de 24 para 29 etapas.
+- Estado reclassificado para 4 concluídas, 10 parciais e 15 pendentes.
+- Definidos gates próprios para núcleo Capability/Provider, operação resiliente
+  de providers, research/evidências, threat intelligence e OpenAPI.
+- Registradas dependências com RBAC, sandbox, modelos, contexto, skills,
+  observabilidade, diagnóstico e benchmarks.
+- Preservadas as fronteiras: Jarvis executa; ULTRON cataloga/distribui; Rachel
+  governa a experiência pessoal; Zane consolida futuramente.
+- APIs de domínio não essenciais permanecem fixtures ou packs opcionais, sem
+  inflar o core do Jarvis.
+- Documento técnico:
+  [Capability/Provider](../integracao/capability-provider-public-apis.md).
+- Roadmap: [Plano mestre](plano-mestre-conclusao.md).

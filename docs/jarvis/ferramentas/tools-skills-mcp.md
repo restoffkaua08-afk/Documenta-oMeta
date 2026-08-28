@@ -4,6 +4,20 @@
 
 Cada tool deve possuir schema, efeito, risco, timeout, escopo, idempotencia, politica de retry e executor. A existencia de uma funcao Python nao e suficiente para publica-la ao modelo.
 
+## Capability e Provider
+
+Uma capability representa a operação lógica pedida pelo agente. Uma tool ou
+provider representa uma implementação possível. O planner não deve construir
+HTTP arbitrário quando existir um adapter aprovado.
+
+- Capability Registry: contrato, versão, schemas, efeitos e policy;
+- Provider Registry: implementação, auth, domínios, health, custo e quota;
+- Provider Router: seleção por capacidade, privacidade, disponibilidade e custo;
+- Provider Gateway: execução, erros normalizados, retry, ledger e redaction.
+
+Especificação completa:
+[Capability/Provider](../integracao/capability-provider-public-apis.md).
+
 ## Dominios planejados
 
 - filesystem;
@@ -63,3 +77,5 @@ Tool results precisam de estado, dados sanitizados, evidencias, duracao, erro ti
 
 ULTRON podera fornecer manifests e packs. Jarvis deve validar compatibilidade e seguranca antes de registrar capacidades. O runtime continua funcional sem ULTRON.
 
+Manifests vindos do ULTRON ou de OpenAPI entram desativados. Descobrir, baixar,
+instalar, registrar, ativar e autorizar efeitos são decisões separadas.
