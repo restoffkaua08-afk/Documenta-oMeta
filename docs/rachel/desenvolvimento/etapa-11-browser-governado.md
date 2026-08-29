@@ -1,7 +1,7 @@
 # Rachel — Etapa 11: Browser Governado
 
 **Estado:** EM VALIDACAO INCREMENTAL  
-**Data:** 2026-08-27  
+**Data:** 2026-08-29  
 **Repositorio:** `restoffkaua08-afk/rachel-ia`  
 **Branch oficial:** `main`
 
@@ -160,24 +160,71 @@ O teste usa backend fake e bancos temporarios e comprova:
 - um approval e criado;
 - ferramentas `browser.*` sao descobertas pelo registry.
 
+## Roteamento natural no Ned
+
+Commits ja incorporados em `main`:
+
+- `16e3460` — `feat(ned): rotear intenções naturais de browser`;
+- `35499b7` — `test(ned): validar roteamento natural de browser`;
+- `91949b6` — `ci(ned): incluir roteamento natural de browser`.
+
+`NedRouter.browser_intent()` reconhece URL explicita e intencoes read-only para `browser.open`, `browser.title` e `browser.read`, evitando falsos positivos como pedidos de titulo de projeto sem contexto web.
+
+Esse sublote esta implementado e coberto no roteador, mas o gate E2E ainda exige integrar a decisao deterministica ao caminho canonico do planner/Agent Loop. Portanto nao deve ser tratado como roteamento natural completo da Rachel ainda.
+
+## Sublote — contrato de sessao governada
+
+Commits:
+
+- `abe592800f6bc4690bd3570da48ff3cb64577419` — `feat(browser): adicionar gerenciamento de sessão governada`;
+- `6198d25db2658c9c96a60ff30d822120bdedcfa8` — `test(browser): validar ciclo de vida de sessão governada`;
+- `4e2e4e5d39652b8a663378df878aad798633ac5f` — `ci(browser): incluir sessões governadas na regressão crítica`.
+
+Foi criado `browser_session_runtime.py` para estabelecer antes dos efeitos interativos o contrato de estado que click/form/login/upload/download deverao consumir.
+
+O `BrowserSessionManager` fornece:
+
+- `session_id` estavel e opaco;
+- `page_id` estavel e opaco;
+- `current_url`;
+- `origin` normalizada;
+- `created_at_ms` e `last_used_at_ms`;
+- TTL configuravel, com piso defensivo;
+- limite global de sessoes;
+- eviction LRU deterministica quando o limite e atingido;
+- fechamento explicito e idempotente;
+- limpeza de sessoes expiradas;
+- lock interno para evitar corrupcao concorrente da tabela de sessoes;
+- validacao da URL em toda criacao/navegacao antes de alterar estado.
+
+O teste cobre:
+
+1. criacao e navegacao com validacao de toda URL;
+2. navegacao invalida sem mutar o estado conhecido;
+3. expiracao fail-closed;
+4. eviction LRU com numero maximo de sessoes;
+5. close explicito/idempotente;
+6. status que nao anuncia capacidades ainda inexistentes.
+
+### Regra de verdade do status
+
+O status do manager declara explicitamente:
+
+```text
+persistent_metadata = true
+live_playwright_context_persistence = false
+effectful_actions_enabled = false
+```
+
+Essa distincao e deliberada. O projeto agora possui persistencia logica/metadata de sessao, mas ainda nao mantem um `BrowserContext/Page` Playwright vivo entre chamadas. Nao sera permitido marcar sessao browser como plenamente concluida antes de existir persistencia real do contexto Playwright.
+
 ## CI
 
-Commit:
+O gate integrado inicial do BrowserRuntime + ToolCoordinator + Cyber foi validado anteriormente no run `33074979083`, com Core/Runtime, frontend e Tauri verdes.
 
-- `3124f23276f6cd8546f3c9e85d6c484ff9dbb0f7` — `ci(browser): incluir integração do browser governado`.
+O workflow legado `tests` tambem foi recuperado em lote posterior de hardening do dashboard/Samwell. O run `33203477817`, no commit `ab62901290faae7ec6b6b46ae6c8558495d9fe01`, concluiu com `success`, eliminando o timeout historico usado como blocker de higiene de CI.
 
-A regressao critica inclui agora:
-
-- `test_browser_runtime.py`;
-- `test_browser_tools.py`.
-
-O run `33074979083`, no head `3124f23276f6cd8546f3c9e85d6c484ff9dbb0f7`, concluiu com:
-
-- Python Core + Runtime contracts: **PASS**;
-- Desktop frontend build: **PASS**;
-- Tauri Rust check: **PASS**.
-
-Portanto, o primeiro gate integrado de BrowserRuntime + ToolCoordinator + Cyber esta verde. A Etapa 11 como um todo continua aberta porque os efeitos interativos, roteamento natural e sessao persistente ainda nao foram concluidos.
+O novo teste `test_browser_session_runtime.py` passou a integrar a regressao critica profissional no commit `4e2e4e5d39652b8a663378df878aad798633ac5f`. A conclusao desse novo head deve ser registrada separadamente antes de promover o subgate para `VALIDATED`.
 
 ## Gate atual
 
@@ -193,19 +240,21 @@ Portanto, o primeiro gate integrado de BrowserRuntime + ToolCoordinator + Cyber 
 - leitura = Cyber LOW: **VALIDATED**;
 - efeitos = Cyber approval: **VALIDATED**;
 - efeito remoto sem approval -> `approval_required`: **VALIDATED**;
+- roteamento natural deterministico no `NedRouter`: **IMPLEMENTED / TESTED**;
+- roteamento natural no planner/Agent Loop canonico: **PENDING**;
+- contrato de `session_id/page_id`, TTL, close e LRU: **IMPLEMENTED / TESTED / CI DO NOVO HEAD PENDING**;
+- persistencia real de `BrowserContext/Page` Playwright: **PENDING**;
 - click/form/login/upload/download depois do approval: **PENDING**;
-- roteamento natural deterministico no Ned: **PENDING**;
-- sessao persistente/tab state: **PENDING**;
 - smoke real Playwright com browser instalado: **PENDING PARA AMBIENTE APROPRIADO**;
-- CI deste sublote: **GREEN**;
 - CI final da etapa: **PENDING**.
 
 ## Proximos passos
 
-1. adicionar roteamento natural confiavel para pedidos de navegacao;
-2. criar contrato de sessao/tab que impeça efeitos sem pagina alvo conhecida;
-3. implementar click/form/login/upload/download em sublotes independentes;
-4. vincular approvals a acao + alvo + parametros para impedir reutilizacao indevida;
-5. testar que approval de uma operacao nao autoriza outra;
-6. executar smoke Playwright real quando dependencia/browser estiver disponivel;
-7. fechar Etapa 11 somente com CI completa verde e gate funcional comprovado.
+1. integrar `NedRouter.browser_intent()` ao caminho canonico de planejamento/Agent Loop;
+2. ligar `BrowserSessionManager` ao `BrowserRuntime` sem enfraquecer `WebPolicy`;
+3. criar backend Playwright persistente que mantenha `BrowserContext/Page` por `session_id` e feche por TTL/close;
+4. implementar `click` e `form` primeiro, com seletor/alvo e pos-condicao verificavel;
+5. vincular approvals a ferramenta + efeito + session/page + alvo + parametros para impedir reutilizacao indevida;
+6. implementar login, upload e download em sublotes separados;
+7. executar smoke Playwright real quando dependencia/browser estiver disponivel;
+8. fechar Etapa 11 somente com CI completa verde, testes E2E e evidencia de execucao real.
