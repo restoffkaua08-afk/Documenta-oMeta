@@ -180,7 +180,7 @@ validação no Windows e empacotamento antes da release.
 - A suíte ampliada registrou 471 aprovações, 14 skips e 50 falhas preexistentes
   ligadas principalmente à ausência de `openjarvis_rust`; o gate integral não
   foi declarado verde.
-- Commit do Jarvis: `57a3657f`.
+- Commit do Jarvis: `0b6224c61297f4c51470e4121f4c2424e89084b3`.
 - Documento técnico:
   `alteracoes/JARVIS-015-seguranca-chat-code.md`.
 

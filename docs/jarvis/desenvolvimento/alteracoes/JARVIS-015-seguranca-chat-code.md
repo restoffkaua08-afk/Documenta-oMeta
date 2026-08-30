@@ -84,7 +84,7 @@ confirmação interativa já existente.
 
 ## Validação executada
 
-Commit do Jarvis: `57a3657f`.
+Commit do Jarvis: `0b6224c61297f4c51470e4121f4c2424e89084b3`.
 
 Resultados do conjunto diretamente afetado:
 
@@ -134,4 +134,3 @@ O JARVIS-015 fortalece as etapas 03 e 05, mas não as conclui:
 3. testar deny-by-default com todas as ferramentas do perfil Code;
 4. adicionar testes de travessia de diretório, rede, timeout e cancelamento;
 5. validar o fluxo em Windows com modelo real antes de promover a etapa 05.
-
