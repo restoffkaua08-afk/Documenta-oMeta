@@ -166,6 +166,24 @@ validação no Windows e empacotamento antes da release.
 - Documento técnico:
   `alteracoes/JARVIS-014-modelos-avancados.md`.
 
+## JARVIS-015 — segurança efetiva no runtime de Chat e Code
+
+- Detectado que `jarvis chat` não inicializava a esteira compartilhada de
+  segurança; `jarvis code` herdava a lacuna por delegar ao mesmo runtime.
+- Chat e Code agora executam `setup_security()` e usam o engine protegido.
+- A `CapabilityPolicy` passou a ser encaminhada aos agentes compatíveis.
+- O modo Code com gate recebe política deny-by-default limitada aos nomes
+  exatos das ferramentas selecionadas.
+- `ToolSpec.required_capabilities` permanece a fonte primária, com fallback no
+  mapa central quando a especificação individual omite capacidades.
+- Testes diretamente afetados: 96 aprovados e 1 skip opcional.
+- A suíte ampliada registrou 471 aprovações, 14 skips e 50 falhas preexistentes
+  ligadas principalmente à ausência de `openjarvis_rust`; o gate integral não
+  foi declarado verde.
+- Commit do Jarvis: `57a3657f`.
+- Documento técnico:
+  `alteracoes/JARVIS-015-seguranca-chat-code.md`.
+
 ## DOC-JARVIS-001 — plano mestre de conclusão
 
 - Data: 2026-08-28.

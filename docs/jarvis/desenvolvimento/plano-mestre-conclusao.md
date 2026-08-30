@@ -26,7 +26,7 @@ Cada etapa possui peso igual no indicador executivo:
 Somente etapas `CONCLUÍDAS` contam no percentual oficial. O progresso não é
 calculado pelo número de commits ou de arquivos criados.
 
-## Estado executivo em 28 de agosto de 2026
+## Estado executivo em 30 de agosto de 2026
 
 | Indicador | Estado |
 |---|---:|
@@ -34,12 +34,12 @@ calculado pelo número de commits ou de arquivos criados.
 | Etapas parciais | 10 de 29 |
 | Etapas pendentes | 15 de 29 |
 | Progresso oficial | 13,8% |
-| Melhorias rastreadas | JARVIS-001 a JARVIS-014 |
+| Melhorias rastreadas | JARVIS-001 a JARVIS-015 |
 | Gate atual | Fundação técnica e modo Code |
 | Release estável | Ainda não autorizada |
 
 O percentual é deliberadamente conservador. As entregas JARVIS-001 a
-JARVIS-014 criaram partes importantes, mas várias só podem ser aprovadas após
+JARVIS-015 criaram partes importantes, mas várias só podem ser aprovadas após
 execução integral da suíte, uso de modelos reais e teste no Windows final.
 
 ## Definição global de concluído
@@ -87,8 +87,12 @@ dependências do modo CLI e cloud; registrar versões e tempo de instalação.
 **Escopo:** lint, tipos quando aplicável, testes unitários, integração, CLI,
 frontend, instaladores e artefatos em CI.
 
+**Evidência atual:** JARVIS-015 aprovou 96 testes diretamente afetados e
+identificou, na suíte ampliada, dependências Rust ainda não matriciadas.
+
 **Falta para concluir:** obter todas as esteiras obrigatórias verdes no mesmo
-commit; remover testes instáveis; publicar matriz de cobertura e exceções.
+commit; separar jobs Python-only e Rust-enabled; remover testes instáveis;
+publicar matriz de cobertura e exceções.
 
 ### Etapa 04 — Segurança de capacidades e RBAC
 
@@ -106,9 +110,13 @@ escopo de recursos e RBAC ativo/configurável.
 **Escopo:** confirmação de ações perigosas, isolamento de shell/código,
 restrição de caminhos, rede, orçamento, timeout, cancelamento e kill switch.
 
+**Evidência atual:** JARVIS-015 conectou `setup_security()` ao runtime de Chat e
+Code e introduziu deny-by-default com grants limitados às ferramentas
+selecionadas.
+
 **Falta para concluir:** matriz completa por ferramenta; testes de fuga de
-diretório, comandos destrutivos, rede e cancelamento; perfil deny-by-default
-pronto para uso real.
+diretório, comandos destrutivos, rede, timeout, cancelamento e kill switch;
+validação do perfil em Windows com modelo real.
 
 ## Marco B — Agente de código competente
 
