@@ -23,7 +23,13 @@ Jarvis nao sera um servico obrigatorio em producao. Suas capacidades comprovadas
 
 ## Estado
 
-Planejamento consolidado. O desenvolvimento detalhado deve iniciar somente depois do gate definido para a Rachel.
+Desenvolvimento Ativo. A fase de importação foi concluída e a estabilização do runtime foi iniciada.
+
+## Recentes Implementações (Agosto/2026)
+
+- **Estratégia de Feedback Adaptativo**: Implementação da `AdaptiveFeedbackStrategy` para evitar loops de erro, penalizando modelos instáveis em tempo real.
+- **Autodiagnóstico de Sistema**: Criação da `HealthCheckTool` para monitoramento de CPU, RAM, GPU e conectividade com o motor de inferência.
+- **Trigger de Saúde**: Integração no `OrchestratorAgent` para sugerir diagnósticos automáticos após falhas múltiplas de ferramentas.
 
 ## Produto-alvo
 
@@ -50,4 +56,3 @@ Jarvis deve chegar ao final como um runtime agentic completo e demonstravel, cap
 - uma dependencia operacional permanente do Zane.
 
 Ver [`indice.md`](indice.md) para a especificacao completa.
-
